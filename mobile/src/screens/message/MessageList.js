@@ -44,11 +44,14 @@ export default function MessageListScreen({ navigation, route }) {
       const allChatsObj = snapshot.val();
       let roomChats = [];
 
-      for (let room in allChatsObj) {
+      for (let room in allChatsObj) {        
         var userIds = room.split("-");
         let roomChatsObj = allChatsObj[room];
-        //let roomLastChat = roomChatsObj[Object.keys(roomChatsObj)[Object.keys(roomChatsObj).length - 1]];
-        let roomLastChat = roomChatsObj[Object.keys(roomChatsObj)[0]];
+        
+        let keyArr = Object.keys(roomChatsObj);
+        keyArr.sort((a,b)=>a<b);
+        let roomLastChat = roomChatsObj[keyArr[0]];
+        
         if (userIds[0] == Constants.user.id) {
           roomChats.push({
             chateeId: userIds[1],
