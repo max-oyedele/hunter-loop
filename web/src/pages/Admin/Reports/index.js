@@ -144,6 +144,7 @@ class Reports extends Component {
   }
 
   renderList = () => {
+    console.log(this.state.reports)
     return (
       <>
         {
@@ -170,6 +171,12 @@ class Reports extends Component {
               </CardBody>
             )
           })
+        }
+        {
+          this.state.reports.length == 0 &&
+          <CardBody className="d-flex justify-content-center align-items-center">
+            <CardTitle>NO REPORTS</CardTitle>
+          </CardBody>
         }
       </>
     )

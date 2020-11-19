@@ -83,6 +83,12 @@ class Users extends Component {
             </CardBody>
           ))
         }
+        {
+          validUsers.length == 0 &&
+          <CardBody className="d-flex justify-content-center align-items-center">
+            <CardTitle>NO USERS</CardTitle>
+          </CardBody>
+        }
       </div>
     )
   }
@@ -107,6 +113,12 @@ class Users extends Component {
               </CardBody>
             )
           })
+        }
+        {
+          this.state.users.filter(each=>each.active == false).length == 0 &&
+          <CardBody className="d-flex justify-content-center align-items-center">
+            <CardTitle>NO BANNED USER</CardTitle>
+          </CardBody>
         }
       </div>
     )

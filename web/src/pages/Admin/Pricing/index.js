@@ -16,7 +16,8 @@ class Pricing extends Component {
     this.state = {
       memberships: [],
       addPlanModal: false,
-      newMembership: {},
+      newMembershipLevel: '',
+      newMembershipPrice: '',
 
       successAlert: false,
       successAlertText: '',
@@ -38,7 +39,7 @@ class Pricing extends Component {
     //////////////////////////////
     if (!prevProps.data.success && this.props.data.success) {
       this.setState({ successAlert: true });
-      this.props.getData('memberships');      
+      this.props.getData('memberships');
     }
     if (!prevProps.data.error && this.props.data.error) {
       this.setState({ errorAlert: true });
@@ -47,7 +48,12 @@ class Pricing extends Component {
 
   onChangePrice = (e, membership) => {
     membership.price = e.target.value;
-
+    if (membership.price < 0) membership.price = 0;
+    var priceStr = membership.price.toString();
+    if (priceStr.charAt(0) == '0') {
+      membership.price = '0';
+    }
+    
     var { memberships } = this.state;
     memberships.splice(memberships.findIndex(each => each.id == membership.id), 1, membership);
     this.setState({ memberships: memberships });
@@ -69,6 +75,7 @@ class Pricing extends Component {
   }
 
   onDelete = (membership) => {
+    console.log(membership)
     this.props.setData('memberships', 'delete', this.state.memberships, membership);
 
     this.setState({
@@ -76,9 +83,9 @@ class Pricing extends Component {
       errorAlertText: 'Membership delete error.'
     });
 
-    var { memberships } = this.state;
-    memberships.splice(memberships.findIndex(each => each.id == membership.id), 1);
-    this.setState({ memberships: memberships });
+    // var { memberships } = this.state;
+    // memberships.splice(memberships.findIndex(each => each.id == membership.id), 1);
+    // this.setState({ memberships: memberships });
   }
 
   toggleModal = () => {
@@ -87,35 +94,51 @@ class Pricing extends Component {
 
   onChangeFieldForAdd = (e, field) => {
     if (field === 'level') {
-      var { newMembership } = this.state;
-      newMembership.level = e.target.value;
-      this.setState({ newMembership: newMembership });
+      this.setState({ newMembershipLevel: e.target.value });
     }
     if (field === 'price') {
-      var { newMembership } = this.state;
-      newMembership.price = Number(e.target.value);      
-      this.setState({ newMembership: newMembership });
+      var { newMembershipPrice } = this.state;
+      newMembershipPrice = e.target.value;      
+      if (newMembershipPrice < 0) newMembershipPrice = 0;
+      var priceStr = newMembershipPrice.toString();
+      if (priceStr.charAt(0) == '0') {
+        newMembershipPrice = '0';
+      }
+
+      this.setState({ newMembershipPrice: newMembershipPrice });
     }
   }
 
-  addPlans = () => {    
-    if (isNaN(this.state.newMembership.price)) {
+  addPlans = () => {
+    var {newMembershipLevel} = this.state;
+    var {newMembershipPrice} = this.state;
+    if(!newMembershipLevel){
+      alert('Please enter membership name.');
+      return;
+    }
+    if(!newMembershipPrice){
+      alert('Please enter membership price.');
+      return;
+    }
+    if (isNaN(newMembershipPrice)) {
       alert('Wrong price entered');
       return;
     }
 
-    this.props.setData('memberships', 'add', this.state.memberships, this.state.newMembership);
+    newMembershipPrice = Number(newMembershipPrice);
+    var newMembership = {level: newMembershipLevel, price: newMembershipPrice};
+    this.props.setData('memberships', 'add', this.state.memberships, newMembership);
 
     this.setState({
       successAlertText: 'New Membership Added.',
       errorAlertText: 'Membership add error.'
     });
 
-    this.setState({addPlanModal: false});    
+    this.setState({ addPlanModal: false });
 
-    var {memberships} = this.state;
-    memberships.push(this.state.newMembership);
-    this.setState({memberships: memberships});
+    // var { memberships } = this.state;
+    // memberships.push(newMembership);
+    // this.setState({ memberships: memberships });
   }
 
   render() {
@@ -135,7 +158,7 @@ class Pricing extends Component {
               onConfirm={() => this.setState({ errorAlert: false })}
             >
               {" "}
-              <span>{this.props.data.error}</span>
+              <span>{this.props.data.error.toString()}</span>
             </SweetAlert>
           }
 
@@ -147,7 +170,7 @@ class Pricing extends Component {
                   <div key={index} className="form-group row justify-content-center align-items-center">
                     <label htmlFor="example-text-input" className="col-md-3 col-form-label text-right">{each.level} ($)</label>
                     <div className="col-4">
-                      <input className="form-control" type="text" defaultValue={each.price} onChange={(e) => this.onChangePrice(e, each)} />
+                      <input className="form-control" type="number" min={0} onChange={(e) => this.onChangePrice(e, each)} value={each.price} />
                     </div>
                     <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style={{ width: 25, height: 25, cursor: "pointer" }} onClick={() => { this.onSave(each) }}>
                       <i className={`${Icons.edit} text-white font-size-14`}></i>
@@ -187,13 +210,13 @@ class Pricing extends Component {
                   <div className="form-group row mt-3">
                     <label htmlFor="example-text-input" className="col-md-5 col-form-label text-right">Membership</label>
                     <div className="col-md-6">
-                      <input className="form-control" type="text" defaultValue='' onChange={(e) => this.onChangeFieldForAdd(e, 'level')} />
+                      <input className="form-control" type="text" defaultValue={this.state.newMembershipLevel} onChange={(e) => this.onChangeFieldForAdd(e, 'level')} />
                     </div>
                   </div>
                   <div className="form-group row mt-3">
                     <label htmlFor="example-text-input" className="col-md-5 col-form-label text-right">Membership Price ($)</label>
                     <div className="col-md-6">
-                      <input className="form-control" type="text" defaultValue='' onChange={(e) => this.onChangeFieldForAdd(e, 'price')} />
+                      <input className="form-control" type="number" min={0} onChange={(e) => this.onChangeFieldForAdd(e, 'price')} value={this.state.newMembershipPrice} />
                     </div>
                   </div>
 
