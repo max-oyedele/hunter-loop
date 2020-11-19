@@ -301,7 +301,8 @@ class BusinessAccounts extends Component {
     if (this.props.data.business.length == 0) return;
     const bid = this.props.location.state.bid;
     const business = this.state.business.find(each=>each.id == bid);
-    const membership = this.state.memberships.find(each=>each.id == business.mid);    
+    const membership = this.state.memberships.find(each=>each.id == business.mid);
+    const services = this.state.services.filter(each=>each.bid == bid);    
     if(!business) return;
 
     return (
@@ -320,7 +321,7 @@ class BusinessAccounts extends Component {
           </Col>
           <Col className="col-9">
             {
-              this.state.services.map((each, index) => {
+              services.map((each, index) => {
                 return (
                   <div key={index} className="mb-3">
                     <CardBody className="bg-white w-75">

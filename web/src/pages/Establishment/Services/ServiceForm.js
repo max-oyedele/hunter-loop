@@ -77,7 +77,7 @@ class ServiceForm extends Component {
 
     var categories = this.props.data.categories; 
     if (prevState.categories.length != categories.length) {
-      this.setState({ categories: categories });
+      this.setState({ categories: categories });      
     }
 
     /////////////////
@@ -136,8 +136,8 @@ class ServiceForm extends Component {
       var service = { ...this.state.service };
       var bid = JSON.parse(localStorage.getItem("authUser")).bid;
       service.bid = bid;
-      if(!service.cid) service.cid = this.state.categories[0].cid;
-
+      if(!service.cid) service.cid = this.state.categories[0].id;
+      
       services.push(this.state.service);
       this.props.setData('services', 'add', services, service);
     }
@@ -216,7 +216,7 @@ class ServiceForm extends Component {
                             <select className="form-control" onChange={(e) => this.onChangeField(e, 'cid')}>
                               {
                                 this.state.categories.map((each, index) => (
-                                  <option key={index} value={each.id} selected={each.id == this.state.service.cid}>{each.name.toUpperCase()}</option>
+                                  <option key={index} value={each.id} defaultValue={this.state.service.cid}>{each.name.toUpperCase()}</option>
                                 ))
                               }                              
                             </select>

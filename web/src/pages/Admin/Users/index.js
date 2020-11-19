@@ -65,7 +65,7 @@ class Users extends Component {
 
   renderAllUsers = () => {
     var filtered = this.state.users.filter(each => each.name.toLowerCase().includes(this.state.keyword.toLowerCase()));
-    var validUsers = filtered.filter(each => each.active);
+    var validUsers = filtered.filter(each => each.active && each.role != 'admin');
     return (
       <div>
         {

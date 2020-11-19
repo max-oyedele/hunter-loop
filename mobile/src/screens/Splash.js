@@ -126,7 +126,7 @@ export default function SplashScreen({ navigation }) {
       .then(location => {
         Constants.location.latitude = location.latitude;
         Constants.location.longitude = location.longitude;
-        console.log('location', Constants.location);
+        // console.log('location', Constants.location);
         getAllData();
       })
       .catch(ex => {
