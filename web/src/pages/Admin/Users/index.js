@@ -94,11 +94,12 @@ class Users extends Component {
   }
 
   renderBannedUsers = () => {
+    var filtered = this.state.users.filter(each => each.name.toLowerCase().includes(this.state.keyword.toLowerCase()));
+    var bannedUsers = filtered.filter(each => each.active == false && each.role != 'admin');
     return (
       <div>
         {
-          this.state.users.map((each, index) => {
-            if (each.active) return;
+          bannedUsers.map((each, index) => {
             return (
               <CardBody key={index} className="bg-white" style={{ borderBottom: '2px solid #eee' }}>
                 <Row>
@@ -115,7 +116,7 @@ class Users extends Component {
           })
         }
         {
-          this.state.users.filter(each=>each.active == false).length == 0 &&
+          bannedUsers.length == 0 &&
           <CardBody className="d-flex justify-content-center align-items-center">
             <CardTitle>NO BANNED USER</CardTitle>
           </CardBody>
