@@ -10,7 +10,7 @@ import StarRatings from 'react-star-ratings';
 
 import { getData, setData } from '../../../store/actions';
 
-import defaultUserImg from "../../../assets/images/users/defaultUserImg.png";
+import defaultUserImg from "../../../assets/images/defaultUserImg.png";
 
 import { Icons } from '../../../constants';
 

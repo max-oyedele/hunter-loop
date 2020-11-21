@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { Col, Row, Card, CardBody, CardTitle, CardSubtitle, CardImg, CardText, Modal, Container, Button } from "reactstrap";
 import { Icons } from '../../../constants';
 
-import defaultUserImg from '../../../assets/images/users/defaultUserImg.png';
+import defaultUserImg from '../../../assets/images/defaultUserImg.png';
 
 class Header extends Component {
   constructor(props) {

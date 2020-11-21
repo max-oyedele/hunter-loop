@@ -12,7 +12,7 @@ import { getData, setData } from '../../../store/actions';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
-import defaultUserImg from '../../../assets/images/users/defaultUserImg.png';
+import defaultUserImg from '../../../assets/images/defaultUserImg.png';
 import { times } from 'chartist';
 
 class Chat extends Component {

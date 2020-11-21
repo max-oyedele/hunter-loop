@@ -8,7 +8,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 
 import { getData, setData } from '../../../store/actions'
 
-import defaultUserImg from '../../../assets/images/users/defaultUserImg.png';
+import defaultUserImg from '../../../assets/images/defaultUserImg.png';
 
 class Users extends Component {
   constructor(props) {

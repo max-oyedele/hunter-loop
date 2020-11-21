@@ -8,7 +8,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 
 import { getData, setData } from '../../../store/actions'
 
-import defaultUserImg from '../../../assets/images/users/defaultUserImg.png';
+import defaultUserImg from '../../../assets/images/defaultUserImg.png';
 
 class Reports extends Component {
   constructor(props) {
@@ -143,8 +143,7 @@ class Reports extends Component {
     )
   }
 
-  renderList = () => {
-    console.log(this.state.reports)
+  renderList = () => {    
     return (
       <>
         {

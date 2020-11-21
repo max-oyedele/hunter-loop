@@ -23,24 +23,24 @@ const authProtectedRoutes = [
 	{ path: "/profile", exact: true, component: Profile },
 	{ path: "/profile/edit", component: ProfileForm},
 	{ path: "/services", exact: true, component: Services },
-	{ path: "/services/add", exact: true, component: ServiceForm },
-	{ path: "/services/edit", exact: true, component: ServiceForm },
-	{ path: "/chat", component: Messages },
+	{ path: "/services/add", component: ServiceForm },
+	{ path: "/services/edit", component: ServiceForm },
+	{ path: "/chat", exact: true, component: Messages },
 	{ path: "/socialupdate", component: SocialUpdate },
 	{ path: "/settings", component: Settings },
 ];
 
 const authProtectedAdminRoutes = [
 	{ path: "/admin/reports", exact: true, component: Reports },
-	{ path: "/admin/reports/detail", exact: true, component: Reports },
-	{ path: "/admin/users/all", component: Users},
+	{ path: "/admin/reports/detail", component: Reports },
+	{ path: "/admin/users/all", exact: true, component: Users},
 	{ path: "/admin/users/banned", component: Users},
 	{ path: "/admin/pricing", exact: true, component: Pricing },
 	{ path: "/admin/businessaccounts", exact: true, component: BusinessAccounts },
 	{ path: "/admin/businessaccounts/requests", exact: true, component: BusinessAccounts },
 	{ path: "/admin/businessaccounts/requests/detail", component: BusinessAccounts },
-	{ path: "/admin/businessaccounts/view", component: BusinessAccounts },
-	{ path: "/admin/changepwd", component: ChangePwd },
+	{ path: "/admin/businessaccounts/view", exact: true, component: BusinessAccounts },
+	{ path: "/admin/changepwd", exact: true, component: ChangePwd },
 ]
 
 export { publicRoutes, authProtectedRoutes, authProtectedAdminRoutes };
