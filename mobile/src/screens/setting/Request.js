@@ -30,6 +30,7 @@ import ImageResizer from 'react-native-image-resizer';
 import DropDownPicker from 'react-native-dropdown-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import TextInputMask from 'react-native-text-input-mask';
 
 import { Colors, Images, Constants } from '@constants';
 
@@ -51,7 +52,7 @@ export default function RequestScreen({ navigation }) {
   const [spinner, setSpinner] = useState(false);
 
   let ref = useRef();
-
+  
   if (useIsFocused() && Constants.refreshFlag) {
     Constants.refreshFlag = false;
     if (Constants.user.bid) {
@@ -67,6 +68,10 @@ export default function RequestScreen({ navigation }) {
       setMembershipId(business.mid);
     }
   }
+
+  useEffect(()=>{
+    ref.current?.setAddressText(address);
+  }, [address])
 
   onBusinessLogo = () => {
     var options = {
@@ -194,7 +199,7 @@ export default function RequestScreen({ navigation }) {
 
   onRequest = async () => {
     if (!logo) {
-      Alert.alert('Please enter logo image');
+      Alert.alert('Please upload logo image');
       return;
     }
     if (!bname) {
@@ -309,7 +314,7 @@ export default function RequestScreen({ navigation }) {
           }}
         />
 
-        <TextInput
+        {/* <TextInput
           style={styles.inputBox}
           keyboardType='numeric'
           placeholder={'Contact Number'}
@@ -317,7 +322,19 @@ export default function RequestScreen({ navigation }) {
           value={phone}
           onChangeText={(text) => setPhone(text)}
         >
-        </TextInput>
+        </TextInput> */}
+        <TextInputMask          
+          style={styles.inputBox}
+          placeholder={'Contact Number'}
+          placeholderTextColor={Colors.greyColor}
+          value={phone}
+          onChangeText={(formatted, extracted) => {
+            // console.log(formatted) // +1 (123) 456-78-90
+            // console.log(extracted) // 1234567890
+            setPhone(extracted);
+          }}
+          mask={"+1 ([000]) [000]-[0000]"}
+        />
         <TextInput
           style={styles.inputBox}
           autoCapitalize='none'

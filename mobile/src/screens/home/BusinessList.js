@@ -43,7 +43,7 @@ export default function BusinessListScreen({ navigation }) {
   const [categories, setCategories] = useState(Constants.categories);
   const [activeCategory, setActiveCategory] = useState();
 
-  useEffect(() => {
+  useEffect(() => {   
     var cates = [...categories];
 
     // var allHunting = {
@@ -65,10 +65,23 @@ export default function BusinessListScreen({ navigation }) {
     // cates.unshift(allFishing);    
     // cates.unshift(allHunting);
     cates.unshift(all);
-
     setCategories(cates);
-    
   }, [])
+
+  // useEffect(()=>{
+  //   const onBackPress = () => {      
+  //     return true;
+  //   };
+  //   BackHandler.addEventListener(
+  //     'hardwareBackPress', onBackPress
+  //   );
+
+  //   return () => {  
+  //     BackHandler.removeEventListener(
+  //       'hardwareBackPress', onBackPress
+  //     );
+  //   }
+  // })
 
   if (useIsFocused() && Constants.refreshFlag) {
     Constants.refreshFlag = false;
@@ -94,7 +107,7 @@ export default function BusinessListScreen({ navigation }) {
   }
 
   onSearch = (text) => {
-    var filtered = Constants.business.filter(each => each.name.toLowerCase().includes(text.toLowerCase()) && each.status === 'approved');
+    var filtered = Constants.business.filter(each => (each.name?.toLowerCase().includes(text.toLowerCase()) || each.address?.toLowerCase().includes(text.toLowerCase())) && each.status === 'approved');
     setBusiness(filtered);
     setKeyword(text);
   }
@@ -256,13 +269,13 @@ export default function BusinessListScreen({ navigation }) {
                     <Text style={styles.btnTxt}>
                       {each.name}
                     </Text>
-                    <TouchableOpacity onPress={() => {
+                    {/* <TouchableOpacity onPress={() => {
                       var cates = [...categories];
                       cates.splice(cates.findIndex(e => e.id == each.id), 1);
                       setCategories(cates);
                     }}>
                       <EntypoIcon name="circle-with-cross" style={styles.iconClose}></EntypoIcon>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </TouchableOpacity>
                 )
               })
@@ -388,8 +401,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: normalize(8),
     marginBottom: normalize(8, 'height'),
-    paddingLeft: normalize(10),
-    paddingRight: normalize(5),
+    paddingLeft: normalize(7),
+    paddingRight: normalize(7),
     borderColor: '#333',
     borderWidth: 3
   },

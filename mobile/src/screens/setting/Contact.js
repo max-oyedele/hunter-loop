@@ -31,7 +31,20 @@ export default function ContactScreen({ navigation }) {
   const [message, setMessage] = useState();
 
   handleEmail = () => {
-    Linking.openURL(`mailto:support@example.com?subject=${subject}&body=${message}`)
+    if(!name){
+      Alert.alert('Please enter name.');
+      return;
+    }
+    if(!email){
+      Alert.alert('Please enter email.');
+      return;
+    }
+    if(!message){
+      Alert.alert('Please enter message.');
+      return;
+    }
+    
+    Linking.openURL(`mailto:support@example.com?subject=${subject}&body=${message}&name=${name}&email=${email}`)
     .catch(err=>{
       console.log('email error:', err)
     })
@@ -67,7 +80,7 @@ export default function ContactScreen({ navigation }) {
           placeholder={'Email Address'}
           placeholderTextColor={Colors.greyColor}
           value={email}
-          onChangeText={(text) => setEmail(email)}
+          onChangeText={(text) => setEmail(text)}
         >
         </TextInput>
         <TextInput

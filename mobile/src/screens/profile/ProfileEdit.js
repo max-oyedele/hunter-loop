@@ -37,6 +37,9 @@ export default function ProfileEditScreen({ navigation, route }) {
   const [photoLocalPath, setPhotoLocalPath] = useState('');
 
   let ref = useRef();
+  useEffect(()=>{
+    ref.current.setAddressText(profile.address);
+  }, [])
 
   onFavoriteItem = (item) => {
     var index = Constants.user.favorbids.findIndex(each => each == item.id);
@@ -111,7 +114,7 @@ export default function ProfileEditScreen({ navigation, route }) {
       .then(() => {
         if (alertShow) {
           Alert.alert(
-            'Saved Success!',
+            'Profile updated successfully!',
             '',
             [
               { text: "OK", onPress: () => { setSpinner(false); setRefresh(!refresh) } }
@@ -125,7 +128,7 @@ export default function ProfileEditScreen({ navigation, route }) {
       .catch((err) => {
         if (alertShow) {
           Alert.alert(
-            'Saved Error!',
+            'Profile update failed!',
             '',
             [
               { text: "OK", onPress: () => setSpinner(false) }
@@ -215,19 +218,20 @@ export default function ProfileEditScreen({ navigation, route }) {
                 borderColor: Colors.whiteColor,
                 borderRadius: normalize(25),
                 borderWidth: normalize(3),
-                paddingLeft: normalize(10),
+                paddingLeft: normalize(10),                
               },
               textInput: {
                 backgroundColor: 'transparent',
                 fontSize: RFPercentage(2.5),
                 color: Colors.whiteColor,
-              },
+                marginTop: normalize(-2, 'height'),
+              },              
               description: {
                 width: '95%',
                 fontWeight: 'bold',
-              }
+              },
             }}
-            placeholder='Address'
+            placeholder='Address'             
             enablePoweredByContainer={false}
             fetchDetails={true}
             onPress={(data, details = null) => {
@@ -256,9 +260,9 @@ export default function ProfileEditScreen({ navigation, route }) {
             )
           }
           {
-            Constants.favorites.length == 0 &&
+            Constants.favorites.length == 0 && 
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyTxt}>No Favoirtes</Text>
+              <Text style={styles.emptyTxt}>No Favorites</Text>
             </View>
           }
         </ScrollView>
@@ -315,7 +319,7 @@ const styles = StyleSheet.create({
 
   body: {
     backgroundColor: Colors.greyStrongColor,
-    height: '77%'    
+    height: '77%',
   },
   imgContainer: {
     width: '100%',
@@ -333,7 +337,7 @@ const styles = StyleSheet.create({
   imgEditIconBack: {
     width: normalize(25),
     height: normalize(25),
-    marginTop: normalize(90, 'height'),
+    marginTop: normalize(120, 'height'),
     marginLeft: normalize(-30),
     justifyContent: 'center',
     alignItems: 'center',
@@ -356,7 +360,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.whiteColor,
     borderRadius: normalize(25),
     borderWidth: normalize(3),
-    paddingLeft: normalize(10),
+    paddingLeft: normalize(20),
   },
 
   favoritesHeader: {
@@ -376,14 +380,14 @@ const styles = StyleSheet.create({
 
   emptyContainer: {
     width: '100%',
+    height: normalize(200, 'height'),
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: normalize(80, 'height')
   },
   emptyTxt: {
     fontSize: RFPercentage(2.2),
     fontWeight: '600',
-    color: Colors.blackColor
+    color: Colors.whiteColor
   },
 
   btnContainer: {
@@ -391,7 +395,7 @@ const styles = StyleSheet.create({
     height: '10%',
     backgroundColor: Colors.greyStrongColor,
     justifyContent: 'center',
-    alignItems: 'center',    
+    alignItems: 'center'   
   },
   btn: {
     width: '80%',

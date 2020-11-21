@@ -36,20 +36,7 @@ export default function MapViewScreen({ navigation }) {
   let mapRef = useRef();
 
   useEffect(() => {
-    getMarkerData();
-
-    // const onBackPress = () => {      
-    //   return true;
-    // };
-
-    // BackHandler.addEventListener(
-    //   'hardwareBackPress', onBackPress
-    // );
-
-    // return () =>
-    //   BackHandler.removeEventListener(
-    //     'hardwareBackPress', onBackPress
-    //   );
+    getMarkerData();   
   }, [])
 
   useEffect(() => {
@@ -76,7 +63,7 @@ export default function MapViewScreen({ navigation }) {
   }
 
   function onSearch(text){
-    var filtered = Constants.business.filter(each => each.name.toLowerCase().includes(text.toLowerCase()) && each.status === 'approved');
+    var filtered = Constants.business.filter(each => (each.name?.toLowerCase().includes(text.toLowerCase()) || each.address?.toLowerCase().includes(text.toLowerCase())) && each.status === 'approved');
     if (filtered) setBusiness(filtered);
     else setBusiness([]);
     // setKeyword(text);

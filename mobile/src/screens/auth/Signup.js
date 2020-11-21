@@ -23,7 +23,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
 
 import { Colors, Images } from '@constants';
-import { signup, createUser, setData } from '../../service/firebase';
+import { signup, createUser, setData, checkInternet } from '../../service/firebase';
 
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -136,6 +136,12 @@ export default function SignupScreen({ navigation }) {
     //   Alert.alert('Please endter a valid password');
     //   return;
     // }
+
+    var isConnected = await checkInternet();
+    if(!isConnected){
+      Alert.alert('Please connect to network.');
+      return;
+    }
 
     setSpinner(true);
 

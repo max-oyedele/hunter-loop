@@ -11,6 +11,14 @@ import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 
+import NetInfo from '@react-native-community/netinfo';
+
+export const checkInternet = async () => {
+  return NetInfo.fetch().then(state => {    
+    return state.isConnected;
+  })
+}
+
 export const signin = (email, password) => {
   return new Promise((resolve, reject) => {
     auth().signInWithEmailAndPassword(email, password)
@@ -71,11 +79,11 @@ export const googleSignin = () => {
   return new Promise(async (resolve, reject) => {
     try {
       GoogleSignin.configure({
-        webClientId: '680066562625-35gmea5i58ahr7jn1o2qhnkslv8rh2sf.apps.googleusercontent.com',
+        webClientId: '680066562625-qsppuad0iilcc05an2qe2tql2fqen40d.apps.googleusercontent.com',
         offlineAccess: false
       })
 
-      // Get the users ID token
+      // Get the users ID token      
       const { idToken } = await GoogleSignin.signIn();
 
       // // Create a Google credential with the token

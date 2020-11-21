@@ -30,7 +30,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import { Colors, Images, Constants } from '@constants';
 import { appleSignin, googleSignin, facebookSignin, signin, } from '../../service/firebase';
-import { getUserSocialRegistered, createUser } from '../../service/firebase';
+import { getUserSocialRegistered, createUser, checkInternet } from '../../service/firebase';
 
 export default function SigninScreen({ navigation }) {
   const [page, setPage] = useState('all');
@@ -58,7 +58,7 @@ export default function SigninScreen({ navigation }) {
         getUserRegistered(res.user);
       })
       .catch((err) => {
-        //console.log('google signin error', err)
+        console.log('google signin error', err)
       })
   }
 
@@ -88,8 +88,8 @@ export default function SigninScreen({ navigation }) {
         console.log('signin errr', err);
 
         Alert.alert(
-          'Signin is failed. \n Please try again',
-          '',
+          'Signin is failed.',
+          'Please try again.',
           [
             { text: "OK", onPress: () => setSpinner(false) }
           ],
@@ -135,8 +135,14 @@ export default function SigninScreen({ navigation }) {
     if (!pwd) {
       Alert.alert('Please enter password');
       return;
-    }
+    }    
 
+    var isConnected = await checkInternet();
+    if(!isConnected){
+      Alert.alert('Please connect to network.');
+      return;
+    }
+        
     setSpinner(true);
 
     await signin(email, pwd)
@@ -151,8 +157,8 @@ export default function SigninScreen({ navigation }) {
         console.log('signin errr', err);
 
         Alert.alert(
-          'Signin is failed. \n Please try again',
-          '',
+          'Signin is failed.',
+          'Please try again.',
           [
             { text: "OK", onPress: () => setSpinner(false) }
           ],

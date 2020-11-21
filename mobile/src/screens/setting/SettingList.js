@@ -42,9 +42,18 @@ export default function SettingListScreen({ navigation }) {
   }
 
   onSignout = () => {
-    signOut();
-    AsyncStorage.removeItem('user');
-    navigation.navigate('Auth');
+    Alert.alert(
+      'Are you sure want to log out?',
+      '',
+      [
+        { text: "OK", onPress: () => {
+          signOut();
+          AsyncStorage.removeItem('user');
+          navigation.navigate('Auth');
+        }},
+        { text: "CANCEL", onPress: () => {}}
+      ],
+    );
   }
 
   return (
@@ -107,7 +116,7 @@ export default function SettingListScreen({ navigation }) {
 
       <View style={styles.itemLine}>
         <View style={styles.iconPart}><EntypoIcon name="suitcase" style={styles.iconLabel}></EntypoIcon></View>
-        <TouchableOpacity style={styles.titlePart} onPress={() => {Constants.refreshFlag = true; navigation.navigate('Request')}}><Text style={styles.itemTxt}>Create a Business Account</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.titlePart} onPress={() => { Constants.refreshFlag = true; navigation.navigate('Request') }}><Text style={styles.itemTxt}>Create a Business Account</Text></TouchableOpacity>
         <View style={styles.iconPart}><EntypoIcon name="chevron-thin-right" style={styles.itemTxt}></EntypoIcon></View>
       </View>
 
@@ -167,17 +176,19 @@ export default function SettingListScreen({ navigation }) {
           setRateModal(false)
           console.log(state)
         }}
-        styles={{button: {
-          backgroundColr: 'transparent',
-          borderColor: 'transparent',
-          textTransform: 'uppercase'
-        }}}
+        styles={{
+          button: {
+            backgroundColr: 'transparent',
+            borderColor: 'transparent',
+            textTransform: 'uppercase'
+          }
+        }}
         ratingProps={{
           selectedColor: 'red',
         }}
-        // modalProps={{
-        //   animationType: 'fade',
-        // }}
+      // modalProps={{
+      //   animationType: 'fade',
+      // }}
       />
     </View>
   );
@@ -314,7 +325,7 @@ var businessItem = {
   phone: '',
   site: '',
   desc: '',
-  rating: '',  
+  rating: '',
   location: {
     latitude: '',
     longitude: ''
@@ -326,7 +337,7 @@ var businessItem = {
   slideImgs: [],
   active: '', //related with ban/lift ban
   status: '', // 'ready', 'approved'  related with approve
-  mid:'', //membership id
+  mid: '', //membership id
   requestDate: ''
 }
 
@@ -359,7 +370,7 @@ var reviewItem = {
   uid: '', // user that reports
   ///////////
   bid: '', // business to be reported
-  bDesc: '', 
+  bDesc: '',
   bRating: '',
   // or //////
   sid: '', // service to be reported

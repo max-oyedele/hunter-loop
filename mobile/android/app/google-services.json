@@ -15,23 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "680066562625-vgmg30j61ed0fktmr9fb34v08slnarp8.apps.googleusercontent.com",
+          "client_id": "680066562625-e2e026p1cb5lavcq8i6oaj603q5t01ik.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.brainyapps.hunters",
-            "certificate_hash": "9dde28b81dec0233ddb5913b16def3d0be711a17"
+            "certificate_hash": "d3de8b55e47c16c1c906fbb7a7488de5e13053d2"
           }
         },
         {
-          "client_id": "680066562625-apvmj1n1ht5ku177u7g5stuj6q2372in.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.brainyapps.hunters",
-            "certificate_hash": "3bce41820da2c66e5f48c6f4c604154bb20244e3"
-          }
-        },
-        {
-          "client_id": "680066562625-o2nup5kbps8gu0s4eddpgolaneon0rpo.apps.googleusercontent.com",
+          "client_id": "680066562625-4shrbvif12o9vh2b71ecpc1v1thoqk55.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.brainyapps.hunters",

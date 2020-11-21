@@ -123,8 +123,8 @@ export default function BusinessItem( {item, onPress, onRefresh} ) {
             />
           </View>
           <Text style={styles.ratingTxt}>{item.rating.toFixed(1)}</Text>
-          <TouchableOpacity onPress={() => onBookmarkBusinessItem(item, Constants.user.favorbids.includes(item.id) ? 'delete' : 'add')}>
-            <EntypoIcon name="bookmark" style={[styles.iconBookmark, Constants.user.favorbids.includes(item.id) ? { color: Colors.yellowToneColor } : { color: Colors.greyColor }]}></EntypoIcon>
+          <TouchableOpacity onPress={() => onBookmarkBusinessItem(item, Constants.user.favorbids?.includes(item.id) ? 'delete' : 'add')}>
+            <EntypoIcon name="bookmark" style={[styles.iconBookmark, Constants.user.favorbids?.includes(item.id) ? { color: Colors.yellowToneColor } : { color: Colors.greyColor }]}></EntypoIcon>
           </TouchableOpacity>
         </View>
         <View style={styles.imgLine}>

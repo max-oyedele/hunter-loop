@@ -11,6 +11,7 @@ import {
   Text,
   ImageBackground,
   PermissionsAndroid,  
+  Alert
 } from 'react-native';
 import normalize from 'react-native-normalize';
 import { RFPercentage } from 'react-native-responsive-fontsize';
@@ -29,7 +30,7 @@ import {
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import { Colors, Images, Constants } from '@constants';
-import { getUser, getData } from '../service/firebase';
+import { getUser, getData, checkInternet } from '../service/firebase';
 
 export default function SplashScreen({ navigation }) {
 
@@ -131,11 +132,17 @@ export default function SplashScreen({ navigation }) {
       })
       .catch(ex => {
         // GetLocation.openAppSettings();
-        getAllData();
+        getAllData(); //temp
       });
   }
 
   getAllData = async () => {
+    var isConnected = await checkInternet();
+    if(!isConnected){
+      Alert.alert('Please connect to network.');
+      return;
+    }
+
     setSpinner(true);
     await getData('users').then(res => Constants.users = res);
     await getData('business').then(res => Constants.business = res);
