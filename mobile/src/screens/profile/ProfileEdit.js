@@ -37,7 +37,7 @@ export default function ProfileEditScreen({ navigation, route }) {
   const [photoLocalPath, setPhotoLocalPath] = useState('');
 
   let ref = useRef();
-  useEffect(()=>{
+  useEffect(() => {
     ref.current.setAddressText(profile.address);
   }, [])
 
@@ -189,66 +189,72 @@ export default function ProfileEditScreen({ navigation, route }) {
             </TouchableOpacity>
           </View>
 
-          <TextInput
-            style={styles.inputBox}
-            autoCapitalize='none'
-            placeholder={'Full Name'}
-            placeholderTextColor={Colors.greyWeakColor}
-            value={profile.name}
-            onChangeText={(text) => {
-              var newProfile = { ...profile };
-              newProfile.name = text;
-              setProfile(newProfile);
-            }}
-          >
-          </TextInput>
-
-          <GooglePlacesAutocomplete
-            ref={ref}
-            styles={{
-              container: {
-                width: '90%',
-                alignSelf: 'center'
-              },
-              textInputContainer: {
-                height: normalize(40, 'height'),
-                backgroundColor: Colors.greyStrongColor,
-                alignSelf: 'center',
-                marginTop: normalize(10, 'height'),
-                borderColor: Colors.whiteColor,
-                borderRadius: normalize(25),
-                borderWidth: normalize(3),
-                paddingLeft: normalize(10),                
-              },
-              textInput: {
-                backgroundColor: 'transparent',
-                fontSize: RFPercentage(2.5),
-                color: Colors.whiteColor,
-                marginTop: normalize(-2, 'height'),
-              },              
-              description: {
-                width: '95%',
-                fontWeight: 'bold',
-              },
-            }}
-            placeholder='Address'             
-            enablePoweredByContainer={false}
-            fetchDetails={true}
-            onPress={(data, details = null) => {
-              var location = {
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng
-              }
-              var newProfile = { ...profile };
-              newProfile.address = data.description;
-              newProfile.location = location;
-              setProfile(newProfile);
-            }}
-            query={{
-              key: 'AIzaSyDdPAhHXaBBh2V5D2kQ3Vy7YYrDrT7UW3I',
-              language: 'en'
-            }}
-          />
+          <View style={styles.inputContainer}>
+            <Text style={styles.labelTxt}>User name</Text>
+            <TextInput
+              style={styles.inputBox}
+              autoCapitalize='none'
+              placeholder={'Full Name'}
+              placeholderTextColor={Colors.greyWeakColor}
+              value={profile.name}
+              onChangeText={(text) => {
+                var newProfile = { ...profile };
+                newProfile.name = text;
+                setProfile(newProfile);
+              }}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.labelTxt}>Address</Text>
+            <GooglePlacesAutocomplete
+              ref={ref}
+              styles={{
+                container: {
+                  width: '100%',
+                  alignSelf: 'center',                  
+                },
+                textInputContainer: {
+                  width: '100%',
+                  height: normalize(40, 'height'),
+                  backgroundColor: Colors.greyStrongColor,
+                  alignSelf: 'center',
+                  marginTop: normalize(10, 'height'),
+                  borderColor: Colors.whiteColor,
+                  borderRadius: normalize(25),
+                  borderWidth: normalize(3),
+                  paddingLeft: normalize(10),                  
+                },
+                textInput: {
+                  width: '100%',
+                  backgroundColor: 'transparent',
+                  fontSize: RFPercentage(2.5),
+                  color: Colors.whiteColor,
+                  marginTop: normalize(-2, 'height'),
+                },
+                description: {
+                  width: '80%',
+                  fontWeight: 'bold',                  
+                },
+              }}
+              placeholder=''
+              enablePoweredByContainer={false}
+              fetchDetails={true}
+              onPress={(data, details = null) => {
+                var location = {
+                  latitude: details.geometry.location.lat,
+                  longitude: details.geometry.location.lng
+                }
+                var newProfile = { ...profile };
+                newProfile.address = data.description;
+                newProfile.location = location;
+                setProfile(newProfile);
+              }}
+              query={{
+                key: 'AIzaSyDdPAhHXaBBh2V5D2kQ3Vy7YYrDrT7UW3I',
+                language: 'en'
+              }}
+            />
+          </View>
 
           <View style={styles.favoritesHeader}>
             <Text style={styles.favoritesHeaderTxt}>My Favorites</Text>
@@ -260,7 +266,7 @@ export default function ProfileEditScreen({ navigation, route }) {
             )
           }
           {
-            Constants.favorites.length == 0 && 
+            Constants.favorites.length == 0 &&
             <View style={styles.emptyContainer}>
               <Text style={styles.emptyTxt}>No Favorites</Text>
             </View>
@@ -349,9 +355,22 @@ const styles = StyleSheet.create({
     height: '60%',
   },
 
-  inputBox: {
-    // width: '45%',
+  inputContainer: {
     width: '90%',
+    flexDirection: 'row',    
+    alignSelf: 'center',    
+  },
+  labelTxt: {
+    width: '20%',
+    textAlign: 'right',
+    fontSize: RFPercentage(2.2),
+    fontWeight: '600',
+    color: Colors.whiteColor,
+    marginTop: normalize(17, 'height'),
+    marginRight: normalize(10)
+  },
+  inputBox: {    
+    width: '77%',
     height: normalize(40, 'height'),
     fontSize: RFPercentage(2.5),
     color: Colors.whiteColor,
@@ -395,7 +414,7 @@ const styles = StyleSheet.create({
     height: '10%',
     backgroundColor: Colors.greyStrongColor,
     justifyContent: 'center',
-    alignItems: 'center'   
+    alignItems: 'center'
   },
   btn: {
     width: '80%',

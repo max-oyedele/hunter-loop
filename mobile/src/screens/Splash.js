@@ -58,7 +58,7 @@ export default function SplashScreen({ navigation }) {
         .catch((err) => {
           console.log('request permission error', err);
         })
-    }  
+    }
   }, []) 
 
   keyboardManager = () => {
