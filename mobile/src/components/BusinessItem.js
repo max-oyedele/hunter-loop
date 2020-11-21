@@ -89,8 +89,8 @@ export default function BusinessItem( {item, onPress, onRefresh} ) {
   getDistanceMile = (item) => {    
     let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user.location;
     
-    if ((!myLocation.latitude || !myLocation.longitude) ||
-      (!item.location.latitude || !item.location.longitude)) {
+    if ((!myLocation?.latitude || !myLocation?.longitude) ||
+      (!item.location?.latitude || !item.location?.longitude)) {
       return 0;
     }
     else {

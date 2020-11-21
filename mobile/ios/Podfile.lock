@@ -613,6 +613,8 @@ PODS:
     - React-Core
   - react-native-maps (0.27.1):
     - React
+  - react-native-netinfo (5.9.7):
+    - React-Core
   - react-native-safe-area-context (3.1.8):
     - React-Core
   - React-RCTActionSheet (0.63.3):
@@ -772,6 +774,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -892,6 +895,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-resizer"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-RCTActionSheet:
@@ -1012,6 +1017,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: 32d1ad2c0024ca36161ae0d5c2117e2d6c441f11
   react-native-image-resizer: b53bf95ad880100e20262687e41f76fdbc9df255
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
+  react-native-netinfo: e36c1bb6df27ab84aa933679b3f5bbf9d180b18f
   react-native-safe-area-context: 01158a92c300895d79dee447e980672dc3fb85a6
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
@@ -1043,6 +1049,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 65dce5544c6d7c18350baf987f358c94d2dedf6e
+PODFILE CHECKSUM: 6103a3a3e27c52fa0e9d0f2217438f3fd9cc655a
 
 COCOAPODS: 1.9.3

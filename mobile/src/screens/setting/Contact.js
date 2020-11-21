@@ -39,12 +39,16 @@ export default function ContactScreen({ navigation }) {
       Alert.alert('Please enter email.');
       return;
     }
+    if(!subject){
+      Alert.alert('Please enter subject.');
+      return;
+    }
     if(!message){
       Alert.alert('Please enter message.');
       return;
     }
     
-    Linking.openURL(`mailto:support@example.com?subject=${subject}&body=${message}&name=${name}&email=${email}`)
+    Linking.openURL(`mailto:support@example.com?subject=${subject}&body=${message}&name=${name}&email=${email}`)    
     .catch(err=>{
       console.log('email error:', err)
     })

@@ -72,8 +72,8 @@ export default function ServiceItem({ item, onPress, onRefresh }) {
               <Text style={styles.address} numberOfLines={1} ellipsizeMode='tail'>{item.address}</Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => onBookmarkServiceItem(item, Constants.user.favorsids.includes(item.id) ? 'delete' : 'add')}>
-            <EntypoIcon name="bookmark" style={[styles.iconBookmark, Constants.user.favorsids.includes(item.id) ? { color: Colors.yellowToneColor } : { color: Colors.greyColor }]}></EntypoIcon>
+          <TouchableOpacity onPress={() => onBookmarkServiceItem(item, Constants.user.favorsids?.includes(item.id) ? 'delete' : 'add')}>
+            <EntypoIcon name="bookmark" style={[styles.iconBookmark, Constants.user.favorsids?.includes(item.id) ? { color: Colors.yellowToneColor } : { color: Colors.greyColor }]}></EntypoIcon>
           </TouchableOpacity>
         </View>
         <View style={styles.imgLine}>

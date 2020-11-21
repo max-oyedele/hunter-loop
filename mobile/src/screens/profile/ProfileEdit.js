@@ -72,6 +72,7 @@ export default function ProfileEditScreen({ navigation, route }) {
     ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
       } else if (response.error) {
+        console.log(response.error)
       } else if (response.customButton) {
       } else {
         setPhotoLocalPath(response.uri);
@@ -343,7 +344,7 @@ const styles = StyleSheet.create({
   imgEditIconBack: {
     width: normalize(25),
     height: normalize(25),
-    marginTop: normalize(120, 'height'),
+    marginTop: Platform.OS === 'android' ? normalize(120, 'height') : normalize(90, 'height'),
     marginLeft: normalize(-30),
     justifyContent: 'center',
     alignItems: 'center',
@@ -359,18 +360,19 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'row',    
     alignSelf: 'center',    
+    // borderWidth: 1
   },
   labelTxt: {
-    width: '20%',
+    width: '25%',
     textAlign: 'right',
     fontSize: RFPercentage(2.2),
     fontWeight: '600',
     color: Colors.whiteColor,
-    marginTop: normalize(17, 'height'),
+    marginTop: normalize(19, 'height'),
     marginRight: normalize(10)
   },
   inputBox: {    
-    width: '77%',
+    width: '72%',
     height: normalize(40, 'height'),
     fontSize: RFPercentage(2.5),
     color: Colors.whiteColor,

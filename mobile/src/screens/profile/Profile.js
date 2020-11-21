@@ -193,13 +193,17 @@ const styles = StyleSheet.create({
     marginTop: normalize(20, 'height')
   },
   addressLine: {
+    width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: normalize(10, 'height')
+    alignSelf: 'center',
+    marginTop: normalize(10, 'height'),
   },
   address: {
+    width: '90%',
     fontSize: RFPercentage(2.5),
     color: Colors.whiteColor,
+    marginLeft: normalize(10)
   },
 
   favoritesHeader: {

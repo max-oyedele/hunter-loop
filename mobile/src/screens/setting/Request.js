@@ -30,7 +30,7 @@ import ImageResizer from 'react-native-image-resizer';
 import DropDownPicker from 'react-native-dropdown-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import TextInputMask from 'react-native-text-input-mask';
+import { TextInputMask } from 'react-native-masked-text';
 
 import { Colors, Images, Constants } from '@constants';
 
@@ -52,7 +52,7 @@ export default function RequestScreen({ navigation }) {
   const [spinner, setSpinner] = useState(false);
 
   let ref = useRef();
-  
+
   if (useIsFocused() && Constants.refreshFlag) {
     Constants.refreshFlag = false;
     if (Constants.user.bid) {
@@ -69,7 +69,7 @@ export default function RequestScreen({ navigation }) {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     ref.current?.setAddressText(address);
   }, [address])
 
@@ -323,7 +323,7 @@ export default function RequestScreen({ navigation }) {
           onChangeText={(text) => setPhone(text)}
         >
         </TextInput> */}
-        <TextInputMask          
+        {/* <TextInputMask          
           style={styles.inputBox}
           placeholder={'Contact Number'}
           placeholderTextColor={Colors.greyColor}
@@ -334,6 +334,19 @@ export default function RequestScreen({ navigation }) {
             setPhone(extracted);
           }}
           mask={"+1 ([000]) [000]-[0000]"}
+        /> */}
+        <TextInputMask
+          type={'custom'}
+          options={{
+            mask: '+1 (999) 999 - 9999'
+          }}
+          refInput={ref => { this.input = ref }}
+          style={styles.inputBox}
+          placeholder='Contact Number'
+          placeholderTextColor={Colors.greyColor}
+          value={phone}
+          keyboardType={'numeric'}          
+          onChangeText={(text) => setPhone(text)}
         />
         <TextInput
           style={styles.inputBox}

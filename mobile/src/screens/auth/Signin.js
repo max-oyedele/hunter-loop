@@ -39,6 +39,18 @@ export default function SigninScreen({ navigation }) {
   const [rememberMe, setRememberMe] = useState(false);
   const [spinner, setSpinner] = useState(false);
 
+  useEffect(()=>{    
+    AsyncStorage.getItem('hunteruserremember')
+    .then(async (res)=>{
+      if(res){
+        var email = await AsyncStorage.getItem('hunteruseremail');
+        var pwd = await AsyncStorage.getItem('hunteruserpwd');
+        setEmail(email);
+        setPwd(pwd);
+        setRememberMe(true);
+      }
+    })
+  }, [])
 
   onAppleSignin = async () => {
     await appleSignin()
@@ -245,6 +257,16 @@ export default function SigninScreen({ navigation }) {
                 boxType={'square'}
                 onValueChange={() => {
                   setRememberMe(!rememberMe);
+                  if(!rememberMe){
+                    AsyncStorage.setItem('hunteruserremember', 'yes');
+                    AsyncStorage.setItem('hunteruseremail', email);
+                    AsyncStorage.setItem('hunteruserpwd', pwd);
+                  }
+                  else{
+                    AsyncStorage.removeItem('hunteruserremember');
+                    AsyncStorage.removeItem('hunteruseremail');
+                    AsyncStorage.removeItem('hunteruserpwd');
+                  }
                 }}
               />
               <Text style={styles.checkLbl}>Remember Me</Text>

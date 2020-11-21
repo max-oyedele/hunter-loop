@@ -42,6 +42,7 @@
     "react-native-linear-gradient": "^2.5.6",
     "react-native-loading-spinner-overlay": "^1.1.0",
     "react-native-maps": "^0.27.1",
+    "react-native-masked-text": "^1.13.0",
     "react-native-modal": "^11.5.6",
     "react-native-normalize": "^1.0.1",
     "react-native-permissions": "^2.2.2",
@@ -54,7 +55,6 @@
     "react-native-star-rating": "^1.1.0",
     "react-native-store-rating": "^1.0.1",
     "react-native-swipe-list-view": "^3.2.4",
-    "react-native-text-input-mask": "^2.0.0",
     "react-native-vector-icons": "^7.1.0",
     "toggle-switch-react-native": "^2.3.0"
   },

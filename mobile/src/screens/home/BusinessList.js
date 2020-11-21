@@ -115,8 +115,8 @@ export default function BusinessListScreen({ navigation }) {
   getDistanceMile = (item) => {
     let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user.location;
     
-    if ((!myLocation.latitude || !myLocation.longitude) ||
-      (!item.location.latitude || !item.location.longitude)) {
+    if ((!myLocation?.latitude || !myLocation?.longitude) ||
+      (!item.location?.latitude || !item.location?.longitude)) {
       return 0;
     }
     else {
@@ -288,6 +288,9 @@ export default function BusinessListScreen({ navigation }) {
       <ScrollView style={styles.scrollBody}>
         {
           business.map((each, index) => {
+            if(Constants.user.bid){
+              if(Constants.user.bid == each.id) return null;
+            }
             return <BusinessItem key={index} item={each} onPress={onBusinessItem} onRefresh={onRefresh} />
           })
         }

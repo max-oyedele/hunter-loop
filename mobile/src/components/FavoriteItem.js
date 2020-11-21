@@ -28,7 +28,7 @@ export default function FavoriteItem({ item, onPressItem, onPressBookmark }) {
         onPressItem &&
         <TouchableOpacity onPress={() => onPressItem(item)}>
           <View style={styles.topLine}>
-            <Image style={styles.img} source={{ uri: item.icon ? item.icon : item.img }} />
+            <Image style={styles.img} source={item.icon ? { uri: item.icon } : item.img ? { uri: item.img } : Images.logo} />
             <Text style={styles.title}>{item.name}</Text>
             <EntypoIcon name="bookmark" style={styles.icon}></EntypoIcon>
           </View>
@@ -41,9 +41,9 @@ export default function FavoriteItem({ item, onPressItem, onPressBookmark }) {
         onPressBookmark &&
         <>
           <View style={styles.topLine}>
-            <Image style={styles.img} source={{ uri: item.icon ? item.icon : item.img }} />
+            <Image style={styles.img} source={item.icon ? { uri: item.icon } : item.img ? { uri: item.img } : Images.logo} />
             <Text style={styles.title}>{item.name}</Text>
-            
+
             <TouchableOpacity onPress={() => onPressBookmark(item)}>
               <EntypoIcon name="bookmark" style={styles.icon}></EntypoIcon>
             </TouchableOpacity>
