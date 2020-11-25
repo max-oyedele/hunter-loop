@@ -30,6 +30,11 @@ export default function ContactScreen({ navigation }) {
   const [subject, setSubject] = useState();
   const [message, setMessage] = useState();
 
+  function validateEmail () {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return reg.test(email);
+  }
+
   handleEmail = () => {
     if(!name){
       Alert.alert('Please enter name.');
@@ -37,6 +42,10 @@ export default function ContactScreen({ navigation }) {
     }
     if(!email){
       Alert.alert('Please enter email.');
+      return;
+    }
+    if (!validateEmail()) {
+      Alert.alert('Please enter valid email.');
       return;
     }
     if(!subject){

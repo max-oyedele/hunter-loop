@@ -69,11 +69,31 @@ export default function MapViewScreen({ navigation }) {
     // setKeyword(text);
   }
 
+  function showAlert() {
+    Alert.alert('You should login first!', 'Going to login now?',
+      [
+        {
+          text: 'OK', onPress: () => navigation.navigate('Auth')
+        },
+        {
+          text: 'CANCEL', onPress: () => { }
+        }
+      ]
+    )
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.iconBackContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity onPress={() => {
+            if (Constants.user) {
+              navigation.navigate('Profile')
+            }
+            else {
+              showAlert();
+            }
+          }}>
             <EntypoIcon name="user" style={styles.headerIcon}></EntypoIcon>
           </TouchableOpacity>
         </View>

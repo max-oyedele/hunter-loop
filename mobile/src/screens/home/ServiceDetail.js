@@ -96,15 +96,15 @@ export default function ServiceDetailScreen({ navigation, route }) {
     setSpinner(true);
 
     //check already, update or add
-    var index = Constants.reviews.findIndex(each => each.uid == Constants.user.id && each.sid == serviceItem.id);
-    var reviewItem = Constants.reviews.find(each => each.uid == Constants.user.id && each.sid == serviceItem.id);
+    var index = Constants.reviews.findIndex(each => each.uid == Constants.user?.id && each.sid == serviceItem.id);
+    var reviewItem = Constants.reviews.find(each => each.uid == Constants.user?.id && each.sid == serviceItem.id);
     var action = '';
     var newItem = '';
 
     if (index == -1) {
       action = 'add';
       newItem = {
-        uid: Constants.user.id,        
+        uid: Constants.user?.id,        
         sid: serviceItem.id,
         sRating: rating,
         sDesc: review,
@@ -154,6 +154,19 @@ export default function ServiceDetailScreen({ navigation, route }) {
     var user = Constants.users.find(each=>each.bid == business.id);    
     if(user) setHunter(user);
     console.log('user', user)    
+  }
+
+  function showAlert() {
+    Alert.alert('You should login first!', 'Going to login now?',
+      [
+        {
+          text: 'OK', onPress: () => navigation.navigate('Auth')
+        },
+        {
+          text: 'CANCEL', onPress: () => { }
+        }
+      ]
+    )
   }
 
   renderCollapseHeader = (section) => {
@@ -227,7 +240,14 @@ export default function ServiceDetailScreen({ navigation, route }) {
           <Text style={styles.titleTxt} numberOfLines={1} ellipsizeMode='tail'>{serviceItem.name}</Text>
         </View>
         <View style={styles.iconReviewContainer}>
-          <TouchableOpacity onPress={() => setReviewModal(!reviewModal)}>
+          <TouchableOpacity onPress={() => {
+            if (Constants.user) {              
+              setReviewModal(!reviewModal)
+            }
+            else {
+              showAlert();
+            }
+          }}>
             <EntypoIcon name="flag" style={styles.headerIcon}></EntypoIcon>
           </TouchableOpacity>
         </View>
@@ -319,7 +339,14 @@ export default function ServiceDetailScreen({ navigation, route }) {
             <Text style={styles.hunterDesc}>{serviceItem.hunterDesc}</Text>
             {
               hunter && 
-              <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Message', { screen: 'Chat',  params:{chateeId: hunter?.id }})}>
+              <TouchableOpacity style={styles.btn} onPress={() => {
+                if (Constants.user) {
+                  navigation.navigate('Message', { screen: 'Chat',  params:{chateeId: hunter?.id }})
+                }
+                else {
+                  showAlert();
+                }  
+              }}>
                 <Text style={styles.btnTxt}>SEND MESSAGE</Text>
               </TouchableOpacity>
             }            

@@ -43,7 +43,7 @@ export default function BusinessListScreen({ navigation }) {
   const [categories, setCategories] = useState(Constants.categories);
   const [activeCategory, setActiveCategory] = useState();
 
-  useEffect(() => {   
+  useEffect(() => {
     var cates = [...categories];
 
     // var allHunting = {
@@ -88,7 +88,7 @@ export default function BusinessListScreen({ navigation }) {
     getBusiness();
   }
 
-  async function getBusiness(){
+  async function getBusiness() {
     await getData('business')
       .then((res) => {
         if (res) {
@@ -113,17 +113,18 @@ export default function BusinessListScreen({ navigation }) {
   }
 
   getDistanceMile = (item) => {
-    let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user.location;
-    
+    let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user?.location;
+
     if ((!myLocation?.latitude || !myLocation?.longitude) ||
       (!item.location?.latitude || !item.location?.longitude)) {
       return 0;
     }
     else {
+      if(!myLocation) return 0;
       var distance = getDistance(myLocation, item.location);
       var distanceMile = distance / 1000 / 1.6;
       return distanceMile.toFixed(2);
-    }    
+    }
   }
 
   onDistanceSearch = (distance) => {
@@ -131,7 +132,7 @@ export default function BusinessListScreen({ navigation }) {
     setKeyword('');
     setActiveCategory('');
 
-    var filteredBusiness = Constants.business.filter(each => getDistanceMile(each) < distance && each.status === 'approved');
+    var filteredBusiness = Constants.business.filter(each => getDistanceMile(each) < distance && each.status === 'approved');    
     setBusiness(filteredBusiness);
   }
 
@@ -187,11 +188,31 @@ export default function BusinessListScreen({ navigation }) {
     setRefresh(!refresh)
   }
 
+  function showAlert() {
+    Alert.alert('You should login first!', 'Going to login now?',
+      [
+        {
+          text: 'OK', onPress: () => navigation.navigate('Auth')
+        },
+        {
+          text: 'CANCEL', onPress: () => { }
+        }
+      ]
+    )
+  }
+
   return (
     <ImageBackground style={styles.container} source={Images.background}>
       <View style={styles.header}>
         <View style={styles.iconProfileContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity onPress={() => {
+            if (Constants.user) {
+              navigation.navigate('Profile')
+            }
+            else {
+              showAlert();
+            }
+          }}>
             <EntypoIcon name="user" style={styles.headerIcon}></EntypoIcon>
           </TouchableOpacity>
         </View>
@@ -204,7 +225,14 @@ export default function BusinessListScreen({ navigation }) {
           <Text style={styles.titleTxt}>Hunters Loop</Text>
         </View>
         <View style={styles.iconMessageContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Message')}>
+          <TouchableOpacity onPress={() => {
+            if (Constants.user) {
+              navigation.navigate('Message')
+            }
+            else {
+              showAlert();
+            }
+          }}>
             <EntypoIcon name="message" style={styles.headerIcon}></EntypoIcon>
           </TouchableOpacity>
         </View>
@@ -256,7 +284,7 @@ export default function BusinessListScreen({ navigation }) {
               heightPercentage={1}
               widthPercentage={80}
             />
-            <Text style={{fontSize: RFPercentage(2.5), fontWeight: 'bold', color: Colors.whiteColor, position: 'absolute', alignSelf: 'center'}}>{distance} mi</Text>
+            <Text style={{ fontSize: RFPercentage(2.5), fontWeight: 'bold', color: Colors.whiteColor, position: 'absolute', alignSelf: 'center' }}>{distance} mi</Text>
           </View>
         }
         {
@@ -288,10 +316,10 @@ export default function BusinessListScreen({ navigation }) {
       <ScrollView style={styles.scrollBody}>
         {
           business.map((each, index) => {
-            if(Constants.user.bid){
-              if(Constants.user.bid == each.id) return null;
+            if (Constants.user?.bid) {
+              if (Constants.user?.bid == each.id) return null;
             }
-            return <BusinessItem key={index} item={each} onPress={onBusinessItem} onRefresh={onRefresh} />
+            return <BusinessItem key={index} item={each} onPress={onBusinessItem} onRefresh={onRefresh} showAlert={showAlert} />
           })
         }
         {
@@ -386,7 +414,7 @@ const styles = StyleSheet.create({
     marginRight: normalize(10)
   },
   distanceSearchPart: {
-    
+
   },
   categorySearchPart: {
     flexDirection: 'row',

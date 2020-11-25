@@ -52,13 +52,13 @@ export default function MessageListScreen({ navigation, route }) {
         keyArr.sort((a,b)=>a<b);
         let roomLastChat = roomChatsObj[keyArr[0]];
         
-        if (userIds[0] == Constants.user.id) {
+        if (userIds[0] == Constants.user?.id) {
           roomChats.push({
             chateeId: userIds[1],
             lastChat: roomLastChat
           })
         }
-        else if (userIds[1] == Constants.user.id) {
+        else if (userIds[1] == Constants.user?.id) {
           roomChats.push({
             chateeId: userIds[0],
             lastChat: roomLastChat

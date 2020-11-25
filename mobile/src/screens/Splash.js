@@ -165,10 +165,10 @@ export default function SplashScreen({ navigation }) {
           if (user) {
             Constants.user = JSON.parse(user);
             navigation.navigate("Home", { screen: 'BusinessList' });
-            // navigation.navigate("Welcome");            
           }
           else {
-            navigation.navigate('Auth')
+            // navigation.navigate('Auth')
+            navigation.navigate("Home", { screen: 'BusinessList' });
           }
         })
     }, 1500)

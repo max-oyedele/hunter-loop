@@ -36,24 +36,39 @@ export default function SettingListScreen({ navigation }) {
     setRateModal(!rateModal);
   }
 
-  onRateNow = () => {
+  function onRateNow() {
     //to do    
     toggleModal();
   }
 
-  onSignout = () => {
+  function onSignout() {
     Alert.alert(
       'Are you sure want to log out?',
       '',
       [
-        { text: "OK", onPress: () => {
-          signOut();
-          AsyncStorage.removeItem('user');
-          navigation.navigate('Auth');
-        }},
-        { text: "CANCEL", onPress: () => {}}
+        {
+          text: "OK", onPress: () => {
+            signOut();
+            AsyncStorage.removeItem('user');
+            navigation.navigate('Auth');
+          }
+        },
+        { text: "CANCEL", onPress: () => { } }
       ],
     );
+  }
+
+  function showAlert() {
+    Alert.alert('You should login first!', 'Going to login now?',
+      [
+        {
+          text: 'OK', onPress: () => navigation.navigate('Auth')
+        },
+        {
+          text: 'CANCEL', onPress: () => { }
+        }
+      ]
+    )
   }
 
   return (
@@ -86,7 +101,14 @@ export default function SettingListScreen({ navigation }) {
 
       <View style={styles.itemLine}>
         <View style={styles.iconPart}><EntypoIcon name="star" style={styles.iconLabel}></EntypoIcon></View>
-        <TouchableOpacity style={styles.titlePart} onPress={() => toggleModal()}><Text style={styles.itemTxt}>Rate App</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.titlePart} onPress={() => {
+          if (Constants.user) {
+            toggleModal()
+          }
+          else {
+            showAlert();
+          }
+        }}><Text style={styles.itemTxt}>Rate App</Text></TouchableOpacity>
         <View style={styles.iconPart}></View>
       </View>
 
@@ -114,38 +136,22 @@ export default function SettingListScreen({ navigation }) {
         <View style={styles.iconPart}><EntypoIcon name="chevron-thin-right" style={styles.itemTxt}></EntypoIcon></View>
       </View>
 
-      <View style={styles.itemLine}>
-        <View style={styles.iconPart}><EntypoIcon name="suitcase" style={styles.iconLabel}></EntypoIcon></View>
-        <TouchableOpacity style={styles.titlePart} onPress={() => { Constants.refreshFlag = true; navigation.navigate('Request') }}><Text style={styles.itemTxt}>Create a Business Account</Text></TouchableOpacity>
-        <View style={styles.iconPart}><EntypoIcon name="chevron-thin-right" style={styles.itemTxt}></EntypoIcon></View>
-      </View>
-
-      <TouchableOpacity style={styles.logoutPart} onPress={() => onSignout()}>
-        <EntypoIcon name="log-out" style={styles.iconLogout}></EntypoIcon>
-        <Text style={styles.itemTxt}>Log Out</Text>
-      </TouchableOpacity>
-
-
-      {/* <Modal isVisible={rateModal} >
-        <View style={styles.modalBody}>
-          <Text style={styles.rateLabel}>Rate App</Text>
-          <Text style={styles.rateTxt}>If you love our app, we would appreciate if you take a couple of seconds to rate us in the app market!</Text>
-          <View style={styles.starRatingPart}>
-            <StarRating
-              starSize={30}
-              fullStarColor={Colors.yellowToneColor}
-              disabled={false}
-              maxStars={5}
-              rating={ratingValue}
-              selectedStar={(rating) => { setRatingValue(rating) }}
-            />
-          </View>
-          <View style={styles.btnLine}>
-            <TouchableOpacity><Text style={styles.rateTxt} onPress={() => onRateNow()}>RATE NOW</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={styles.rateTxt} onPress={() => toggleModal()}>LATER</Text></TouchableOpacity>
-          </View>
+      {
+        Constants.user &&
+        <View style={styles.itemLine}>
+          <View style={styles.iconPart}><EntypoIcon name="suitcase" style={styles.iconLabel}></EntypoIcon></View>
+          <TouchableOpacity style={styles.titlePart} onPress={() => { Constants.refreshFlag = true; navigation.navigate('Request') }}><Text style={styles.itemTxt}>Create a Business Account</Text></TouchableOpacity>
+          <View style={styles.iconPart}><EntypoIcon name="chevron-thin-right" style={styles.itemTxt}></EntypoIcon></View>
         </View>
-      </Modal> */}
+      }
+
+      {
+        Constants.user &&
+        <TouchableOpacity style={styles.logoutPart} onPress={() => onSignout()}>
+          <EntypoIcon name="log-out" style={styles.iconLogout}></EntypoIcon>
+          <Text style={styles.itemTxt}>Log Out</Text>
+        </TouchableOpacity>
+      }
 
       <RateModal
         modalTitle="If you love our app, we would appreciate if you take a couple of seconds to rate us in the app market!"

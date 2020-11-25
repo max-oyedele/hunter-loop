@@ -56,15 +56,15 @@ export default function ServiceListScreen({ navigation, route }) {
     setSpinner(true);
 
     //check already, update or add
-    var index = Constants.reviews.findIndex(each => each.uid == Constants.user.id && each.bid == businessItem.id);
-    var reviewItem = Constants.reviews.find(each => each.uid == Constants.user.id && each.bid == businessItem.id);
+    var index = Constants.reviews.findIndex(each => each.uid == Constants.user?.id && each.bid == businessItem.id);
+    var reviewItem = Constants.reviews.find(each => each.uid == Constants.user?.id && each.bid == businessItem.id);
     var action = '';
     var newItem = '';
 
     if (index == -1) {
       action = 'add';
       newItem = {
-        uid: Constants.user.id,
+        uid: Constants.user?.id,
         bid: businessItem.id,
         bRating: rating,
         bDesc: review,
@@ -106,16 +106,30 @@ export default function ServiceListScreen({ navigation, route }) {
 
   getDistanceMile = (businessItem) => {
     let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user.location;
-    
+
     if ((!myLocation?.latitude || !myLocation?.longitude) ||
       (!businessItem.location?.latitude || !businessItem.location?.longitude)) {
       return 0;
     }
     else {
+      if(!myLocation) return 0;
       var distance = getDistance(myLocation, businessItem.location);
       var distanceMile = distance / 1000 / 1.6;
       return distanceMile.toFixed(2);
-    }    
+    }
+  }
+
+  function showAlert() {
+    Alert.alert('You should login first!', 'Going to login now?',
+      [
+        {
+          text: 'OK', onPress: () => navigation.navigate('Auth')
+        },
+        {
+          text: 'CANCEL', onPress: () => { }
+        }
+      ]
+    )
   }
 
   return (
@@ -137,7 +151,14 @@ export default function ServiceListScreen({ navigation, route }) {
           {/* <TouchableOpacity onPress={() => onBookmarkBusiness(Constants.user.favorbids.includes(businessItem.id) ? 'delete' : 'add')}>
             <EntypoIcon name="bookmark" style={[styles.headerIconBookmark, Constants.user.favorbids.includes(businessItem.id) ? { color: Colors.yellowToneColor } : null]}></EntypoIcon>
           </TouchableOpacity> */}
-          <TouchableOpacity onPress={() => setReviewModal(!reviewModal)}>
+          <TouchableOpacity onPress={() => {
+            if (Constants.user) {              
+              setReviewModal(!reviewModal)
+            }
+            else {
+              showAlert();
+            }
+          }}>
             <EntypoIcon name="flag" style={styles.headerIcon}></EntypoIcon>
           </TouchableOpacity>
         </View>
@@ -183,7 +204,7 @@ export default function ServiceListScreen({ navigation, route }) {
       <ScrollView style={styles.listBody}>
         {
           services.map((each, index) =>
-            <ServiceItem key={index} item={each} onPress={onServiceItem} onRefresh={onRefresh} />
+            <ServiceItem key={index} item={each} onPress={onServiceItem} onRefresh={onRefresh} showAlert={showAlert} />
           )
         }
         {

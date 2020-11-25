@@ -22,11 +22,11 @@ EntypoIcon.loadFont();
 import { Colors, Images } from '@constants';
 
 export default function AboutScreen({ navigation }) {
-  
-  function onContact(){
+
+  function onContact() {
     navigation.navigate('Contact');
   }
-  
+
   return (
     <ImageBackground style={styles.container} source={Images.authBack}>
       <View style={styles.backIconRow}>
@@ -38,7 +38,7 @@ export default function AboutScreen({ navigation }) {
         <Text style={styles.labelTxt}>About the App</Text>
       </View>
       <View style={styles.body}>
-        
+
         <View style={styles.tipContainer}>
           <Text style={styles.tip}>
             Version 1.00
@@ -50,9 +50,13 @@ export default function AboutScreen({ navigation }) {
         </View>
 
         <View style={styles.descContainer}>
-          <Text style={styles.desc}>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing edit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis this is more or less part
+          <ScrollView>
+            <Text style={styles.desc}>
+              Hunter’s Loop is an advertising hub and directory for hunting and fishing guides. Operators and guides can advertise businesses, set up business profiles and go PRO level to enhance heir features within the app. It also has a messaging function that is used for communication between the User and Establishment.
+              To search for businesses, you can search by using keywords, location and type of activities. You may also filter results by proximity, price range, type of activity and others. View species available for hunting and number of hunts or games an establishment is offering, as well as reviews and ratings from past transactions.
+              PRO businesses sees what their Public Profile looks like. Create posts, upload photos and videos, post updates and see a timeline of recent activities and posts. Provide information such as business name, profile photo, activity description, portfolio, services offered, amount, etc. Public Profile (search result) PRO results are also featured at the top of the list including corresponding logos or profile photos.
           </Text>
+          </ScrollView>
         </View>
 
         <TouchableOpacity style={styles.btn} onPress={() => onContact()}>
@@ -98,15 +102,15 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    width: '80%',        
+    width: '80%',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: normalize(20, 'height'),    
+    marginTop: normalize(20, 'height'),
   },
-  
+
   tipContainer: {
     width: '80%',
-    marginTop: normalize(20, 'height'),    
+    marginTop: normalize(20, 'height'),
   },
   tip: {
     fontSize: RFPercentage(2.2),
@@ -118,15 +122,15 @@ const styles = StyleSheet.create({
     height: normalize(150, 'height'),
     marginTop: normalize(20, 'height'),
   },
-  desc:{
+  desc: {
     fontSize: RFPercentage(2.2),
-    color: Colors.blackColor,    
+    color: Colors.blackColor,
   },
 
   btn: {
     width: '100%',
     height: normalize(45, 'height'),
-    backgroundColor: Colors.yellowToneColor,    
+    backgroundColor: Colors.yellowToneColor,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: normalize(50, 'height'),

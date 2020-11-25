@@ -25,39 +25,44 @@ FontAwesomeIcon.loadFont();
 import StarRating from 'react-native-star-rating';
 
 import { Colors, Images, Constants } from '@constants';
-import {setData} from '../service/firebase';
+import { setData } from '../service/firebase';
 
-export default function ServiceItem({ item, onPress, onRefresh }) {
+export default function ServiceItem({ item, onPress, onRefresh, showAlert }) {
   onBookmarkServiceItem = async (item, action) => {
-    if(action === 'delete'){
-      var index = Constants.user.favorsids.findIndex(each => each == item.id);
-      if(index != -1) Constants.user.favorsids.splice(index, 1);
+    if (!Constants.user) {
+      showAlert();
+      return;
     }
 
-    if(action === 'add'){
-      if (Constants.user.favorsids.findIndex(each => each == item.id) == -1) {
-        Constants.user.favorsids.push(item.id);
+    if (action === 'delete') {
+      var index = Constants.user?.favorsids.findIndex(each => each == item.id);
+      if (index != -1) Constants.user?.favorsids.splice(index, 1);
+    }
+
+    if (action === 'add') {
+      if (Constants.user?.favorsids.findIndex(each => each == item.id) == -1) {
+        Constants.user?.favorsids.push(item.id);
       }
     }
 
     var favorites = [];
-    Constants.user.favorsids.forEach(each => {
+    Constants.user?.favorsids.forEach(each => {
       var sItem = Constants.services.find(e => e.id == each);
       if (sItem) favorites.push(sItem);
     })
-    
+
     Constants.favorites = favorites;
     await setData('users', 'update', Constants.user)
-    .then(()=>{
-      onRefresh();
-    })
-    .catch((err)=>{
-      console.log('bookmark setting error:', err);
-    })
+      .then(() => {
+        onRefresh();
+      })
+      .catch((err) => {
+        console.log('bookmark setting error:', err);
+      })
   }
 
-  getReviewLength = (item) => {    
-    var reviews = Constants.reviews.filter(each=>each.sid == item.id);
+  getReviewLength = (item) => {
+    var reviews = Constants.reviews.filter(each => each.sid == item.id);
     return reviews.length;
   }
 
@@ -72,8 +77,8 @@ export default function ServiceItem({ item, onPress, onRefresh }) {
               <Text style={styles.address} numberOfLines={1} ellipsizeMode='tail'>{item.address}</Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => onBookmarkServiceItem(item, Constants.user.favorsids?.includes(item.id) ? 'delete' : 'add')}>
-            <EntypoIcon name="bookmark" style={[styles.iconBookmark, Constants.user.favorsids?.includes(item.id) ? { color: Colors.yellowToneColor } : { color: Colors.greyColor }]}></EntypoIcon>
+          <TouchableOpacity onPress={() => onBookmarkServiceItem(item, Constants.user?.favorsids?.includes(item.id) ? 'delete' : 'add')}>
+            <EntypoIcon name="bookmark" style={[styles.iconBookmark, Constants.user?.favorsids?.includes(item.id) ? { color: Colors.yellowToneColor } : { color: Colors.greyColor }]}></EntypoIcon>
           </TouchableOpacity>
         </View>
         <View style={styles.imgLine}>

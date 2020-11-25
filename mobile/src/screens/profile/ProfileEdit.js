@@ -42,18 +42,18 @@ export default function ProfileEditScreen({ navigation, route }) {
   }, [])
 
   onFavoriteItem = (item) => {
-    var index = Constants.user.favorbids.findIndex(each => each == item.id);
-    if (index != -1) Constants.user.favorbids.splice(index, 1);
+    var index = Constants.user?.favorbids.findIndex(each => each == item.id);
+    if (index != -1) Constants.user?.favorbids.splice(index, 1);
 
-    index = Constants.user.favorsids.findIndex(each => each == item.id);
-    if (index != -1) Constants.user.favorsids.splice(index, 1);
+    index = Constants.user?.favorsids.findIndex(each => each == item.id);
+    if (index != -1) Constants.user?.favorsids.splice(index, 1);
 
     var favorites = [];
-    Constants.user.favorbids.forEach(each => {
+    Constants.user?.favorbids.forEach(each => {
       var item = Constants.business.find(e => e.id == each);
       if (item) favorites.push(item);
     })
-    Constants.user.favorsids.forEach(each => {
+    Constants.user?.favorsids.forEach(each => {
       var item = Constants.services.find(e => e.id == each);
       if (item) favorites.push(item);
     })
@@ -95,7 +95,7 @@ export default function ProfileEditScreen({ navigation, route }) {
           console.log('image resizer error', err);
         });
 
-      await uploadMedia('users', Constants.user.id, newPath)
+      await uploadMedia('users', Constants.user?.id, newPath)
         .then((downloadURL) => {
           console.log('downloadURL', downloadURL)
           if (!downloadURL) return;

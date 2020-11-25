@@ -28,8 +28,12 @@ import { getDistance, getPreciseDistance } from 'geolib';
 import { Colors, Images, Constants } from '@constants';
 import { setData } from '../service/firebase';
 
-export default function BusinessItem( {item, onPress, onRefresh} ) {
-  onBookmarkBusinessItem = async (item, action) => {        
+export default function BusinessItem( {item, onPress, onRefresh, showAlert} ) {
+  onBookmarkBusinessItem = async (item, action) => { 
+    if(!Constants.user){
+      showAlert();
+      return;
+    }       
     if (action === 'delete') {
       var index = Constants.user.favorbids.findIndex(each => each == item.id);
       if (index != -1) Constants.user.favorbids.splice(index, 1);
@@ -123,8 +127,8 @@ export default function BusinessItem( {item, onPress, onRefresh} ) {
             />
           </View>
           <Text style={styles.ratingTxt}>{item.rating.toFixed(1)}</Text>
-          <TouchableOpacity onPress={() => onBookmarkBusinessItem(item, Constants.user.favorbids?.includes(item.id) ? 'delete' : 'add')}>
-            <EntypoIcon name="bookmark" style={[styles.iconBookmark, Constants.user.favorbids?.includes(item.id) ? { color: Colors.yellowToneColor } : { color: Colors.greyColor }]}></EntypoIcon>
+          <TouchableOpacity onPress={() => onBookmarkBusinessItem(item, Constants.user?.favorbids?.includes(item.id) ? 'delete' : 'add')}>
+            <EntypoIcon name="bookmark" style={[styles.iconBookmark, Constants.user?.favorbids?.includes(item.id) ? { color: Colors.yellowToneColor } : { color: Colors.greyColor }]}></EntypoIcon>
           </TouchableOpacity>
         </View>
         <View style={styles.imgLine}>

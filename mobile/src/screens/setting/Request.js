@@ -55,8 +55,8 @@ export default function RequestScreen({ navigation }) {
 
   if (useIsFocused() && Constants.refreshFlag) {
     Constants.refreshFlag = false;
-    if (Constants.user.bid) {
-      var business = Constants.business.find(each => each.id == Constants.user.bid);
+    if (Constants.user?.bid) {
+      var business = Constants.business.find(each => each.id == Constants.user?.bid);
 
       setLogo(business.img ? business.img : null);
       setBname(business.name);
@@ -104,7 +104,7 @@ export default function RequestScreen({ navigation }) {
           console.log('image resizer error', err);
         });
 
-      await uploadMedia('business', Constants.user.id, newPath)
+      await uploadMedia('business', Constants.user?.id, newPath)
         .then((downloadURL) => {
           if (!downloadURL) return;
           // console.log('downloadURL', downloadURL)
@@ -141,10 +141,10 @@ export default function RequestScreen({ navigation }) {
     nBusiness.requestDate = moment().format("MM/DD/YYYY");
 
     let act = '';
-    if (Constants.business.findIndex(each => each.id == Constants.user.bid) == -1) act = 'add';
+    if (Constants.business.findIndex(each => each.id == Constants.user?.bid) == -1) act = 'add';
     else {
       act = 'update';
-      nBusiness.id = Constants.user.bid
+      nBusiness.id = Constants.user?.bid
     }
 
     await setData('business', act, nBusiness)

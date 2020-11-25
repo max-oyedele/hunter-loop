@@ -5,7 +5,7 @@ export const Colors = CustomColors;
 export const Images = DefinedImages;
 
 export const Constants = {
-  user: {},
+  user: null,
   users: [],
   business: [],
   services: [],

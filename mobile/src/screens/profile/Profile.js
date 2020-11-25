@@ -30,7 +30,7 @@ export default function ProfileScreen({ navigation }) {
   const [spinner, setSpinner] = useState(false);
 
   useEffect(() => {
-    if (Constants.user.id) {
+    if (Constants.user?.id) {
       updateLocalUser();
       getFavorites();
     }
@@ -43,7 +43,7 @@ export default function ProfileScreen({ navigation }) {
   }
 
   updateLocalUser = async () => {
-    await getUser(Constants.user.id)
+    await getUser(Constants.user?.id)
       .then((user) => {
         if (user) {
           Constants.user = user;
@@ -55,13 +55,13 @@ export default function ProfileScreen({ navigation }) {
 
   getFavorites = () => {
     var favorites = [];
-    Constants.user.favorbids.forEach(each => {
+    Constants.user?.favorbids.forEach(each => {
       var item = Constants.business.find(e => e.id == each);
       if (item) {
         if (favorites.findIndex(each => each.id == item.id) == -1) favorites.push(item);
       }
     })
-    Constants.user.favorsids.forEach(each => {
+    Constants.user?.favorsids.forEach(each => {
       var item = Constants.services.find(e => e.id == each);
       if (item) {
         if (favorites.findIndex(each => each.id == item.id) == -1) favorites.push(item);
