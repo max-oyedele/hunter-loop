@@ -56,7 +56,7 @@ export const appleSignin = () => {
         requestedOperation: AppleAuthRequestOperation.LOGIN,
         requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
       });
-
+      
       // Ensure Apple returned a user identityToken
       if (!appleAuthRequestResponse.identityToken) {
         throw 'Apple Sign-In failed - no identify token returned';

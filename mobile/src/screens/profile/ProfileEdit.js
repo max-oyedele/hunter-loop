@@ -38,7 +38,9 @@ export default function ProfileEditScreen({ navigation, route }) {
 
   let ref = useRef();
   useEffect(() => {
-    ref.current.setAddressText(profile.address);
+    if(profile.address){
+      ref.current.setAddressText(profile.address);
+    }
   }, [])
 
   onFavoriteItem = (item) => {

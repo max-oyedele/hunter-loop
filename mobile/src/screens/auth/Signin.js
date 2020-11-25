@@ -39,17 +39,17 @@ export default function SigninScreen({ navigation }) {
   const [rememberMe, setRememberMe] = useState(false);
   const [spinner, setSpinner] = useState(false);
 
-  useEffect(()=>{    
+  useEffect(() => {
     AsyncStorage.getItem('hunteruserremember')
-    .then(async (res)=>{
-      if(res){
-        var email = await AsyncStorage.getItem('hunteruseremail');
-        var pwd = await AsyncStorage.getItem('hunteruserpwd');
-        setEmail(email);
-        setPwd(pwd);
-        setRememberMe(true);
-      }
-    })
+      .then(async (res) => {
+        if (res) {
+          var email = await AsyncStorage.getItem('hunteruseremail');
+          var pwd = await AsyncStorage.getItem('hunteruserpwd');
+          setEmail(email);
+          setPwd(pwd);
+          setRememberMe(true);
+        }
+      })
   }, [])
 
   onAppleSignin = async () => {
@@ -94,7 +94,7 @@ export default function SigninScreen({ navigation }) {
         }
         Constants.user = user;
         AsyncStorage.setItem('user', JSON.stringify(user));
-        navigation.navigate('Welcome');
+        navigation.navigate('Home');
       })
       .catch((err) => {
         console.log('signin errr', err);
@@ -130,7 +130,7 @@ export default function SigninScreen({ navigation }) {
         console.log('create user success');
         Constants.user = user;
         AsyncStorage.setItem('user', JSON.stringify(user));
-        navigation.navigate('Welcome');        
+        navigation.navigate('Welcome');
       })
       .catch((err) => {
         console.log('create user error', err);
@@ -147,14 +147,14 @@ export default function SigninScreen({ navigation }) {
     if (!pwd) {
       Alert.alert('Please enter password');
       return;
-    }    
+    }
 
     var isConnected = await checkInternet();
-    if(!isConnected){
+    if (!isConnected) {
       Alert.alert('Please connect to network.');
       return;
     }
-        
+
     setSpinner(true);
 
     await signin(email, pwd)
@@ -213,12 +213,15 @@ export default function SigninScreen({ navigation }) {
               <Image style={styles.btnIcon} source={Images.google} />
               <Text style={[styles.btnTxt, { color: Colors.blackColor }]}>Login with Google</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.btn, { borderColor: Colors.greyWeakColor, borderWidth: 2 }]} onPress={() => onAppleSignin()}>
-              <View style={styles.btnIcon}>
-                <FontAwesomeIcon name="apple" style={styles.btnIconTxt}></FontAwesomeIcon>
-              </View>
-              <Text style={[styles.btnTxt, { color: Colors.blackColor }]}>Login with Apple</Text>
-            </TouchableOpacity>
+            {
+              Platform.OS === 'ios' &&
+              <TouchableOpacity style={[styles.btn, { borderColor: Colors.greyWeakColor, borderWidth: 2 }]} onPress={() => onAppleSignin()}>
+                <View style={styles.btnIcon}>
+                  <FontAwesomeIcon name="apple" style={styles.btnIconTxt}></FontAwesomeIcon>
+                </View>
+                <Text style={[styles.btnTxt, { color: Colors.blackColor }]}>Login with Apple</Text>
+              </TouchableOpacity>
+            }
             <TouchableOpacity style={[styles.btn, { backgroundColor: Colors.yellowToneColor }]} onPress={() => setPage('email')}>
               <View style={styles.btnIcon}>
                 <EntypoIcon name="mail" style={styles.btnIconTxt}></EntypoIcon>
@@ -257,12 +260,12 @@ export default function SigninScreen({ navigation }) {
                 boxType={'square'}
                 onValueChange={() => {
                   setRememberMe(!rememberMe);
-                  if(!rememberMe){
+                  if (!rememberMe) {
                     AsyncStorage.setItem('hunteruserremember', 'yes');
                     AsyncStorage.setItem('hunteruseremail', email);
                     AsyncStorage.setItem('hunteruserpwd', pwd);
                   }
-                  else{
+                  else {
                     AsyncStorage.removeItem('hunteruserremember');
                     AsyncStorage.removeItem('hunteruseremail');
                     AsyncStorage.removeItem('hunteruserpwd');
