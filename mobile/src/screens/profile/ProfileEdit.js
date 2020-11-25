@@ -195,8 +195,8 @@ export default function ProfileEditScreen({ navigation, route }) {
             <TextInput
               style={styles.inputBox}
               autoCapitalize='none'
-              placeholder={'Full Name'}
-              placeholderTextColor={Colors.greyWeakColor}
+              // placeholder={'Full Name'}
+              // placeholderTextColor={Colors.greyWeakColor}
               value={profile.name}
               onChangeText={(text) => {
                 var newProfile = { ...profile };

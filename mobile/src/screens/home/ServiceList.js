@@ -105,7 +105,7 @@ export default function ServiceListScreen({ navigation, route }) {
   }
 
   getDistanceMile = (businessItem) => {
-    let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user.location;
+    let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user?.location;
 
     if ((!myLocation?.latitude || !myLocation?.longitude) ||
       (!businessItem.location?.latitude || !businessItem.location?.longitude)) {

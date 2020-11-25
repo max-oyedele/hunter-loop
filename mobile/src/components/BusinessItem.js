@@ -91,13 +91,14 @@ export default function BusinessItem( {item, onPress, onRefresh, showAlert} ) {
   }
   
   getDistanceMile = (item) => {    
-    let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user.location;
+    let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user?.location;
     
     if ((!myLocation?.latitude || !myLocation?.longitude) ||
       (!item.location?.latitude || !item.location?.longitude)) {
       return 0;
     }
     else {
+      if(!myLocation) return 0;
       var distance = getDistance(myLocation, item.location);
       var distanceMile = distance / 1000 / 1.6;
       return distanceMile.toFixed(2);

@@ -70,7 +70,9 @@ export default function RequestScreen({ navigation }) {
   }
 
   useEffect(() => {
-    ref.current?.setAddressText(address);
+    if(address){
+      ref.current?.setAddressText(address);    
+    }
   }, [address])
 
   onBusinessLogo = () => {
@@ -314,27 +316,6 @@ export default function RequestScreen({ navigation }) {
           }}
         />
 
-        {/* <TextInput
-          style={styles.inputBox}
-          keyboardType='numeric'
-          placeholder={'Contact Number'}
-          placeholderTextColor={Colors.greyColor}
-          value={phone}
-          onChangeText={(text) => setPhone(text)}
-        >
-        </TextInput> */}
-        {/* <TextInputMask          
-          style={styles.inputBox}
-          placeholder={'Contact Number'}
-          placeholderTextColor={Colors.greyColor}
-          value={phone}
-          onChangeText={(formatted, extracted) => {
-            // console.log(formatted) // +1 (123) 456-78-90
-            // console.log(extracted) // 1234567890
-            setPhone(extracted);
-          }}
-          mask={"+1 ([000]) [000]-[0000]"}
-        /> */}
         <TextInputMask
           type={'custom'}
           options={{

@@ -72,11 +72,11 @@ export default function ProfileScreen({ navigation }) {
   }
 
   onPressItem = (item) => {
-    if(item.bid){//service
-      navigation.navigate('Home', {screen: 'ServiceDetail', params: {serviceItem: item}})
+    if (item.bid) {//service
+      navigation.navigate('Home', { screen: 'ServiceDetail', params: { serviceItem: item } })
     }
-    else{//business
-      navigation.navigate('Home', {screen: 'ServiceList', params: {businessItem: item}})
+    else {//business
+      navigation.navigate('Home', { screen: 'ServiceList', params: { businessItem: item } })
     }
   }
 
@@ -104,10 +104,10 @@ export default function ProfileScreen({ navigation }) {
 
       <View style={styles.topContainer}>
         <Image style={styles.img} source={profile.img ? { uri: profile.img } : Images.profileImg} />
-        <Text style={styles.name}>{profile.name}</Text>
+        <Text style={styles.name}>{profile.name ? profile.name : 'No name'}</Text>
         <View style={styles.addressLine}>
           <EntypoIcon name="location-pin" style={styles.headerIcon}></EntypoIcon>
-          <Text style={styles.address}>{profile.address}</Text>
+          <Text style={styles.address}>{profile.address ? profile.address : 'No address'}</Text>
         </View>
       </View>
 
