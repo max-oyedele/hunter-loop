@@ -92,7 +92,8 @@ export default function BusinessListScreen({ navigation }) {
     await getData('business')
       .then((res) => {
         if (res) {
-          setBusiness(res)
+          // setBusiness(res)
+          Constants.business = res;
         }
       })
   }
@@ -106,36 +107,7 @@ export default function BusinessListScreen({ navigation }) {
     navigation.navigate('ServiceList', { businessItem: item })
   }
 
-  onSearch = (text) => {
-    var filtered = Constants.business.filter(each => (each.name?.toLowerCase().includes(text.toLowerCase()) || each.address?.toLowerCase().includes(text.toLowerCase())) && each.status === 'approved');
-    setBusiness(filtered);
-    setKeyword(text);
-  }
-
-  getDistanceMile = (item) => {
-    let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user?.location;
-
-    if ((!myLocation?.latitude || !myLocation?.longitude) ||
-      (!item.location?.latitude || !item.location?.longitude)) {
-      return 0;
-    }
-    else {
-      if(!myLocation) return 0;
-      var distance = getDistance(myLocation, item.location);
-      var distanceMile = distance / 1000 / 1.6;
-      return distanceMile.toFixed(2);
-    }
-  }
-
-  onDistanceSearch = (distance) => {
-    setDistance(distance);
-    setKeyword('');
-    setActiveCategory('');
-
-    var filteredBusiness = Constants.business.filter(each => getDistanceMile(each) < distance && each.status === 'approved');    
-    setBusiness(filteredBusiness);
-  }
-
+  /////////////////////
   onCategorySearch = (category) => {
     if (category.name == 'All hunting') {
       var bids = [];
@@ -167,9 +139,17 @@ export default function BusinessListScreen({ navigation }) {
       var filteredBusiness = Constants.business.filter(each => bids.includes(each.id) && each.status === 'approved');
       setBusiness(filteredBusiness);
     }
-    else if (category.name == 'All') {
-      setBusiness(Constants.business);
+    else {
+      var filtered = getBusinessByCategory(category);      
+      filtered = getBusinessByDistance(filtered, distance);
+      filtered = getBusinessByKeyword(filtered, keyword);
+      setBusiness(filtered);
     }
+
+    setActiveCategory(category);
+  }
+  getBusinessByCategory = (category) => {
+    if (!categorySearch || !category || category?.name == 'All') return Constants.business.filter(each => each.status === 'approved');
     else {
       var bids = [];
       services.forEach(each => {
@@ -177,12 +157,77 @@ export default function BusinessListScreen({ navigation }) {
           bids.push(each.bid);
         }
       });
-      var filteredBusiness = Constants.business.filter(each => bids.includes(each.id) && each.status === 'approved');
-      setBusiness(filteredBusiness);
+      
+      var filtered = Constants.business.filter(each => bids.includes(each.id) && each.status === 'approved');
+      return filtered;
     }
-
-    setActiveCategory(category.name);
+  }  
+  ///////////////////
+  onDistanceSearch = (distanceValue) => {
+    var filtered = getBusinessByCategory(activeCategory);
+    filtered = getBusinessByDistance(filtered, distanceValue);
+    filtered = getBusinessByKeyword(filtered, keyword);
+    setBusiness(filtered);
+    setDistance(distanceValue);
   }
+  getDistanceMile = (item) => {
+    let myLocation = (Constants.location.latitude && Constants.location.latitude) ? Constants.location : Constants.user?.location;
+
+    if ((!myLocation?.latitude || !myLocation?.longitude) ||
+      (!item.location?.latitude || !item.location?.longitude)) {
+      return 0;
+    }
+    else {
+      if (!myLocation) return 0;
+      var distance = getDistance(myLocation, item.location);
+      var distanceMile = distance / 1000 / 1.6;
+      return distanceMile.toFixed(2);
+    }
+  }
+  getBusinessByDistance = (result, distance) => {
+    if(!distanceSearch) return result;
+    var filtered = result.filter(each => getDistanceMile(each) < distance && each.status === 'approved');
+    return filtered;
+  }
+  ///////////////////
+  onSearch = (text) => {
+    var filtered = getBusinessByCategory(activeCategory);
+    filtered = getBusinessByDistance(filtered, distance);
+    filtered = getBusinessByKeyword(filtered, text);
+    setBusiness(filtered);
+    setKeyword(text);
+  }
+  getBusinessByKeyword = (result, text) => {
+    if(!text) return result;
+    var filtered = result.filter(each => (each.name?.toLowerCase().includes(text.toLowerCase()) || each.address?.toLowerCase().includes(text.toLowerCase())) && each.status === 'approved');
+    return filtered;
+  }
+  
+  useEffect(() => {
+    if (distanceSearch && categorySearch) {
+      var filtered = getBusinessByCategory(activeCategory);
+      filtered = getBusinessByDistance(filtered, distance);
+      filtered = getBusinessByKeyword(filtered, keyword);
+      setBusiness(filtered);
+    }
+    else if(distanceSearch && !categorySearch){
+      var filtered = getBusinessByCategory(null);
+      filtered = getBusinessByDistance(filtered, distance);
+      filtered = getBusinessByKeyword(filtered, keyword);
+      setBusiness(filtered);
+      // setActiveCategory(null);
+    }
+    else if(!distanceSearch && categorySearch){
+      var filtered = getBusinessByCategory(activeCategory);      
+      filtered = getBusinessByKeyword(filtered, keyword);
+      setBusiness(filtered);
+    }
+    else if(!distanceSearch && !categorySearch){      
+      setBusiness(Constants.business.filter(each => each.status === 'approved'));
+      // setActiveCategory(null);
+    }
+    
+  }, [distanceSearch, categorySearch]);
 
   onRefresh = () => {
     setRefresh(!refresh)
@@ -255,10 +300,10 @@ export default function BusinessListScreen({ navigation }) {
           >
           </TextInput>
           <TouchableOpacity onPress={() => setDistanceSearch(!distanceSearch)}>
-            <EntypoIcon name="location-pin" style={[styles.searchBoxIcon, { fontSize: RFPercentage(4.2) }]}></EntypoIcon>
+            <EntypoIcon name="location-pin" style={[styles.searchBoxIcon, { fontSize: RFPercentage(4.2) }, distanceSearch ? { color: Colors.yellowToneColor } : null]}></EntypoIcon>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setCategorySearch(!categorySearch)}>
-            <EntypoIcon name="funnel" style={styles.searchBoxIcon}></EntypoIcon>
+            <EntypoIcon name="funnel" style={[styles.searchBoxIcon, categorySearch ? { color: Colors.yellowToneColor } : null]}></EntypoIcon>
           </TouchableOpacity>
         </View>
         {
@@ -266,8 +311,8 @@ export default function BusinessListScreen({ navigation }) {
           <View style={styles.distanceSearchPart}>
             <SliderPicker
               minLabel={'0'}
-              maxLabel={'2000'}
-              maxValue={2000}
+              maxLabel={'3000'}
+              maxValue={3000}
               callback={position => onDistanceSearch(position)}
               defaultValue={distance}
               labelFontColor={Colors.whiteColor}
@@ -293,7 +338,7 @@ export default function BusinessListScreen({ navigation }) {
             {
               categories.map((each, index) => {
                 return (
-                  <TouchableOpacity style={[styles.categorySearchBtn, each.name == activeCategory ? { borderColor: Colors.yellowToneColor } : null]} onPress={() => onCategorySearch(each)}>
+                  <TouchableOpacity key={index} style={[styles.categorySearchBtn, each.name == activeCategory?.name ? { borderColor: Colors.yellowToneColor } : null]} onPress={() => onCategorySearch(each)}>
                     <Text style={styles.btnTxt}>
                       {each.name}
                     </Text>
