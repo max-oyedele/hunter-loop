@@ -42,7 +42,7 @@ class ChangePwd extends Component {
       <React.Fragment>
         <div className="page-content">
 
-          {this.props.login.error ? <Alert color="danger">{this.props.login.error}</Alert> : null}
+          {this.props.auth.error ? <Alert color="danger">{this.props.auth.error}</Alert> : null}
 
           <Container>
             <CardBody className="bg-white" style={{ borderBottom: '2px solid #eee' }}>

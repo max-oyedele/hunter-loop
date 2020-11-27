@@ -34,7 +34,7 @@ class Profile extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let user = this.props.login.user;
+    let user = this.props.auth.user;
     if (!user) {
       user = JSON.parse(localStorage.getItem("authUser"));
     }
@@ -120,7 +120,7 @@ class Profile extends Component {
     review.status = 'reported';
     this.props.setData('reviews', 'update', this.props.data.reviews, review);
 
-    let user = this.props.login.user;
+    let user = this.props.auth.user;
     if (!user) {
       user = JSON.parse(localStorage.getItem("authUser"));
     }

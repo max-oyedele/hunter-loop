@@ -28,7 +28,7 @@ class Header extends Component {
       params: params
     });
 
-    let user = this.props.login.user;
+    let user = this.props.auth.user;
     if (!user){
       user = JSON.parse(localStorage.getItem("authUser"))      
     }
@@ -42,7 +42,7 @@ class Header extends Component {
   }
 
   render() {
-    let storeUser = this.props.login.user;
+    let storeUser = this.props.auth.user;
     let role = storeUser && storeUser.role;
     if(!role){
       let storageUser = JSON.parse(localStorage.getItem("authUser"));

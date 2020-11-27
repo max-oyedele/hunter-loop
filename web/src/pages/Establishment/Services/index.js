@@ -29,7 +29,7 @@ class Services extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let user = this.props.login.user;
+    let user = this.props.auth.user;
     if (!user) {
       user = JSON.parse(localStorage.getItem("authUser"));
     }

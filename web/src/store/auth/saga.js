@@ -3,8 +3,8 @@ import { takeEvery, fork, put, all, call } from 'redux-saga/effects';
 import { LOGIN_USER, LOGOUT_USER, FORGET_PASSWORD } from './actionTypes';
 import { loginSuccess, logoutUserSuccess, apiError } from './actions';
 
-import { getFirebaseBackend } from '../../../helpers/firebase_helper';
-import { getFirestoreBackend } from '../../../helpers/firestore_helper';
+import { getFirebaseBackend } from '../../helpers/firebase_helper';
+import { getFirestoreBackend } from '../../helpers/firestore_helper';
 
 const fireBaseBackend = getFirebaseBackend();
 const fireStoreBackend = getFirestoreBackend();

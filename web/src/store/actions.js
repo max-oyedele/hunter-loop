@@ -1,2 +1,2 @@
-export * from './auth/login/actions';
+export * from './auth/actions';
 export * from './data/actions';

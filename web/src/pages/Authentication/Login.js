@@ -25,7 +25,7 @@ class Login extends Component {
   }
 
   componentDidMount() {// already login => other tab window => redirect
-    let storeUser = this.props.login.user;
+    let storeUser = this.props.auth.user;
     let role = storeUser && storeUser.role;
     if(!role){
       let storageUser = JSON.parse(localStorage.getItem("authUser"));
@@ -37,8 +37,8 @@ class Login extends Component {
   }
 
   componentDidUpdate(){// login => redux => update => redirect
-    if (this.props.login.user.role === 'business') this.props.history.push('/profile');
-    else if (this.props.login.user.role === 'admin') this.props.history.push('/admin/reports');
+    if (this.props.auth.user.role === 'business') this.props.history.push('/profile');
+    else if (this.props.auth.user.role === 'admin') this.props.history.push('/admin/reports');
   }
 
   renderLoading = () => {
@@ -56,7 +56,7 @@ class Login extends Component {
     return (
       <React.Fragment>
         {
-          this.props.login.loading && this.renderLoading()
+          this.props.auth.loading && this.renderLoading()
         }
         <div className="m-0 d-flex justify-content-center align-items-center" style={{ backgroundColor: '#313131', height: '100vh' }}>
           <div style={{ width: '20%' }}>
@@ -69,7 +69,7 @@ class Login extends Component {
             <div className="">
               <AvForm className="form-horizontal" onValidSubmit={this.handleValidSubmit}>
 
-                {this.props.login.error ? <Alert color="danger">{this.props.login.error}</Alert> : null}
+                {this.props.auth.error ? <Alert color="danger">{this.props.auth.error}</Alert> : null}
 
                 <div className="form-group">
                   <AvField name="email" label="" value="" className="form-control" placeholder="Email" type="email" required />

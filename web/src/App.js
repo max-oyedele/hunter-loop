@@ -22,7 +22,7 @@ class App extends Component {
 
 	render() {
 		//when logged in, redux store is filled
-		let storeUser = this.props.login.user;
+		let storeUser = this.props.auth.user;
     let role = storeUser && storeUser.role;
 		//when refresh, redux store value is deleted
     if(!role){

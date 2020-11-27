@@ -166,10 +166,10 @@ class SidebarContent extends Component {
       <React.Fragment>
         <div id="sidebar-menu" className="p-0">
           {
-            (this.props.login.user.role === 'admin' || JSON.parse(localStorage.getItem("authUser")).role === 'admin' ) && this.renderAdminMenu()
+            (this.props.auth.user.role === 'admin' || JSON.parse(localStorage.getItem("authUser")).role === 'admin' ) && this.renderAdminMenu()
           }
           {
-            (this.props.login.user.role === 'business' || JSON.parse(localStorage.getItem("authUser")).role === 'business' ) && this.renderBusinessMenu()
+            (this.props.auth.user.role === 'business' || JSON.parse(localStorage.getItem("authUser")).role === 'business' ) && this.renderBusinessMenu()
           }
         </div>
       </React.Fragment>

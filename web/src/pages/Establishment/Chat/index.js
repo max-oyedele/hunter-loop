@@ -32,7 +32,7 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    let user = this.props.login.user;
+    let user = this.props.auth.user;
     if (!user) {
       user = JSON.parse(localStorage.getItem("authUser"));
     }
