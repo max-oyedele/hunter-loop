@@ -190,7 +190,7 @@ export default function BusinessListScreen({ navigation }) {
     return filtered;
   }
   ///////////////////
-  onSearch = (text) => {
+  function onSearch(text){
     var filtered = getBusinessByCategory(activeCategory);
     filtered = getBusinessByDistance(filtered, distance);
     filtered = getBusinessByKeyword(filtered, text);

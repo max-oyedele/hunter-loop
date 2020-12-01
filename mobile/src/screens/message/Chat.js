@@ -20,7 +20,6 @@ import normalize from 'react-native-normalize';
 import { RFPercentage } from 'react-native-responsive-fontsize';
 
 import firebase from '@react-native-firebase/app';
-import database from '@react-native-firebase/database';
 
 import {
   GiftedChat,  
@@ -31,6 +30,7 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 EntypoIcon.loadFont();
 
 import { Colors, Images, Constants } from '@constants';
+import { checkInternet } from '../../service/firebase';
 
 export default function ChatScreen({ navigation, route }) {
   const [messages, setMessages] = useState([]);
@@ -69,6 +69,12 @@ export default function ChatScreen({ navigation, route }) {
   }
 
   onSendMessage = async (messages = []) => {
+    var isConnected = await checkInternet();
+    if (!isConnected) {
+      Alert.alert('Please connect to network.');
+      return;
+    }
+
     messages.forEach(message => {
       if (message.text.trim() == "") {
         return;

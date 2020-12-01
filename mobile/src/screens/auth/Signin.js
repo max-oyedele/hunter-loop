@@ -92,6 +92,12 @@ export default function SigninScreen({ navigation }) {
           createUserWithSocial(userInfo);
           return;
         }
+
+        if(!user.active){
+          Alert.alert('You are banned by admin.');
+          return;
+        }
+
         Constants.user = user;
         AsyncStorage.setItem('user', JSON.stringify(user));
         navigation.navigate('Home');
@@ -160,7 +166,20 @@ export default function SigninScreen({ navigation }) {
     await signin(email, pwd)
       .then((user) => {
         //console.log('signin success', user);
+        
+        if(!user.active){
+          Alert.alert(
+            'You are banned by admin.',
+            '',
+            [
+              { text: "OK", onPress: () => setSpinner(false) }
+            ],  
+          );
+          return;
+        }
+
         setSpinner(false);
+
         Constants.user = user;
         AsyncStorage.setItem('user', JSON.stringify(user));
         navigation.navigate('Home', {screen: 'BusinessList'});

@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   titleTxt: {
     fontSize: RFPercentage(2.2),
     color: Colors.blueTitleColor,
-    marginLeft: normalize(5)
+    marginLeft: normalize(3)
   },
   ratingAndBookmark: {
     flexDirection: 'row',
