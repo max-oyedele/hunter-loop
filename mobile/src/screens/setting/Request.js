@@ -51,7 +51,8 @@ export default function RequestScreen({ navigation }) {
 
   const [spinner, setSpinner] = useState(false);
 
-  let ref = useRef();
+  let refAddress = useRef();
+  let refInput = useRef();
 
   if (useIsFocused() && Constants.refreshFlag) {
     Constants.refreshFlag = false;
@@ -71,7 +72,7 @@ export default function RequestScreen({ navigation }) {
 
   useEffect(() => {
     if(address){
-      ref.current?.setAddressText(address);    
+      refAddress.current?.setAddressText(address);    
     }
   }, [address])
 
@@ -228,14 +229,10 @@ export default function RequestScreen({ navigation }) {
     //   Alert.alert('Please enter site url');
     //   return;
     // }
-    // if (!subscription) {
-    //   Alert.alert('Please enter subscription');
-    //   return;
-    // }
-    // if (!desc) {
-    //   Alert.alert('Please enter description');
-    //   return;
-    // }
+    if (!membershipId) {
+      Alert.alert('Please select membership');
+      return;
+    }    
 
     setSpinner(true);
     if (photoLocalPath) {
@@ -297,7 +294,7 @@ export default function RequestScreen({ navigation }) {
         >
         </TextInput>
         <GooglePlacesAutocomplete
-          ref={ref}
+          ref={refAddress}
           textInputProps={styles.inputBox}
           placeholder='Address'
           enablePoweredByContainer={false}
@@ -321,7 +318,7 @@ export default function RequestScreen({ navigation }) {
           options={{
             mask: '+1 (999) 999 - 9999'
           }}
-          refInput={ref => { this.input = ref }}
+          refInput={refInput}
           style={styles.inputBox}
           placeholder='Contact Number'
           placeholderTextColor={Colors.greyColor}
@@ -357,7 +354,12 @@ export default function RequestScreen({ navigation }) {
                   value: each.id
                 }))
               }
-              onValueChange={(value) => setMembershipId(value)}
+              onValueChange={(value) => {
+                console.log(value)
+                if(value){
+                  setMembershipId(value);
+                }
+              }}
               value={membershipId}
             />
           }

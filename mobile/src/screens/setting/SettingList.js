@@ -99,7 +99,7 @@ export default function SettingListScreen({ navigation }) {
         </View>
       </View> */}
 
-      <View style={styles.itemLine}>
+      {/* <View style={styles.itemLine}>
         <View style={styles.iconPart}><EntypoIcon name="star" style={styles.iconLabel}></EntypoIcon></View>
         <TouchableOpacity style={styles.titlePart} onPress={() => {
           if (Constants.user) {
@@ -110,7 +110,7 @@ export default function SettingListScreen({ navigation }) {
           }
         }}><Text style={styles.itemTxt}>Rate App</Text></TouchableOpacity>
         <View style={styles.iconPart}></View>
-      </View>
+      </View> */}
 
       <View style={styles.itemLine}>
         <View style={styles.iconPart}><EntypoIcon name="clock" style={styles.iconLabel}></EntypoIcon></View>
@@ -383,6 +383,7 @@ var reviewItem = {
   sDesc: '',
   sRating: '',
   /////////
+  type: '', //business or service
   status: '' // 'ready', 'accepted', 'reported'
 }
 

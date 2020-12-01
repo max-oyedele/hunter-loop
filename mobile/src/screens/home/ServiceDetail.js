@@ -108,6 +108,7 @@ export default function ServiceDetailScreen({ navigation, route }) {
         sid: serviceItem.id,
         sRating: rating,
         sDesc: review,
+        type: 'service',
         status: 'ready'
       }
     }
@@ -153,7 +154,6 @@ export default function ServiceDetailScreen({ navigation, route }) {
     var business = Constants.business.find(each=>each.id == serviceItem.bid);
     var user = Constants.users.find(each=>each.bid == business.id);    
     if(user) setHunter(user);
-    console.log('user', user)    
   }
 
   function showAlert() {

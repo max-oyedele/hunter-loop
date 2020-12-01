@@ -24,6 +24,7 @@ class Services extends Component {
   }
 
   componentDidMount() {
+    this.props.getData('business');
     this.props.getData('services');
     this.props.getData('categories');
   }
@@ -34,11 +35,12 @@ class Services extends Component {
       user = JSON.parse(localStorage.getItem("authUser"));
     }
 
-    // console.log('prevstate services', prevState.services);
-    // console.log('prevprops services', prevProps.data.services)
-    // console.log('this props services', this.props.data.services)
-    if(!prevProps.data.business) return;
-    let business = prevProps.data.business.find((each) => each.id == user.bid);
+    let business = prevProps.data.business.length > 0 && prevProps.data.business.find((each) => each.id == user.bid);
+    if (prevState.business != business) {
+      this.setState({ business: business })
+    }
+    if(!business) return;
+
     let services = this.props.data.services.filter((each) => each.bid == business.id);    
     if (prevState.services.length != services.length) {//mounting, refreshing 
       this.setState({

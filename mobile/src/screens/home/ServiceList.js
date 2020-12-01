@@ -68,6 +68,7 @@ export default function ServiceListScreen({ navigation, route }) {
         bid: businessItem.id,
         bRating: rating,
         bDesc: review,
+        type: 'business',
         status: 'ready'
       }
     }
@@ -112,7 +113,7 @@ export default function ServiceListScreen({ navigation, route }) {
       return 0;
     }
     else {
-      if(!myLocation) return 0;
+      if (!myLocation) return 0;
       var distance = getDistance(myLocation, businessItem.location);
       var distanceMile = distance / 1000 / 1.6;
       return distanceMile.toFixed(2);
@@ -147,12 +148,12 @@ export default function ServiceListScreen({ navigation, route }) {
         <View style={styles.titleContainer}>
           <Text style={styles.titleTxt}>{businessItem.name}</Text>
         </View>
-        <View style={styles.iconBookmarkContainer}>
+        <View style={styles.iconFlagContainer}>
           {/* <TouchableOpacity onPress={() => onBookmarkBusiness(Constants.user.favorbids.includes(businessItem.id) ? 'delete' : 'add')}>
             <EntypoIcon name="bookmark" style={[styles.headerIconBookmark, Constants.user.favorbids.includes(businessItem.id) ? { color: Colors.yellowToneColor } : null]}></EntypoIcon>
           </TouchableOpacity> */}
           <TouchableOpacity onPress={() => {
-            if (Constants.user) {              
+            if (Constants.user) {
               setReviewModal(!reviewModal)
             }
             else {
@@ -179,13 +180,15 @@ export default function ServiceListScreen({ navigation, route }) {
           }}
         />
         <LinearGradient style={styles.backGradient} colors={['rgba(0,0,0,0)', 'rgba(20,20,20,1)']}>
-          <Text style={styles.titleTxtLabel}>{businessItem.title}</Text>
           <View style={styles.distanceAddressLine}>
-            <EntypoIcon name="map" style={styles.labelIcon}></EntypoIcon>
-            <Text style={styles.labelTxt}>{getDistanceMile(businessItem)} mi</Text>
-
-            <EntypoIcon name="location-pin" style={styles.labelIcon}></EntypoIcon>
-            <Text style={styles.labelTxt}>{businessItem.address}</Text>
+            <View style={styles.distancePart}>
+              <EntypoIcon name="map" style={styles.labelIcon}></EntypoIcon>
+              <Text style={styles.labelTxt}>{getDistanceMile(businessItem)} mi</Text>
+            </View>
+            <View style={styles.addressPart}>
+              <EntypoIcon name="location-pin" style={styles.labelIcon}></EntypoIcon>
+              <Text style={styles.labelTxt} numberOfLines={1} ellipsizeMode='tail'>{businessItem.address}</Text>
+            </View>
           </View>
           <View style={styles.urlLine}>
             <EntypoIcon name="network" style={styles.labelIcon}></EntypoIcon>
@@ -248,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  iconBookmarkContainer: {
+  iconFlagContainer: {
     width: '20%',
     justifyContent: 'center',
     alignItems: 'center'
@@ -284,15 +287,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  titleTxtLabel: {
-    fontSize: RFPercentage(3.8),
-    fontWeight: '600',
-    color: Colors.whiteColor,
-    marginBottom: normalize(5, 'height')
-  },
   distanceAddressLine: {
+    width: '90%',
     flexDirection: 'row',
-    marginBottom: normalize(5, 'height')
+    justifyContent: 'center',     
+    marginBottom: normalize(10, 'height'),
+  },
+  distancePart: {    
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  addressPart: {
+    maxWidth: normalize(230),
+    flexDirection: 'row',    
+    alignItems: 'center',
+    paddingRight: normalize(10),
   },
   labelIcon: {
     fontSize: RFPercentage(2),
@@ -305,11 +315,17 @@ const styles = StyleSheet.create({
     marginLeft: normalize(5)
   },
   urlLine: {
+    width: '90%',
     flexDirection: 'row',
-    marginBottom: normalize(5, 'height')
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: normalize(10, 'height')
   },
   phoneHoursLine: {
-    flexDirection: 'row'
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   listBody: {

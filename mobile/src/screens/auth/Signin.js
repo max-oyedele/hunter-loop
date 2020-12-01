@@ -163,7 +163,7 @@ export default function SigninScreen({ navigation }) {
         setSpinner(false);
         Constants.user = user;
         AsyncStorage.setItem('user', JSON.stringify(user));
-        navigation.navigate('Welcome');
+        navigation.navigate('Home', {screen: 'BusinessList'});
       })
       .catch((err) => {
         console.log('signin errr', err);

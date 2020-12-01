@@ -190,17 +190,17 @@ const styles = StyleSheet.create({
     fontSize: RFPercentage(3.5),
     fontWeight: '600',
     color: Colors.whiteColor,
-    marginTop: normalize(20, 'height')
+    marginTop: normalize(20, 'height'),
   },
   addressLine: {
     width: '90%',
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
     marginTop: normalize(10, 'height'),
   },
   address: {
-    width: '90%',
     fontSize: RFPercentage(2.5),
     color: Colors.whiteColor,
     marginLeft: normalize(10)

@@ -142,7 +142,7 @@ class ServiceForm extends Component {
       this.props.setData('services', 'add', services, service);
     }
     else if (this.state.method === 'edit') {
-      services.splice(services.findIndex(each => each.id == this.state.service.id), 1, this.state.service);
+      services.splice(services.findIndex(each => each.id == this.state.service.id), 1, this.state.service);      
       this.props.setData('services', 'update', services, this.state.service);
     }
   }
@@ -328,7 +328,7 @@ class ServiceForm extends Component {
                         <div className="form-group row">
                           <label htmlFor="example-text-input" className="col-md-3 col-form-label">Terms and Conditions</label>
                           <div className="col-md-9">
-                            <textarea className="form-control" id="information" rows="10" defaultValue={this.state.service.desc}></textarea>
+                            <textarea className="form-control" id="information" rows="10" defaultValue={this.state.service.terms} onChange={(e) => this.onChangeField(e, 'terms')}></textarea>
                           </div>
                         </div>
                       </CardBody>

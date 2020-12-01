@@ -44,20 +44,20 @@ class Profile extends Component {
       this.setState({ business: business })
     }
 
-    if(!business) return;
-    let services = this.props.data.services.filter((each)=>each.bid == business.id);
+    if (!business) return;
+    let services = this.props.data.services.filter((each) => each.bid == business.id);
     let sids = [];
-    services.forEach(each=>{
+    services.forEach(each => {
       sids.push(each.id);
-    })    
+    })
     let reviews = this.props.data.reviews.filter((each) => each.bid == business.id || sids.includes(each.sid));
 
     if (prevState.reviews.length == reviews.length && prevState.reviews.every((each, index) => each === reviews[index])) return;
     this.setState({ reviews: reviews });
 
     let reports = this.props.data.reports;
-    if(prevState.reports.length == reports.length && prevState.reports.every((each, index) => each === reports[index])) return;
-    this.setState({reports: reports});
+    if (prevState.reports.length == reports.length && prevState.reports.every((each, index) => each === reports[index])) return;
+    this.setState({ reports: reports });
   }
 
   getReviewUser = (id) => {
@@ -74,36 +74,36 @@ class Profile extends Component {
   }
 
   onAcceptReview = (review) => {
-    if(review.status === 'accepted') return;    
+    if (review.status === 'accepted') return;
 
     //update business rating value
-    if(review.bid){
-      var bReviews = this.props.data.reviews.filter(each=>each.status === 'accepted' && each.bid == review.bid)
+    if (review.bid) {
+      var bReviews = this.props.data.reviews.filter(each => each.status === 'accepted' && each.bid == review.bid)
       var bRating = 0;
-      bReviews.forEach(each => {      
+      bReviews.forEach(each => {
         bRating += each.bRating;
       })
-      console.log(bReviews)
-      console.log('brating', bRating)
+      // console.log(bReviews)
+      // console.log('brating', bRating)
       bRating += review.bRating
       bRating = bRating / 2;
-      console.log('brating updated', bRating)
-  
-      var {business} = this.state;
+      // console.log('brating updated', bRating)
+
+      var { business } = this.state;
       business.rating = bRating;
       this.props.setData('business', 'update', this.props.data.business, business);
     }
 
     //update service rating value
-    if(review.sid){
-      var sReviews = this.props.data.reviews.filter(each=>each.status === 'accepted' && each.sid == review.sid)
+    if (review.sid) {
+      var sReviews = this.props.data.reviews.filter(each => each.status === 'accepted' && each.sid == review.sid)
       var sRating = 0;
-      sReviews.forEach(each => {      
+      sReviews.forEach(each => {
         sRating += each.sRating;
       })
       sRating += review.sRating
       sRating = sRating / 2;
-      
+
       var service = this.props.data.services.find(each => each.id == review.sid);
       service.rating = sRating;
       this.props.setData('services', 'update', this.props.data.services, service);
@@ -115,7 +115,7 @@ class Profile extends Component {
   }
 
   onReportReview = (review) => {
-    if(review.status === 'reported') return;
+    if (review.status === 'reported') return;
 
     review.status = 'reported';
     this.props.setData('reviews', 'update', this.props.data.reviews, review);
@@ -127,7 +127,7 @@ class Profile extends Component {
     var report = {
       uid: user.id,
       rid: review.id
-    }    
+    }
     this.props.setData('reports', 'add', this.props.data.reports, report);
   }
 
@@ -235,16 +235,18 @@ class Profile extends Component {
                   <TabPane tabId="2" className="p-3">
                     {
                       this.state.reviews.map((each, index) => {
+                        let reviewUser = this.getReviewUser(each.uid);
+                        if(!reviewUser) return null;
                         return (
                           <div key={index}>
                             <Row>
                               <Col className="col-12">
                                 <Row>
-                                  <Col className="col-8 d-flex">
-                                    <CardImg src={this.getReviewUser(each.uid) ? this.getReviewUser(each.uid).img : defaultUserImg} alt="No Image" className="profileImg ml-2 rounded-circle avatar-sm border border-white" style={{ width: 40, height: 40 }} />
+                                  <Col className="col-4 d-flex">
+                                    <CardImg src={reviewUser.img ? reviewUser.img : defaultUserImg} alt="No Image" className="profileImg ml-2 rounded-circle avatar-sm border border-white" style={{ width: 40, height: 40 }} />
                                     <Col>
                                       <Col className="col-12 px-0">
-                                        <span className="text-info"><b>{this.getReviewUser(each.uid) ? this.getReviewUser(each.uid).name : ''}</b></span>
+                                        <span className="text-info"><b>{reviewUser.name}</b></span>
                                       </Col>
                                       <Col className="col-12 px-0 d-flex">
                                         <StarRatings
@@ -256,9 +258,19 @@ class Profile extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                        <CardText className="ml-2">{each.bRating}</CardText>
+                                        {
+                                          each.type === 'business' &&
+                                          <CardText className="ml-2">{each.bRating}</CardText>
+                                        }
+                                        {
+                                          each.type === 'service' &&
+                                          <CardText className="ml-2">{each.sRating}</CardText>
+                                        }
                                       </Col>
                                     </Col>
+                                  </Col>
+                                  <Col className="col-4">
+                                    <CardTitle>{each.type}</CardTitle>
                                   </Col>
                                   <Col className="col-4 d-flex justify-content-end">
                                     {
@@ -286,8 +298,15 @@ class Profile extends Component {
                                   </Col>
                                 </Row>
                                 <Row>
-                                  <Col className="col-12 py-3">
-                                    <CardText>{each.bDesc}</CardText>
+                                  <Col className="col-12 px-4 py-3">
+                                    {
+                                      each.type === 'business' &&
+                                      <CardText>{each.bDesc}</CardText>
+                                    }
+                                    {
+                                      each.type === 'service' &&
+                                      <CardText>{each.sDesc}</CardText>
+                                    }
                                   </Col>
                                 </Row>
                               </Col>

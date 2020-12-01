@@ -21,6 +21,7 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 EntypoIcon.loadFont();
 import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { Colors, Images } from '@constants';
 import { signup, createUser, setData, checkInternet } from '../../service/firebase';
@@ -138,7 +139,7 @@ export default function SignupScreen({ navigation }) {
     // }
 
     var isConnected = await checkInternet();
-    if(!isConnected){
+    if (!isConnected) {
       Alert.alert('Please connect to network.');
       return;
     }
@@ -147,7 +148,7 @@ export default function SignupScreen({ navigation }) {
 
     await signup(email, pwd)
       .then(async (res) => {
-        var user = {          
+        var user = {
           id: res.user.uid,
           name: '',
           img: '',
@@ -162,9 +163,9 @@ export default function SignupScreen({ navigation }) {
           favorsids: [],
           active: true,
           createdAt: moment().format("MM/DD/YYYY"),
-          role: 'user'          
+          role: 'user'
         }
-        
+
         await createUser(user)
           .then(() => {
             console.log('create user success');
@@ -172,14 +173,21 @@ export default function SignupScreen({ navigation }) {
               'Account created!',
               '',
               [
-                { text: "OK", onPress: () => {setSpinner(false); navigation.navigate('Signin')}}
+                {
+                  text: "OK", onPress: () => {
+                    setSpinner(false);
+                    Constants.user = user;
+                    AsyncStorage.setItem('user', JSON.stringify(user));
+                    navigation.navigate('Welcome');
+                  }
+                }
               ],
             )
           })
           .catch((err) => {
             console.log('create user error', err);
             setSpinner(false)
-          })          
+          })
       })
       .catch((err) => {
         console.log('signup error', err);

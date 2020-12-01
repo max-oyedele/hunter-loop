@@ -32,7 +32,7 @@ export default function MapViewScreen({ navigation }) {
 
   const [businessResultData, setBusinessResultData] = useState([]);
   const [markerIdData, setMarkerIdData] = useState([]);
-
+  
   let mapRef = useRef();
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function MapViewScreen({ navigation }) {
     business.forEach((each) => {
       if (each.location.latitude && each.location.longitude) {
         businessResultData.push(each);
-        markerIdData.push(each.name);
+        markerIdData.push(each.id);        
       }
     });
     setBusinessResultData(businessResultData);
@@ -117,7 +117,8 @@ export default function MapViewScreen({ navigation }) {
             showsPointsOfInterest={false}
             zoomControlEnabled={true}
             style={{ flex: 1 }}
-            onMapReady={() => {
+            onMapReady={() => {          
+              console.log(markerIdData)    
               mapRef.current.fitToSuppliedMarkers(markerIdData, {
                 edgePadding:
                 {
@@ -135,7 +136,7 @@ export default function MapViewScreen({ navigation }) {
                   key={index}
                   coordinate={each.location}
                   title={each.name}
-                  identifier={each.name}
+                  identifier={each.id}
                   image={Images.marker}
                   onCalloutPress={() => {
                     navigation.navigate('Home', { screen: 'ServiceList', params: { businessItem: each } })
