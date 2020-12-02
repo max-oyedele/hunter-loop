@@ -23,7 +23,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { Colors, Images } from '@constants';
+import { Colors, Images, Constants } from '@constants';
 import { signup, createUser, setData, checkInternet } from '../../service/firebase';
 
 export default function SignupScreen({ navigation }) {

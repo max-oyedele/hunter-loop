@@ -74,9 +74,10 @@ export default function ProfileEditScreen({ navigation, route }) {
     ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
       } else if (response.error) {
-        console.log(response.error)
+        // console.log('pick error', response.error)
       } else if (response.customButton) {
       } else {
+        // console.log('path', response.uri)
         setPhotoLocalPath(response.uri);
         var nProfile = { ...profile };
         nProfile.img = response.uri;

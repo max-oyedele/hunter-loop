@@ -99,7 +99,7 @@ export default function SettingListScreen({ navigation }) {
         </View>
       </View> */}
 
-      {/* <View style={styles.itemLine}>
+      <View style={styles.itemLine}>
         <View style={styles.iconPart}><EntypoIcon name="star" style={styles.iconLabel}></EntypoIcon></View>
         <TouchableOpacity style={styles.titlePart} onPress={() => {
           if (Constants.user) {
@@ -110,7 +110,7 @@ export default function SettingListScreen({ navigation }) {
           }
         }}><Text style={styles.itemTxt}>Rate App</Text></TouchableOpacity>
         <View style={styles.iconPart}></View>
-      </View> */}
+      </View>
 
       <View style={styles.itemLine}>
         <View style={styles.iconPart}><EntypoIcon name="clock" style={styles.iconLabel}></EntypoIcon></View>
@@ -163,8 +163,8 @@ export default function SettingListScreen({ navigation }) {
         sendBtnText={'Send'}
         commentPlaceholderText={'Write text'}
         emptyCommentErrorMessage={'Empty Rate'}
-        playStoreUrl={'market://details?id=com.brainyapps.hunters'}
-        iTunesStoreUrl={'market://details?id=com.brainyapps.hunters'}
+        playStoreUrl={'https://play.google.com/store/apps/details?id=com.brainyapps.hunters'}
+        iTunesStoreUrl={'https://apps.apple.com/us/app/hunter-loop/id1536214645'}
         isModalOpen={rateModal}
         storeRedirectThreshold={3}
         style={{

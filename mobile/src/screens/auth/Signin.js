@@ -59,7 +59,7 @@ export default function SigninScreen({ navigation }) {
         getUserRegistered(res.user);
       })
       .catch((err) => {
-        //console.log('apple signin error', err);
+        console.log('apple signin error', err);
       })
   }
 
@@ -81,7 +81,7 @@ export default function SigninScreen({ navigation }) {
         getUserRegistered(res.user);
       })
       .catch((err) => {
-        //console.log('facebook signin error', err)
+        console.log('facebook signin error', err)
       })
   }
 
