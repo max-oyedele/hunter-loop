@@ -78,7 +78,7 @@ export default function ServiceDetailScreen({ navigation, route }) {
         },
         title: '',
         width: width,
-        height: normalize(200, 'height')
+        height: height * 0.5
       })
     });
     setDetailImgs(imgs);

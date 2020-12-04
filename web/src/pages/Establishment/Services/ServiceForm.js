@@ -237,13 +237,15 @@ class ServiceForm extends Component {
                         <div className="form-group row">
                           <label className="col-md-3 col-form-label">About the hunt</label>
                           <div className="col-md-9">
-                            <RichTextEditor value={this.state.aboutTxt} onChange={(value) => this.onChangeEditor(value, 'about')} placeholder='Please write here...' />
+                            {/* <RichTextEditor value={this.state.aboutTxt} onChange={(value) => this.onChangeEditor(value, 'about')} placeholder='Please write here...' /> */}
+                            <textarea className="form-control" id="about" rows="6" defaultValue={this.state.service.aboutTxt} onChange={(e) => this.onChangeField(e, 'about')}></textarea>
                           </div>
                         </div>
                         <div className="form-group row">
                           <label className="col-md-3 col-form-label">Hunting Guidelines</label>
                           <div className="col-md-9">
-                            <RichTextEditor value={this.state.guideTxt} onChange={(value) => this.onChangeEditor(value, 'guide')} placeholder="Please write here..." />
+                            {/* <RichTextEditor value={this.state.guideTxt} onChange={(value) => this.onChangeEditor(value, 'guide')} placeholder="Please write here..." /> */}
+                            <textarea className="form-control" id="guide" rows="6" defaultValue={this.state.service.guideTxt} onChange={(e) => this.onChangeField(e, 'guide')}></textarea>
                           </div>
                         </div>
                         <div className="form-group row">
@@ -328,7 +330,7 @@ class ServiceForm extends Component {
                         <div className="form-group row">
                           <label htmlFor="example-text-input" className="col-md-3 col-form-label">Terms and Conditions</label>
                           <div className="col-md-9">
-                            <textarea className="form-control" id="information" rows="10" defaultValue={this.state.service.terms} onChange={(e) => this.onChangeField(e, 'terms')}></textarea>
+                            <textarea className="form-control" id="information" rows="6" defaultValue={this.state.service.terms} onChange={(e) => this.onChangeField(e, 'terms')}></textarea>
                           </div>
                         </div>
                       </CardBody>
