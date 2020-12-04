@@ -146,7 +146,7 @@ export default function ServiceListScreen({ navigation, route }) {
           </TouchableOpacity>
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.titleTxt}>{businessItem.name}</Text>
+          <Text style={styles.titleTxt} numberOfLines={1} ellipsizeMode='tail'>{businessItem.name}</Text>          
         </View>
         <View style={styles.iconFlagContainer}>
           {/* <TouchableOpacity onPress={() => onBookmarkBusiness(Constants.user.favorbids.includes(businessItem.id) ? 'delete' : 'add')}>
@@ -175,7 +175,7 @@ export default function ServiceListScreen({ navigation, route }) {
           activeDotStyle={{ backgroundColor: Colors.yellowToneColor, marginBottom: normalize(160, 'height') }}
           renderItem={(data) => {
             return (
-              <Image style={styles.img} source={{ uri: data.item }} resizeMode='stretch' />
+              <Image style={styles.img} source={{ uri: data.item }} resizeMode='cover' />
             )
           }}
         />
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: 1.5 }]
   },
   titleTxt: {
-    fontSize: RFPercentage(3.5),
+    fontSize: RFPercentage(3),
     fontWeight: '600',
     color: Colors.yellowToneColor,
   },

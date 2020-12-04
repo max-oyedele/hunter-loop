@@ -215,7 +215,7 @@ export default function BusinessListScreen({ navigation }) {
       filtered = getBusinessByDistance(filtered, distance);
       filtered = getBusinessByKeyword(filtered, keyword);
       setBusiness(filtered);
-      // setActiveCategory(null);
+      setActiveCategory(null);
     }
     else if(!distanceSearch && categorySearch){
       var filtered = getBusinessByCategory(activeCategory);      
@@ -224,7 +224,7 @@ export default function BusinessListScreen({ navigation }) {
     }
     else if(!distanceSearch && !categorySearch){      
       setBusiness(Constants.business.filter(each => each.status === 'approved'));
-      // setActiveCategory(null);
+      setActiveCategory(null);
     }
     
   }, [distanceSearch, categorySearch]);

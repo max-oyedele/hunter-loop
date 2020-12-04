@@ -47,7 +47,7 @@ export default function ForgotPwdScreen({ navigation }) {
 
     resetPassword(email)
       .then((res) => {
-        console.log('reset password success');
+        // console.log('reset password success');
         Alert.alert(
           "Reset Password", 
           "We have sent a reset password link to your email.",           

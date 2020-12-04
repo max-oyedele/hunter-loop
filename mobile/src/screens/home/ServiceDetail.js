@@ -11,7 +11,8 @@ import {
   Text,
   TextInput,
   ImageBackground,
-  Alert
+  Alert,
+  Animated
 } from 'react-native';
 import normalize from 'react-native-normalize';
 import { RFPercentage } from 'react-native-responsive-fontsize';
@@ -19,6 +20,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 EntypoIcon.loadFont();
 
+import ImageView from 'react-native-image-view';
 import StarRating from 'react-native-star-rating';
 import ReadMore from 'react-native-read-more-text';
 import Accordion from 'react-native-collapsible/Accordion';
@@ -29,7 +31,7 @@ import ReviewModal from '../../components/ReviewModal';
 import { setData } from '../../service/firebase';
 
 export default function ServiceDetailScreen({ navigation, route }) {
-  const serviceItem = route.params.serviceItem;  
+  const serviceItem = route.params.serviceItem;
   const [page, setPage] = useState('hunt');
 
   const [reviewModal, setReviewModal] = useState(false);
@@ -54,19 +56,39 @@ export default function ServiceDetailScreen({ navigation, route }) {
     },
   ];
 
+  const [detailImgs, setDetailImgs] = useState([]);
+  const [detailImgView, setDetailImgView] = useState(false);
+  const [detailImgIndex, setDetailImgIndex] = useState(0);
+
   const [activeSections, setActiveSections] = useState([]);
   const [hunter, setHunter] = useState();
 
-  useEffect(()=>{
+  useEffect(() => {
+    makeDetailImgs();
     getReviews();
     getHunter();
   }, []);
 
+  makeDetailImgs = () => {
+    var imgs = [];
+    serviceItem.detailImgs.forEach(each => {
+      imgs.push({
+        source: {
+          uri: each
+        },
+        title: '',
+        width: width,
+        height: normalize(200, 'height')
+      })
+    });
+    setDetailImgs(imgs);
+  }
+
   getReviews = () => {
-    var reviews = Constants.reviews.filter(each => each.sid == serviceItem.id);    
+    var reviews = Constants.reviews.filter(each => each.sid == serviceItem.id);
     var nReviews = [];
-    reviews.forEach((each)=>{
-      var user = Constants.users.find(e=>e.id == each.uid);
+    reviews.forEach((each) => {
+      var user = Constants.users.find(e => e.id == each.uid);
       var item = {
         userImg: user.img,
         userName: user.name,
@@ -87,6 +109,11 @@ export default function ServiceDetailScreen({ navigation, route }) {
     }
   }
 
+  toggleDetailImgView = (index) => {
+    setDetailImgView(!detailImgView);
+    setDetailImgIndex(index);
+  }
+
   toggleReviewModal = () => {
     setReviewModal(!reviewModal)
   }
@@ -104,7 +131,7 @@ export default function ServiceDetailScreen({ navigation, route }) {
     if (index == -1) {
       action = 'add';
       newItem = {
-        uid: Constants.user?.id,        
+        uid: Constants.user?.id,
         sid: serviceItem.id,
         sRating: rating,
         sDesc: review,
@@ -145,15 +172,15 @@ export default function ServiceDetailScreen({ navigation, route }) {
       })
   }
 
-  getReviewLength = (serviceItem) => {    
-    var reviews = Constants.reviews.filter(each=>each.sid == serviceItem.id);
+  getReviewLength = (serviceItem) => {
+    var reviews = Constants.reviews.filter(each => each.sid == serviceItem.id);
     return reviews.length;
   }
 
   getHunter = () => {
-    var business = Constants.business.find(each=>each.id == serviceItem.bid);
-    var user = Constants.users.find(each=>each.bid == business.id);    
-    if(user) setHunter(user);
+    var business = Constants.business.find(each => each.id == serviceItem.bid);
+    var user = Constants.users.find(each => each.bid == business.id);
+    if (user) setHunter(user);
   }
 
   function showAlert() {
@@ -198,7 +225,7 @@ export default function ServiceDetailScreen({ navigation, route }) {
               reviews.map((each, index) => (
                 <View key={index}>
                   <View style={styles.topLine}>
-                    <Image style={styles.reviewerImg} source={{uri: each.userImg}} />
+                    <Image style={styles.reviewerImg} source={{ uri: each.userImg }} />
                     <View style={styles.nameAndRatingPart}>
                       <Text style={styles.reviewerName}>{each.userName}</Text>
                       <View style={styles.ratingPart}>
@@ -241,7 +268,7 @@ export default function ServiceDetailScreen({ navigation, route }) {
         </View>
         <View style={styles.iconReviewContainer}>
           <TouchableOpacity onPress={() => {
-            if (Constants.user) {              
+            if (Constants.user) {
               setReviewModal(!reviewModal)
             }
             else {
@@ -259,10 +286,30 @@ export default function ServiceDetailScreen({ navigation, route }) {
 
       <View style={styles.detailImgContainer}>
         {
-          serviceItem.detailImgs && serviceItem.detailImgs.map((each, index) =>
-            <Image key={index} style={styles.detailImg} source={{ uri: each }} />
+          detailImgs.map((each, index) =>
+            <TouchableOpacity key={index} onPress={() => toggleDetailImgView(index)} style={styles.detailImg}>
+              <Image style={{ width: '100%', height: '100%' }} source={{ uri: each.source.uri }} />
+            </TouchableOpacity>
           )
         }
+      </View>
+      <View>
+        <Animated.View
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width: width,
+            height: height            
+          }}
+        >
+          <ImageView
+            images={detailImgs}
+            imageIndex={detailImgIndex}
+            isVisible={detailImgView}
+            onClose={toggleDetailImgView}
+          />
+        </Animated.View>
       </View>
 
       <View style={styles.titlePriceLine}>
@@ -334,22 +381,22 @@ export default function ServiceDetailScreen({ navigation, route }) {
               <Text style={styles.labelTxt}>Hunter Guide</Text>
             </View>
             <View style={styles.collapseContent}>
-              <Image style={styles.hunterImg} source={serviceItem.hunterImg ? { uri: serviceItem.hunterImg } : Images.profileImg} />
+              <Image style={styles.hunterImg} source={hunter?.img ? { uri: hunter.img } : Images.profileImg} />
             </View>
             <Text style={styles.hunterDesc}>{serviceItem.hunterDesc}</Text>
             {
-              hunter && 
+              hunter &&
               <TouchableOpacity style={styles.btn} onPress={() => {
                 if (Constants.user) {
-                  navigation.navigate('Message', { screen: 'Chat',  params:{chateeId: hunter?.id }})
+                  navigation.navigate('Message', { screen: 'Chat', params: { chateeId: hunter?.id } })
                 }
                 else {
                   showAlert();
-                }  
+                }
               }}>
                 <Text style={styles.btnTxt}>SEND MESSAGE</Text>
               </TouchableOpacity>
-            }            
+            }
           </>
         }
       </ScrollView>
@@ -417,11 +464,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '10%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    // justifyContent: 'space-around',
   },
   detailImg: {
-    width: '24%',
-    height: '100%'
+    width: '23%',
+    height: '100%',
+    marginLeft: '1.6%'
   },
 
   titlePriceLine: {
@@ -562,11 +610,13 @@ const styles = StyleSheet.create({
   hunterImg: {
     width: normalize(100),
     height: normalize(100),
+    borderRadius: normalize(50),
     alignSelf: 'center',
   },
   hunterDesc: {
     fontSize: RFPercentage(2.2),
     color: Colors.blackColor,
+    minHeight: normalize(50, 'height'),
     paddingLeft: normalize(10),
     paddingRight: normalize(10),
     paddingBottom: normalize(10),

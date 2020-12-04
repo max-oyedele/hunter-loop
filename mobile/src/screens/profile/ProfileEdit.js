@@ -12,6 +12,7 @@ import {
   TextInput,
   Alert,
   KeyboardAvoidingView,
+  Linking
 } from 'react-native';
 import normalize from 'react-native-normalize';
 import { RFPercentage } from 'react-native-responsive-fontsize';
@@ -22,6 +23,7 @@ EntypoIcon.loadFont();
 import Spinner from 'react-native-loading-spinner-overlay';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
+import { check, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import { Colors, Images, Constants } from '@constants';
@@ -38,7 +40,7 @@ export default function ProfileEditScreen({ navigation, route }) {
 
   let ref = useRef();
   useEffect(() => {
-    if(profile.address){
+    if (profile.address) {
       ref.current.setAddressText(profile.address);
     }
   }, [])
@@ -63,7 +65,36 @@ export default function ProfileEditScreen({ navigation, route }) {
     setRefresh(!refresh);
   }
 
-  pickImage = () => {
+  checkCameraPermission = () => {
+    return new Promise((resolve, reject) => {
+      check(PERMISSIONS.IOS.CAMERA)
+        .then((result) => {          
+          if (result == RESULTS.GRANTED) resolve(true);
+          else resolve(false);
+        })
+        .catch((error) => {
+          resolve(false);
+        })
+    })
+  }
+
+  pickImage = async () => {
+    if (Platform.OS === 'ios') {
+      var isCameraPermission = await checkCameraPermission();
+      if (!isCameraPermission) {
+        Alert.alert(
+          'Visit settings and allow camera permission',
+          '',
+          [
+            { text: "OK", onPress: () => {
+              Linking.openURL('app-settings:');
+            }},
+            { text: "CANCEL", onPress: () => {} }
+          ]);
+        return;
+      }
+    }
+
     var options = {
       title: 'Select Image',
       storageOptions: {
@@ -74,7 +105,7 @@ export default function ProfileEditScreen({ navigation, route }) {
     ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
       } else if (response.error) {
-        // console.log('pick error', response.error)
+        console.log('pick error', response.error)
       } else if (response.customButton) {
       } else {
         // console.log('path', response.uri)
@@ -215,7 +246,7 @@ export default function ProfileEditScreen({ navigation, route }) {
               styles={{
                 container: {
                   width: '100%',
-                  alignSelf: 'center',                  
+                  alignSelf: 'center',
                 },
                 textInputContainer: {
                   width: '100%',
@@ -226,7 +257,7 @@ export default function ProfileEditScreen({ navigation, route }) {
                   borderColor: Colors.whiteColor,
                   borderRadius: normalize(25),
                   borderWidth: normalize(3),
-                  paddingLeft: normalize(10),                  
+                  paddingLeft: normalize(10),
                 },
                 textInput: {
                   width: '100%',
@@ -237,7 +268,7 @@ export default function ProfileEditScreen({ navigation, route }) {
                 },
                 description: {
                   width: '80%',
-                  fontWeight: 'bold',                  
+                  fontWeight: 'bold',
                 },
               }}
               placeholder=''
@@ -361,8 +392,8 @@ const styles = StyleSheet.create({
 
   inputContainer: {
     width: '90%',
-    flexDirection: 'row',    
-    alignSelf: 'center',    
+    flexDirection: 'row',
+    alignSelf: 'center',
     // borderWidth: 1
   },
   labelTxt: {
@@ -374,7 +405,7 @@ const styles = StyleSheet.create({
     marginTop: normalize(19, 'height'),
     marginRight: normalize(10)
   },
-  inputBox: {    
+  inputBox: {
     width: '72%',
     height: normalize(40, 'height'),
     fontSize: RFPercentage(2.5),
