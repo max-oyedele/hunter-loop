@@ -25,15 +25,15 @@ class Login extends Component {
   }
 
   componentDidMount() {// already login => other tab window => redirect
-    let storeUser = this.props.auth.user;
-    let role = storeUser && storeUser.role;
-    if(!role){
-      let storageUser = JSON.parse(localStorage.getItem("authUser"));
-      role = storageUser && storageUser.role;
-    }
+    // let storeUser = this.props.auth.user;
+    // let role = storeUser && storeUser.role;
+    // if(!role){
+    //   let storageUser = JSON.parse(localStorage.getItem("authUser"));
+    //   role = storageUser && storageUser.role;
+    // }
     
-    if (role === 'business') this.props.history.push('/profile');
-    else if (role === 'admin') this.props.history.push('/admin/reports');
+    // if (role === 'business') this.props.history.push('/profile');
+    // else if (role === 'admin') this.props.history.push('/admin/reports');
   }
 
   componentDidUpdate(){// login => redux => update => redirect

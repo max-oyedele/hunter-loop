@@ -1,7 +1,7 @@
 import { takeEvery, fork, put, all, call } from 'redux-saga/effects';
 
 import { LOGIN_USER, LOGOUT_USER, FORGET_PASSWORD } from './actionTypes';
-import { loginSuccess, logoutUserSuccess, apiError } from './actions';
+import { loginUserSuccess, logoutUserSuccess, apiError } from './actions';
 
 import { getFirebaseBackend } from '../../helpers/firebase_helper';
 import { getFirestoreBackend } from '../../helpers/firestore_helper';
@@ -9,28 +9,27 @@ import { getFirestoreBackend } from '../../helpers/firestore_helper';
 const fireBaseBackend = getFirebaseBackend();
 const fireStoreBackend = getFirestoreBackend();
 
-function* loginUser({ payload: { user, history } }) {
+function* loginUser({payload}) {  
   try {
     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(fireBaseBackend.loginUser, user.email, user.password);      
+      const response = yield call(fireBaseBackend.loginUser, payload.email, payload.password);      
       const registeredUser = yield call(fireStoreBackend.getUser, response.uid);
       localStorage.setItem("authUser", JSON.stringify(registeredUser));
-      yield put(loginSuccess(registeredUser));
+      yield put(loginUserSuccess(registeredUser));
     } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
 
     } else if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
 
-    }
-    // history.push('/');
+    }    
   } catch (error) {    
     yield put(apiError(error));
   }
 }
 
-function* forgetPassword({payload: {email}}){
+function* forgetPassword({payload}){
   try{
     if (process.env.REACT_APP_DEFAULTAUTH === 'firebase') {
-      const response = yield call(fireBaseBackend.forgetPassword, email);            
+      const response = yield call(fireBaseBackend.forgetPassword, payload);            
     }
   }
   catch(error){
@@ -38,15 +37,15 @@ function* forgetPassword({payload: {email}}){
   }
 }
 
-function* logoutUser({ payload: { history } }) {
+function* logoutUser() {
   try {
     localStorage.removeItem("authUser");
+    localStorage.removeItem("roomChatFeatureArrs");
 
     if (process.env.REACT_APP_DEFAULTAUTH === 'firebase') {
       const response = yield call(fireBaseBackend.logout);      
       yield put(logoutUserSuccess(response));
-    }
-    // history.push('/login');
+    }    
   } catch (error) {
     yield put(apiError(error));
   }

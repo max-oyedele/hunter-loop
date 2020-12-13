@@ -30,7 +30,7 @@ class Profile extends Component {
     this.props.getData('business');
     this.props.getData('services');
     this.props.getData('reviews');
-    this.props.getData('reports');
+    this.props.getData('reports');    
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -58,7 +58,7 @@ class Profile extends Component {
     let reports = this.props.data.reports;
     if (prevState.reports.length == reports.length && prevState.reports.every((each, index) => each === reports[index])) return;
     this.setState({ reports: reports });
-  }
+  } 
 
   getReviewUser = (id) => {
     let reviewUser = this.props.data.users.find((each) => each.id == id);
@@ -220,7 +220,7 @@ class Profile extends Component {
                       </Col>
                     </Row>
                     {/* <hr /> */}
-                    <div className="d-flex justify-content-end" style={{ marginTop: 280 }}>
+                    <div className="d-flex justify-content-end" style={{ marginTop: 510 }}>
                       <Link to={{ pathname: '/profile/edit', state: { business: this.state.business } }}>
                         <Button
                           color="#f7d907"

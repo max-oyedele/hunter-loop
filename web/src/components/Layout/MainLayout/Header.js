@@ -4,9 +4,12 @@ import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { Col, Row, Card, CardBody, CardTitle, CardSubtitle, CardImg, CardText, Modal, Container, Button } from "reactstrap";
-import { Icons } from '../../../constants';
+import { Col, Row, Card, CardBody, CardTitle, CardSubtitle, CardImg, CardText, Modal, Container, Button, Alert } from "reactstrap";
 
+import firebase from "firebase/app";
+
+import { getData, setData } from '../../../store/actions';
+import { Icons } from '../../../constants';
 import defaultUserImg from '../../../assets/images/defaultUserImg.png';
 
 class Header extends Component {
@@ -15,9 +18,12 @@ class Header extends Component {
     this.state = {
       path: '',
       params: '',
-      user: ''
+      user: '',
+      users: [],
+      newMessage: '',
     };
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.isMount = false;
   }
 
   componentDidMount() {
@@ -29,22 +35,113 @@ class Header extends Component {
     });
 
     let user = this.props.auth.user;
-    if (!user){
-      user = JSON.parse(localStorage.getItem("authUser"))      
+    if (!user) {
+      user = JSON.parse(localStorage.getItem("authUser"))
     }
-    this.setState({user: user});    
+    this.setState({
+      user: user
+    });
+
+    this.props.getData('users');
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.users.length != this.props.data.users.length) {
+      this.setState({ users: this.props.data.users }, () => {
+        this.isMount = true;
+        const chatRef = firebase.database().ref('chat');
+        chatRef.on('value', this.messageHandler)
+      });
+    }
+  }
 
+  componentWillUnmount() {
+    this.isMount = false;
+    const chatRef = firebase.database().ref('chat');
+    chatRef.off('value', this.messageHandler);
+  }
 
   toggleMenu() {
     this.props.toggleMenuCallback();
   }
 
+  messageHandler = (snapshot) => {
+    if (!this.isMount) return;
+
+    const allChatsObj = snapshot.val();
+    let roomChatFeatureArrs = [];
+    for (let room in allChatsObj) {
+      var userIds = room.split("-");
+      let roomChatsObj = allChatsObj[room];
+      let roomLastChat = roomChatsObj[Object.keys(roomChatsObj)[Object.keys(roomChatsObj).length - 1]];
+      let roomChatCount = Object.keys(roomChatsObj).length;
+      if (userIds[0] == this.state.user.id) {
+        roomChatFeatureArrs.push({
+          chateeId: userIds[1],
+          count: roomChatCount,
+          lastChat: roomLastChat,
+        })
+      }
+      else if (userIds[1] == this.state.user.id) {
+        roomChatFeatureArrs.push({
+          chateeId: userIds[0],
+          count: roomChatCount,
+          lastChat: roomLastChat
+        })
+      }
+    }
+
+    let savedRoomChatFeatureArrsObj = localStorage.getItem('roomChatFeatureArrs');
+    if (savedRoomChatFeatureArrsObj) {
+      let savedRoomChatFeatureArrs = JSON.parse(savedRoomChatFeatureArrsObj);
+      if (roomChatFeatureArrs.length > savedRoomChatFeatureArrs.length) {
+        for (var i = 0; i < roomChatFeatureArrs.length; i++) {
+          var index = savedRoomChatFeatureArrs.findIndex(each => each.chateeId == roomChatFeatureArrs[i].chateeId);
+          var isNewChatRoom = index == - 1;
+          if (isNewChatRoom) {
+            var chatee = this.state.users.find(e => e.id == roomChatFeatureArrs[i].chateeId);
+            var newMessage = {
+              chatee: chatee,
+              message: roomChatFeatureArrs[i].lastChat.text
+            }
+            this.setState({ newMessage: newMessage })
+            setTimeout(() => {
+              if (this.isMount) {
+                this.setState({ newMessage: '' })
+              }
+            }, 5000)
+            break;
+          }
+        }
+      }
+      else if (roomChatFeatureArrs.length == savedRoomChatFeatureArrs.length) {
+        roomChatFeatureArrs.forEach((each, index) => {
+          if (each.count != savedRoomChatFeatureArrs[index].count) {
+            if (each.lastChat.user._id == each.chateeId) {
+              var chatee = this.state.users.find(e => e.id == each.chateeId);
+              var newMessage = {
+                chatee: chatee,
+                message: each.lastChat.text
+              }
+              this.setState({ newMessage: newMessage })
+              setTimeout(() => {
+                if (this.isMount) {
+                  this.setState({ newMessage: '' })
+                }
+              }, 5000)
+            }
+          }
+        })
+      }
+    }
+
+    localStorage.setItem("roomChatFeatureArrs", JSON.stringify(roomChatFeatureArrs));
+  }
+
   render() {
     let storeUser = this.props.auth.user;
     let role = storeUser && storeUser.role;
-    if(!role){
+    if (!role) {
       let storageUser = JSON.parse(localStorage.getItem("authUser"));
       role = storageUser && storageUser.role;
     }
@@ -54,7 +151,6 @@ class Header extends Component {
         <header id="page-topbar">
           <div className="navbar-header">
             <div className="d-flex">
-
               <div className="navbar-brand-box">
                 <div className="d-flex align-items-center ml-3">
                   <button type="button" onClick={this.toggleMenu} className="btn btn-sm font-size-16 header-item waves-effect" id="vertical-menu-btn">
@@ -67,7 +163,6 @@ class Header extends Component {
                     <span className="font-size-14 text-secondary">version 1.00</span>
                   </div>
                 </div>
-
               </div>
 
               {
@@ -202,8 +297,22 @@ class Header extends Component {
                   }
                 </div>
               }
-
             </div>
+
+            {
+              this.state.newMessage &&
+              <div className="d-flex justify-content-center align-items-center" style={{ position: 'fixed', width: '100vw', height: 70 }}>
+
+                <Alert color="danger" className="d-flex align-items-center" style={{ minWidth: 500, height: 60 }}>
+                  <CardImg src={this.state.newMessage.chatee.img ? this.state.newMessage.chatee.img : defaultUserImg} alt="No Image" className="profileImg ml-3 rounded-circle avatar-sm border border-white" style={{ width: 30, height: 30 }} />
+                    &nbsp;&nbsp;
+                    [{this.state.newMessage.chatee.name}]
+                    &nbsp;&nbsp;
+                    {this.state.newMessage.message}
+                </Alert>
+
+              </div>
+            }
           </div>
         </header>
 
@@ -219,5 +328,5 @@ const mapStatetoProps = state => {
 };
 
 export default connect(mapStatetoProps, {
-
+  getData
 })(withRouter(Header));

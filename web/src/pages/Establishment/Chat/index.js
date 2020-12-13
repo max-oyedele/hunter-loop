@@ -20,7 +20,7 @@ class Chat extends Component {
     super(props);
     this.state = {
       users: [],
-      roomChats: [],
+      roomLastChats: [],
 
       user: {},
       chatee: {},
@@ -29,6 +29,7 @@ class Chat extends Component {
 
       message: '',
     }
+    this.isMount = false;
   }
 
   componentDidMount() {
@@ -42,40 +43,50 @@ class Chat extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.users.length != this.props.data.users.length){
-      this.setState({users: this.props.data.users});
-      this.getRoomChats();
+    if (prevState.users.length != this.props.data.users.length) {
+      this.setState({ users: this.props.data.users }, () => {
+        this.isMount = true;
+        const chatRef = firebase.database().ref('chat');
+        chatRef.on('value', this.roomLastChatHandler)
+      });
     }
   }
 
-  getRoomChats = () => {
+  componentWillUnmount() {
+    this.isMount = false;
     const chatRef = firebase.database().ref('chat');
-    chatRef.on('value', snapshot => {
-      const allChatsObj = snapshot.val();
-      let roomChats = [];
-      for (let room in allChatsObj) {
-        var userIds = room.split("-");
-        let roomChatsObj = allChatsObj[room];
-        let roomLastChat = roomChatsObj[Object.keys(roomChatsObj)[Object.keys(roomChatsObj).length - 1]];
-        if(userIds[0] == this.state.user.id){
-          roomChats.push({
-            chateeId: userIds[1],
-            lastChat: roomLastChat
-          })
-        } 
-        else if(userIds[1] == this.state.user.id){
-          roomChats.push({
-            chateeId: userIds[0],
-            lastChat: roomLastChat
-          })
-        }
+    chatRef.on('value', this.roomLastChatHandler)
+  }
+
+  roomLastChatHandler = (snapshot) => {
+    if (!this.isMount) return;
+
+    const allChatsObj = snapshot.val();
+    let roomLastChats = [];
+    for (let room in allChatsObj) {
+      var userIds = room.split("-");
+      let roomChatsObj = allChatsObj[room];
+      let roomLastChat = roomChatsObj[Object.keys(roomChatsObj)[Object.keys(roomChatsObj).length - 1]];
+      if (userIds[0] == this.state.user.id) {
+        roomLastChats.push({
+          chateeId: userIds[1],
+          lastChat: roomLastChat
+        })
       }
-      
-      this.setState({roomChats});
-    })
+      else if (userIds[1] == this.state.user.id) {
+        roomLastChats.push({
+          chateeId: userIds[0],
+          lastChat: roomLastChat
+        })
+      }
+    }
+
+    this.setState({ roomLastChats });
   }
 
   chatOpen = (chatee) => {
+    if (!this.isMount) return;
+
     var chatID = this.state.user.id < chatee.id ? this.state.user.id + '-' + chatee.id : chatee.id + '-' + this.state.user.id;
 
     const chatRef = firebase.database().ref('chat/' + chatID);
@@ -87,7 +98,7 @@ class Chat extends Component {
       for (let key in chatsObj) {
         chats.push(chatsObj[key]);
       }
-      this.setState({ 
+      this.setState({
         chats: chats,
         chatee: chatee
       }, () => {
@@ -103,8 +114,8 @@ class Chat extends Component {
     }
 
     if (this.state.message !== '') {
-      const chat = {    
-        _id: new Date().getTime(),    
+      const chat = {
+        _id: new Date().getTime(),
         text: this.state.message,
         user: {
           _id: this.state.user.id,
@@ -135,8 +146,9 @@ class Chat extends Component {
                     <ul className="list-unstyled chat-list">
                       <PerfectScrollbar style={{ height: "410px" }} >
                         {
-                          this.state.roomChats && this.state.roomChats.map((each, index) => {
-                            const chatee = this.state.users.find(e=>e.id == each.chateeId);
+                          this.state.roomLastChats && this.state.roomLastChats.map((each, index) => {
+                            const chatee = this.state.users.find(e => e.id == each.chateeId);
+                            if (!chatee) return null;
                             return (
                               <li key={index} className={chatee.isActive ? "active" : ""}>
                                 <Link to="#" onClick={() => { this.chatOpen(chatee) }}>

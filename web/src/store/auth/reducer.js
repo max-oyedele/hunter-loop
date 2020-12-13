@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGIN_SUCCESS, LOGOUT_USER, LOGOUT_USER_SUCCESS, API_ERROR } from './actionTypes';
+import { LOGIN_USER, LOGIN_USER_SUCCESS, LOGOUT_USER, LOGOUT_USER_SUCCESS, API_ERROR } from './actionTypes';
 
 const initialState = {
   loading: false,
@@ -15,7 +15,7 @@ const login = (state = initialState, action) => {
       }
       break;
 
-    case LOGIN_SUCCESS:
+    case LOGIN_USER_SUCCESS:
       state = {
         ...state,
         user: action.payload,
