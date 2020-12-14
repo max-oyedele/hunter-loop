@@ -84,9 +84,9 @@ class Profile extends Component {
         bRating += each.bRating;
       })
       // console.log(bReviews)
-      // console.log('brating', bRating)
-      bRating += review.bRating
-      bRating = bRating / 2;
+      
+      bRating += review.bRating;
+      bRating = bRating / (bReviews.length + 1);
       // console.log('brating updated', bRating)
 
       var { business } = this.state;
@@ -100,9 +100,9 @@ class Profile extends Component {
       var sRating = 0;
       sReviews.forEach(each => {
         sRating += each.sRating;
-      })
-      sRating += review.sRating
-      sRating = sRating / 2;
+      })      
+      sRating += review.sRating;
+      sRating = sRating / (sReviews.length + 1);
 
       var service = this.props.data.services.find(each => each.id == review.sid);
       service.rating = sRating;

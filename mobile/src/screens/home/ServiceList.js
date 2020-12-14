@@ -29,7 +29,7 @@ import { Colors, Images, Constants } from '@constants';
 import ServiceItem from '../../components/ServiceItem';
 import ReviewModal from '../../components/ReviewModal';
 
-import { setData } from '../../service/firebase';
+import { setData, checkInternet } from '../../service/firebase';
 
 export default function ServiceListScreen({ navigation, route }) {
   const businessItem = route.params.businessItem;
@@ -51,9 +51,16 @@ export default function ServiceListScreen({ navigation, route }) {
     setReviewModal(!reviewModal)
   }
 
-  confirmReviewBusiness = (rating, review) => {
+  confirmReviewBusiness = async (rating, review) => {
     setReviewModal(!reviewModal);
     setSpinner(true);
+
+    var isConnected = await checkInternet();
+    if (!isConnected) {
+      Alert.alert('Please connect to network.');
+      setSpinner(false);
+      return;
+    }
 
     //check already, update or add
     var index = Constants.reviews.findIndex(each => each.uid == Constants.user?.id && each.bid == businessItem.id);
@@ -141,7 +148,11 @@ export default function ServiceListScreen({ navigation, route }) {
       />
       <View style={styles.header}>
         <View style={styles.iconBackContainer}>
-          <TouchableOpacity onPress={() => { Constants.refreshFlag = true; navigation.goBack(null) }}>
+          <TouchableOpacity onPress={() => { 
+            Constants.refreshFlag = true; 
+            if(Constants.backRoute == 'Profile') navigation.navigate('Profile');
+            else navigation.goBack(null);
+          }}>
             <EntypoIcon name="chevron-thin-left" style={styles.headerIcon}></EntypoIcon>
           </TouchableOpacity>
         </View>

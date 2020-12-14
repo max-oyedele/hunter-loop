@@ -82,10 +82,15 @@ export default function ServiceItem({ item, onPress, onRefresh, showAlert }) {
           </TouchableOpacity>
         </View>
         <View style={styles.imgLine}>
-          <Image style={styles.img} source={{ uri: item.img }} />
+          <Image style={styles.img} source={item.img ? { uri: item.img } : Images.noImg} />
         </View>
         <View style={styles.priceLine}>
-          <Text style={styles.priceTxt}>${item.price}</Text>
+          {
+            item.isContactPrice ?
+              <Text style={styles.daysHuntersTxt}>Contact guide for package price</Text>
+              :
+              <Text style={styles.priceTxt}>${item.price}</Text>
+          }
           <Text style={styles.daysHuntersTxt}>{item.days} {item.days < 2 ? 'Day' : 'Days'}, {item.hunters} {item.hunters < 2 ? 'Hunter' : 'Hunters'}</Text>
         </View>
         <View style={styles.descLine}>

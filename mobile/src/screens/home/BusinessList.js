@@ -43,17 +43,6 @@ export default function BusinessListScreen({ navigation }) {
   const [categories, setCategories] = useState(Constants.categories);
   const [activeCategories, setActiveCategories] = useState([]);
 
-  useEffect(() => {
-    // var cates = [...categories];
-    // var all = {
-    //   id: 1,
-    //   kind: 'all',
-    //   name: 'All'
-    // };
-    // cates.unshift(all);
-    // setCategories(cates);
-  }, [])
-
   // useEffect(()=>{
   //   const onBackPress = () => {      
   //     return true;
@@ -89,6 +78,7 @@ export default function BusinessListScreen({ navigation }) {
   }
 
   onBusinessItem = (item) => {
+    Constants.backRoute = 'Home';
     navigation.navigate('ServiceList', { businessItem: item })
   }
 

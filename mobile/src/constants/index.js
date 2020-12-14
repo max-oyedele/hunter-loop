@@ -17,5 +17,6 @@ export const Constants = {
     latitude: '',
     longitude: ''
   },
-  refreshFlag: false
+  refreshFlag: false,
+  backRoute: ''
 }

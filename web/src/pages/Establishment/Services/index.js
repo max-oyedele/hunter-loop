@@ -6,20 +6,22 @@ import { connect } from "react-redux";
 
 import StarRatings from 'react-star-ratings';
 
-import { getData } from '../../../store/actions';
+import { getData, setData } from '../../../store/actions';
 
 import { Icons } from '../../../constants';
 
-import ServiceItem from './components/ServiceItem';
-import ServiceForm from './ServiceForm';
+import ServiceViewModal from "./components/ServiceViewModal";
 
 class Services extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapseForHuntersGuide: true,
       business: '',
       services: [],
+      categories: [],
+      categoryCollapses: [],
+      previewModal: false,
+      previewService: ''
     }
   }
 
@@ -39,22 +41,63 @@ class Services extends Component {
     if (prevState.business != business) {
       this.setState({ business: business })
     }
-    if(!business) return;
+    if (!business) return;
 
-    let services = this.props.data.services.filter((each) => each.bid == business.id);    
+    let services = this.props.data.services.filter((each) => each.bid == business.id);
     if (prevState.services.length != services.length) {//mounting, refreshing 
       this.setState({
         business: business,
         services: services
       })
     }
-    if(prevProps.data.success != this.props.data.success){//return after adding, deleting or edit
+
+    var categories = this.props.data.categories;
+    if (prevState.categories.length != categories.length) {
+      this.setState({ categories: categories });
+
+      var categoryCollapses = [];
+      categories.forEach((each, index) => {
+        var item = {
+          id: each.id,
+          collapse: true
+        }
+        categoryCollapses.push(item);
+      })
+      this.setState({ categoryCollapses: categoryCollapses });
+    }
+
+    if (prevProps.data.success != this.props.data.success && this.props.data.success) {//return after adding, deleting or edit
       this.props.getData('services');
     }
   }
 
-  toggleHuntersGuide = () => {
-    // this.setState({ collapseForHuntersGuide: !this.state.collapseForHuntersGuide });
+  toggleCollapse = (category) => {
+    var { categoryCollapses } = this.state;
+    var collapseItem = categoryCollapses.find(each => each.id == category.id);
+    collapseItem.collapse = !collapseItem.collapse;
+
+    var collapseItemIndex = categoryCollapses.findIndex(each => each.id == category.id);
+    categoryCollapses.splice(collapseItemIndex, 1, collapseItem);
+    this.setState({ categoryCollapses: categoryCollapses });
+  }
+
+  togglePreviewModal = () => {
+    this.setState({ previewModal: !this.state.previewModal });
+  }
+
+  onIcon = (icon, service) => {
+    if (icon === 'eye') {
+      this.setState({previewService: service});
+      this.togglePreviewModal();
+    }
+    else if (icon === 'edit') {
+      this.props.history.push('/services/edit', { serviceId: service.id })
+    }
+    else if (icon === 'delete') {
+      var { services } = this.props.data;
+      services.splice(services.findIndex(each => each.id == service.id), 1);
+      this.props.setData('services', 'delete', services, service);
+    }
   }
 
   renderLoading = () => {
@@ -116,27 +159,74 @@ class Services extends Component {
               </Col>
 
               <Col className="col-8 px-0" style={{ backgroundColor: '#ffffff' }}>
-                <CardHeader id="headingOne" className="pb-0" onClick={this.toggleHuntersGuide} style={{ backgroundColor: '#ffffff', cursor: 'pointer' }}>
+                {/* <CardHeader id="headingOne" className="pb-0" onClick={this.toggleHuntersGuide} style={{ backgroundColor: '#ffffff', cursor: 'pointer' }}>
                   <CardTitle>Hunters Guide</CardTitle>
                   <hr className="my-1" />
-                </CardHeader>
+                </CardHeader> */}
 
-                <Collapse isOpen={this.state.collapseForHuntersGuide}>
-                  <CardBody className="py-0">
-                    {
-                      this.state.services && this.state.services.map((each, index) => {                        
-                        return (
-                          <div key={index}>
-                            <ServiceItem collapse={index == 0 ? true : false} service={each} />
-                            <hr className="my-2" />
-                          </div>
-                        )
-                      })
-                    }
-                  </CardBody>
-                </Collapse>
+                {
+                  this.state.categories.map((each, index) => {
+                    let collapseItem = this.state.categoryCollapses.find(e => e.id == each.id);
+                    let isOpen = collapseItem?.collapse;
+                    let categoryServices = this.state.services.filter(e => e.cid == each.id);
+                    let serviceCount = categoryServices.length;
+                    if (serviceCount == 0) return;
+
+                    return (
+                      <div key={index}>
+                        <CardTitle className="text-secondary px-3 py-3" onClick={() => this.toggleCollapse(each)} style={{ cursor: "pointer" }}>
+                          {
+                            isOpen ?
+                              <i className={`${Icons.arrowDown} font-size-16 mr-2`}></i>
+                              :
+                              <i className={`${Icons.arrowRight} font-size-16 mr-2`}></i>
+                          }
+                          {each.name.toUpperCase()} ({serviceCount})
+                        </CardTitle>
+                        <Collapse isOpen={isOpen}>
+                          <Row id="table-header" className="px-4 mt-2 mb-1">
+                            <Col className="col-2 font-size-11"><i><b>Title</b></i></Col>
+                            <Col className="col-5 font-size-11"><i><b>DESCRIPTION</b></i></Col>
+                            <Col className="col-3 font-size-11"><i><b>HUNTING SEASON</b></i></Col>
+                            <Col className="col-1 font-size-11"><i><b>DETAILS</b></i></Col>
+                            <Col className="col-1 font-size-11"><i><b>ACTIONS</b></i></Col>
+                          </Row>
+                          {
+                            this.state.services && this.state.services.map((eachService, index) => {
+                              if (eachService.cid != each.id) return null;
+                              return (
+                                <div key={index} className="px-4">
+                                  <Row id="table-body" className="text-secondary">
+                                    <Col className="col-2">{eachService.name}</Col>
+                                    <Col className="col-5">{eachService.about}</Col>
+                                    <Col className="col-3">{eachService.season.from} - {eachService.season.to}</Col>
+                                    <Col className="col-1">
+                                      <div className="d-flex align-items-center">
+                                        <i className={`${Icons.profile} mr-1`}></i>
+                                        <span>{eachService.hunters}</span>
+                                        <i className={`${Icons.calendar} ml-3 mr-1`}></i>
+                                        <span>{eachService.days}</span>
+                                      </div>
+                                    </Col>
+                                    <Col className="col-1 px-2 d-flex justify-content-between align-items-center">
+                                      <i className={`${Icons.eye} font-size-14 mr-1`} style={{ cursor: "pointer" }} onClick={() => this.onIcon('eye', eachService)}></i>
+                                      <i className={`${Icons.pencil} font-size-14 mr-1`} style={{ cursor: "pointer" }} onClick={() => this.onIcon('edit', eachService)}></i>
+                                      <i className={`${Icons.trash} font-size-14 text-danger`} style={{ cursor: "pointer" }} onClick={() => this.onIcon('delete', eachService)}></i>
+                                    </Col>
+                                  </Row>
+                                  <hr className="my-2" />                                  
+                                </div>
+                              )
+                            })
+                          }
+                        </Collapse>
+                      </div>
+                    )
+                  })
+                }
               </Col>
             </Row>
+            <ServiceViewModal isOpen={this.state.previewModal} toggle={this.togglePreviewModal} service={this.state.previewService} />
           </Container>
         </div>
       </React.Fragment>
@@ -151,6 +241,6 @@ const mapStatetoProps = state => {
 };
 
 export default connect(mapStatetoProps, {
-  getData
+  getData, setData
 })(withRouter(Services));
 

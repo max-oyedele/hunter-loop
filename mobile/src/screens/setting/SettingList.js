@@ -359,6 +359,7 @@ var serviceItem = {
   days: '',
   hunters: '',
   price: '',
+  isContactPrice: false,
   rating: '',
   season: {
     from: '',

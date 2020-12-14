@@ -76,6 +76,7 @@ export default function ProfileScreen({ navigation }) {
       navigation.navigate('Home', { screen: 'ServiceDetail', params: { serviceItem: item } })
     }
     else {//business
+      Constants.backRoute = 'Profile';
       navigation.navigate('Home', { screen: 'ServiceList', params: { businessItem: item } })
     }
   }

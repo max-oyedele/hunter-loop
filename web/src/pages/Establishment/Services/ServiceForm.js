@@ -27,9 +27,10 @@ class ServiceForm extends Component {
         address: '',
         about: '',
         guide: '',
-        days: '',
-        hunters: '',
+        days: '1',
+        hunters: '1',
         price: '',
+        isContactPrice: false,
         rating: 0,
         season: {
           from: '',
@@ -75,9 +76,9 @@ class ServiceForm extends Component {
       }
     }
 
-    var categories = this.props.data.categories; 
+    var categories = this.props.data.categories;
     if (prevState.categories.length != categories.length) {
-      this.setState({ categories: categories });      
+      this.setState({ categories: categories });
     }
 
     /////////////////
@@ -108,8 +109,9 @@ class ServiceForm extends Component {
 
   onChangeField = (e, field) => {
     var { service } = this.state;
-    service[field] = e.target.value;
-    this.setState({ service: service });
+    if(field == 'isContactPrice') service[field] = e.target.checked;
+    else service[field] = e.target.value;
+    this.setState({ service: service });    
   }
 
   onChangeSeason = (e, field) => {
@@ -123,13 +125,6 @@ class ServiceForm extends Component {
   }
 
   onPublish = () => {
-    if(!this.state.service.cid){
-      this.setState({
-        errorAlert: true,
-        errorAlertTxt: "Please enter hunt category!"
-      })
-      return;
-    }
     if (!this.state.service.name) {
       this.setState({
         errorAlert: true,
@@ -137,33 +132,20 @@ class ServiceForm extends Component {
       })
       return;
     }
-    if(!this.state.service.days){
-      this.setState({
-        errorAlert: true,
-        errorAlertTxt: "Please enter hunt duration!"
-      })
-      return;
-    }
-    if(!this.state.service.hunters){
-      this.setState({
-        errorAlert: true,
-        errorAlertTxt: "Please enter hunt per package!"
-      })
-      return;
-    }
-    
+
     var { services } = this.props.data;
     if (this.state.method === 'add') {
       var service = { ...this.state.service };
       var bid = JSON.parse(localStorage.getItem("authUser")).bid;
       service.bid = bid;
-      if(!service.cid) service.cid = this.state.categories[0].id;
-      
+
+      if (!service.cid) service.cid = this.state.categories[0].id;
+
       services.push(this.state.service);
       this.props.setData('services', 'add', services, service);
     }
     else if (this.state.method === 'edit') {
-      services.splice(services.findIndex(each => each.id == this.state.service.id), 1, this.state.service);      
+      services.splice(services.findIndex(each => each.id == this.state.service.id), 1, this.state.service);
       this.props.setData('services', 'update', services, this.state.service);
     }
   }
@@ -189,7 +171,11 @@ class ServiceForm extends Component {
             {this.state.successAlert &&
               <SweetAlert
                 title={this.state.successAlertTxt}
-                onConfirm={() => this.setState({ successAlert: false })}
+                onConfirm={() => {
+                  this.setState({ successAlert: false }, () => {
+                    this.props.history.push('/services');
+                  })
+                }}
               ></SweetAlert>
             }
             {this.state.errorAlert &&
@@ -232,46 +218,46 @@ class ServiceForm extends Component {
                     <Card>
                       <CardBody>
                         <div className="form-group row">
-                          <label className="col-md-3 col-form-label">Hunt Category<span className="text-danger">*</span></label>
-                          <div className="col-md-9">
-                            <select className="form-control" onChange={(e) => this.onChangeField(e, 'cid')}>
+                          <label className="col-3 col-form-label">Hunt Category<span className="text-danger">*</span></label>
+                          <div className="col-9">
+                            <select className="form-control" value={this.state.service.cid} onChange={(e) => this.onChangeField(e, 'cid')}>
                               {
                                 this.state.categories.map((each, index) => (
-                                  <option key={index} value={each.id} defaultValue={this.state.service.cid}>{each.name.toUpperCase()}</option>
+                                  <option key={index} value={each.id}>{each.name.toUpperCase()}</option>
                                 ))
-                              }                              
+                              }
                             </select>
-                          </div>                          
+                          </div>
                         </div>
                         <div className="form-group row">
-                          <label htmlFor="example-text-input" className="col-md-3 col-form-label">Hunt Title<span className="text-danger">*</span></label>
-                          <div className="col-md-9">
+                          <label htmlFor="example-text-input" className="col-3 col-form-label">Hunt Title<span className="text-danger">*</span></label>
+                          <div className="col-9">
                             <input className="form-control" type="text" defaultValue={`${this.state.service.name}`} onChange={(e) => this.onChangeField(e, 'name')} />
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label htmlFor="example-text-input" className="col-md-3 col-form-label">Address</label>
-                          <div className="col-md-9">
+                          <label htmlFor="example-text-input" className="col-3 col-form-label">Address</label>
+                          <div className="col-9">
                             <input className="form-control" type="text" defaultValue={`${this.state.service.address}`} onChange={(e) => this.onChangeField(e, 'address')} />
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label className="col-md-3 col-form-label">About the hunt</label>
-                          <div className="col-md-9">
+                          <label className="col-3 col-form-label">About the hunt</label>
+                          <div className="col-9">
                             {/* <RichTextEditor value={this.state.aboutTxt} onChange={(value) => this.onChangeEditor(value, 'about')} placeholder='Please write here...' /> */}
                             <textarea className="form-control" id="about" rows="6" defaultValue={this.state.service.aboutTxt} onChange={(e) => this.onChangeField(e, 'about')}></textarea>
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label className="col-md-3 col-form-label">Hunting Guidelines</label>
-                          <div className="col-md-9">
+                          <label className="col-3 col-form-label">Hunting Guidelines</label>
+                          <div className="col-9">
                             {/* <RichTextEditor value={this.state.guideTxt} onChange={(value) => this.onChangeEditor(value, 'guide')} placeholder="Please write here..." /> */}
                             <textarea className="form-control" id="guide" rows="6" defaultValue={this.state.service.guideTxt} onChange={(e) => this.onChangeField(e, 'guide')}></textarea>
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label className="col-md-3 col-form-label">Hunt Duration (day/s)<span className="text-danger">*</span></label>
-                          <div className="col-md-9">
+                          <label className="col-3 col-form-label">Hunt Duration (day/s)<span className="text-danger">*</span></label>
+                          <div className="col-9">
                             <select className="form-control" value={this.state.service.days} onChange={(e) => this.onChangeField(e, 'days')}>
                               <option value="1">1</option>
                               <option value="2">2</option>
@@ -284,8 +270,8 @@ class ServiceForm extends Component {
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label className="col-md-3 col-form-label">Hunt per package<span className="text-danger">*</span></label>
-                          <div className="col-md-9">
+                          <label className="col-3 col-form-label">Hunt per package<span className="text-danger">*</span></label>
+                          <div className="col-9">
                             <select className="form-control" value={this.state.service.hunters} onChange={(e) => this.onChangeField(e, 'hunters')}>
                               <option value="1">1</option>
                               <option value="2">2</option>
@@ -301,18 +287,25 @@ class ServiceForm extends Component {
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label htmlFor="example-text-input" className="col-md-3 col-form-label">Package Price</label>
-                          <div className="col-md-9">
-                            <input className="form-control" type="text" defaultValue={this.state.service.price} placeholder="$" onChange={(e) => this.onChangeField(e, 'price')} />
+                          <label htmlFor="example-text-input" className="col-3 col-form-label">Package Price ($)</label>
+                          <div className="col-9">
+                            <input className="form-control" type="text" defaultValue={this.state.service.price} placeholder="" onChange={(e) => this.onChangeField(e, 'price')} />
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label htmlFor="example-date-input" className="col-md-3 col-form-label">Hunting Season</label>
-                          <div className="col-md-9 d-flex px-0">
-                            <div className="col-md-6">
+                          <label className="col-3 col-form-label"></label>
+                          <div className="col-9 d-flex">
+                            <input id="contactPrice" className="form-control" type="checkbox" style={{ width: 18, height: 18 }} checked={this.state.service.isContactPrice} onChange={(e)=>this.onChangeField(e, 'isContactPrice')} />
+                            <label className="ml-2" htmlFor="contactPrice">Contact guide for package price</label>
+                          </div>
+                        </div>
+                        <div className="form-group row">
+                          <label htmlFor="example-date-input" className="col-3 col-form-label">Hunting Season</label>
+                          <div className="col-9 d-flex px-0">
+                            <div className="col-6">
                               <input className="form-control" type="date" defaultValue={this.state.service.season.from} id="season-from" onChange={(e) => this.onChangeSeason(e, 'from')} />
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-6">
                               <input className="form-control" type="date" defaultValue={this.state.service.season.to} id="season-to" onChange={(e) => this.onChangeSeason(e, 'to')} />
                             </div>
                           </div>
@@ -324,8 +317,8 @@ class ServiceForm extends Component {
                     <Card>
                       <CardBody>
                         <div className="form-group row">
-                          <label htmlFor="example-text-input" className="col-md-3 col-form-label">Service Image</label>
-                          <div className="col-md-9">
+                          <label htmlFor="example-text-input" className="col-3 col-form-label">Service Image</label>
+                          <div className="col-9">
                             {
                               this.state.service.img &&
                               <CardImg className="img-fluid" src={this.state.service.img} alt="No Image" />
@@ -338,13 +331,13 @@ class ServiceForm extends Component {
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label htmlFor="example-text-input" className="col-md-3 col-form-label">Detail Images</label>
-                          <div className="col-md-9 d-flex">
+                          <label htmlFor="example-text-input" className="col-3 col-form-label">Detail Images</label>
+                          <div className="col-9 d-flex">
                             {
                               [0, 1, 2, 3].map((each, index) => {
                                 var src = this.state.service.detailImgs && this.state.service.detailImgs.length > 0 && this.state.service.detailImgs[each] ? this.state.service.detailImgs[each] : Logo;
                                 return (
-                                  <div key={index} className="col-md-3 d-flex flex-column justify-content-between" style={{ minHeight: 120, maxHeight: 120 }}>
+                                  <div key={index} className="col-3 d-flex flex-column justify-content-between" style={{ minHeight: 120, maxHeight: 120 }}>
                                     <CardImg className="img-fluid" src={src} alt="No Image" style={{ width: '100%', height: 90 }} />
                                     <ImageUploader folder='details' setImageUrl={(url) => {
                                       var service = { ...this.state.service };
@@ -358,8 +351,8 @@ class ServiceForm extends Component {
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label htmlFor="example-text-input" className="col-md-3 col-form-label">Terms and Conditions</label>
-                          <div className="col-md-9">
+                          <label htmlFor="example-text-input" className="col-3 col-form-label">Terms and Conditions</label>
+                          <div className="col-9">
                             <textarea className="form-control" id="information" rows="6" defaultValue={this.state.service.terms} onChange={(e) => this.onChangeField(e, 'terms')}></textarea>
                           </div>
                         </div>

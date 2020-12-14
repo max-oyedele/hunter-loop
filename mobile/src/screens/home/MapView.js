@@ -139,6 +139,7 @@ export default function MapViewScreen({ navigation }) {
                   identifier={each.id}
                   image={Images.marker}
                   onCalloutPress={() => {
+                    Constants.backRoute = 'Home';
                     navigation.navigate('Home', { screen: 'ServiceList', params: { businessItem: each } })
                   }}
                   style={{ width: 30, height: 30 }}

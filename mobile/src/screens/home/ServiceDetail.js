@@ -225,7 +225,7 @@ export default function ServiceDetailScreen({ navigation, route }) {
               reviews.map((each, index) => (
                 <View key={index}>
                   <View style={styles.topLine}>
-                    <Image style={styles.reviewerImg} source={{ uri: each.userImg }} />
+                    <Image style={styles.reviewerImg} source={each.userImg ? { uri: each.userImg } : Images.profileImg} />
                     <View style={styles.nameAndRatingPart}>
                       <Text style={styles.reviewerName}>{each.userName}</Text>
                       <View style={styles.ratingPart}>
@@ -380,8 +380,9 @@ export default function ServiceDetailScreen({ navigation, route }) {
             <View style={styles.collapseHeader}>
               <Text style={styles.labelTxt}>Hunter Guide</Text>
             </View>
-            <View style={styles.collapseContent}>
+            <View style={[styles.collapseContent, {alignItems: 'center'}]}>
               <Image style={styles.hunterImg} source={hunter?.img ? { uri: hunter.img } : Images.profileImg} />
+              <Text style={styles.labelTxt}>{hunter?.name ? hunter.name : ''}</Text>  
             </View>
             <Text style={styles.hunterDesc}>{serviceItem.hunterDesc}</Text>
             {
@@ -608,8 +609,8 @@ const styles = StyleSheet.create({
   },
 
   hunterImg: {
-    width: normalize(100),
-    height: normalize(100),
+    width: normalize(80),
+    height: normalize(80),
     borderRadius: normalize(50),
     alignSelf: 'center',
   },
