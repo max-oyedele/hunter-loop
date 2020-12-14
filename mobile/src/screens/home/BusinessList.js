@@ -41,31 +41,17 @@ export default function BusinessListScreen({ navigation }) {
 
   const [categorySearch, setCategorySearch] = useState(false);
   const [categories, setCategories] = useState(Constants.categories);
-  const [activeCategory, setActiveCategory] = useState();
+  const [activeCategories, setActiveCategories] = useState([]);
 
   useEffect(() => {
-    var cates = [...categories];
-
-    // var allHunting = {
-    //   id: 0,
-    //   kind: 'hunting',
-    //   name: 'All hunting'
-    // };
-    // var allFishing = {
+    // var cates = [...categories];
+    // var all = {
     //   id: 1,
-    //   kind: 'fishing',
-    //   name: 'All fishing'
+    //   kind: 'all',
+    //   name: 'All'
     // };
-    var all = {
-      id: 1,
-      kind: 'all',
-      name: 'All'
-    };
-
-    // cates.unshift(allFishing);    
-    // cates.unshift(allHunting);
-    cates.unshift(all);
-    setCategories(cates);
+    // cates.unshift(all);
+    // setCategories(cates);
   }, [])
 
   // useEffect(()=>{
@@ -92,7 +78,6 @@ export default function BusinessListScreen({ navigation }) {
     await getData('business')
       .then((res) => {
         if (res) {
-          // setBusiness(res)
           Constants.business = res;
         }
       })
@@ -109,62 +94,43 @@ export default function BusinessListScreen({ navigation }) {
 
   /////////////////////
   onCategorySearch = (category) => {
-    if (category.name == 'All hunting') {
-      var bids = [];
-      var huntingCategories = Constants.categories.filter(e => e.kind == 'hunting');
-      var huntingCategoryIds = [];
-      huntingCategories.forEach(each => {
-        huntingCategoryIds.push(each.id);
-      })
-      services.forEach(each => {
-        if (huntingCategoryIds.includes(each.cid)) {
-          bids.push(each.bid)
-        }
-      });
-      var filteredBusiness = Constants.business.filter(each => bids.includes(each.id) && each.status === 'approved');
-      setBusiness(filteredBusiness);
-    }
-    else if (category.name == 'All fishing') {
-      var bids = [];
-      var fishingCategories = Constants.categories.filter(e => e.kind == 'fishing');
-      var fishingCategoryIds = [];
-      fishingCategories.forEach(each => {
-        fishingCategoryIds.push(each.id);
-      })
-      services.forEach(each => {
-        if (fishingCategoryIds.includes(each.cid)) {
-          bids.push(each.bid)
-        }
-      });
-      var filteredBusiness = Constants.business.filter(each => bids.includes(each.id) && each.status === 'approved');
-      setBusiness(filteredBusiness);
+    var aCategories = [...activeCategories];
+    var index = aCategories.findIndex(each => each.id == category.id);
+    if (index == -1) {
+      aCategories.push(category)
     }
     else {
-      var filtered = getBusinessByCategory(category);      
-      filtered = getBusinessByDistance(filtered, distance);
-      filtered = getBusinessByKeyword(filtered, keyword);
-      setBusiness(filtered);
+      aCategories.splice(index, 1);
+    }
+    setActiveCategories(aCategories);
+  }
+  useEffect(() => {
+    var filtered = getBusinessByCategory();
+    filtered = getBusinessByDistance(filtered, distance);
+    filtered = getBusinessByKeyword(filtered, keyword);
+    setBusiness(filtered);
+  }, [activeCategories]);
+  getBusinessByCategory = () => {
+    if (!categorySearch) {
+      var result = Constants.business.filter(each => each.status === 'approved');
+      return result;
     }
 
-    setActiveCategory(category);
+    var bids = [];
+    services.forEach(each => {
+      if (activeCategories?.findIndex(e => e.id == each.cid) > -1) {
+        bids.push(each.bid);
+      }
+    });
+
+    var filtered = Constants.business.filter(each => bids.includes(each.id) && each.status === 'approved');
+    console.log('activeCategories', activeCategories);
+    console.log('filtered', filtered.length);
+    return filtered;
   }
-  getBusinessByCategory = (category) => {
-    if (!categorySearch || !category || category?.name == 'All') return Constants.business.filter(each => each.status === 'approved');
-    else {
-      var bids = [];
-      services.forEach(each => {
-        if (each.cid == category.id) {
-          bids.push(each.bid);
-        }
-      });
-      
-      var filtered = Constants.business.filter(each => bids.includes(each.id) && each.status === 'approved');
-      return filtered;
-    }
-  }  
   ///////////////////
   onDistanceSearch = (distanceValue) => {
-    var filtered = getBusinessByCategory(activeCategory);
+    var filtered = getBusinessByCategory();
     filtered = getBusinessByDistance(filtered, distanceValue);
     filtered = getBusinessByKeyword(filtered, keyword);
     setBusiness(filtered);
@@ -185,48 +151,46 @@ export default function BusinessListScreen({ navigation }) {
     }
   }
   getBusinessByDistance = (result, distance) => {
-    if(!distanceSearch) return result;
+    if (!distanceSearch) return result;
     var filtered = result.filter(each => getDistanceMile(each) < distance && each.status === 'approved');
     return filtered;
   }
   ///////////////////
-  function onSearch(text){
-    var filtered = getBusinessByCategory(activeCategory);
+  function onSearch(text) {
+    var filtered = getBusinessByCategory();
     filtered = getBusinessByDistance(filtered, distance);
     filtered = getBusinessByKeyword(filtered, text);
     setBusiness(filtered);
     setKeyword(text);
   }
   getBusinessByKeyword = (result, text) => {
-    if(!text) return result;
+    if (!text) return result;
     var filtered = result.filter(each => (each.name?.toLowerCase().includes(text.toLowerCase()) || each.address?.toLowerCase().includes(text.toLowerCase())) && each.status === 'approved');
     return filtered;
   }
-  
+
   useEffect(() => {
     if (distanceSearch && categorySearch) {
-      var filtered = getBusinessByCategory(activeCategory);
+      var filtered = getBusinessByCategory();
       filtered = getBusinessByDistance(filtered, distance);
       filtered = getBusinessByKeyword(filtered, keyword);
       setBusiness(filtered);
     }
-    else if(distanceSearch && !categorySearch){
-      var filtered = getBusinessByCategory(null);
-      filtered = getBusinessByDistance(filtered, distance);
+    else if (distanceSearch && !categorySearch) {
+      filtered = getBusinessByDistance(Constants.business.filter(each => each.status === 'approved'), distance);
       filtered = getBusinessByKeyword(filtered, keyword);
       setBusiness(filtered);
-      setActiveCategory(null);
+      setActiveCategories([]);
     }
-    else if(!distanceSearch && categorySearch){
-      var filtered = getBusinessByCategory(activeCategory);      
+    else if (!distanceSearch && categorySearch) {
+      var filtered = getBusinessByCategory();
       filtered = getBusinessByKeyword(filtered, keyword);
       setBusiness(filtered);
     }
-    else if(!distanceSearch && !categorySearch){      
+    else if (!distanceSearch && !categorySearch) {
       setBusiness(Constants.business.filter(each => each.status === 'approved'));
-      setActiveCategory(null);
+      setActiveCategories([]);
     }
-    
   }, [distanceSearch, categorySearch]);
 
   onRefresh = () => {
@@ -338,7 +302,7 @@ export default function BusinessListScreen({ navigation }) {
             {
               categories.map((each, index) => {
                 return (
-                  <TouchableOpacity key={index} style={[styles.categorySearchBtn, each.name == activeCategory?.name ? { borderColor: Colors.yellowToneColor } : null]} onPress={() => onCategorySearch(each)}>
+                  <TouchableOpacity key={index} style={[styles.categorySearchBtn, activeCategories?.findIndex(e => e.name == each.name) > -1 ? { borderColor: Colors.yellowToneColor } : null]} onPress={() => onCategorySearch(each)}>
                     <Text style={styles.btnTxt}>
                       {each.name}
                     </Text>
