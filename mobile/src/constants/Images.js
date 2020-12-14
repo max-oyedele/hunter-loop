@@ -13,8 +13,6 @@ const Images = {
     profileImg: require('../assets/images/profileImg.png'),
     noImg: require('../assets/images/noImg.png'),
     
-    hunter: require('../assets/images/hunter.png'),
-    
     iconCamera: require('../assets/images/iconCamera.png'),
     iconDelete: require('../assets/images/iconDelete.png'),
     iconThreeDot: require('../assets/images/iconThreeDot.png')
