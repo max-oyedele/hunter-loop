@@ -33,6 +33,6 @@ export const Icons = {
   changePwd: "bx bx-lock-alt",
 
   //pricing
-  edit: "bx bx-edit",
+  save: "bx bx-save",
   
 }

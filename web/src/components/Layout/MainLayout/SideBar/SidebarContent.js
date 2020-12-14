@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom';
 
 import { connect } from "react-redux";
 
+import { getData, setData } from '../../../../store/actions';
 import { Icons } from '../../../../constants';
 
 class SidebarContent extends Component {
@@ -17,12 +18,40 @@ class SidebarContent extends Component {
     super(props);
     this.state = {
       isSideMenuCollapsed: false,
+      user: '',
+      business: '', //sidebar item for only business
+      memberships: [] //sidebar item for only business
     };
   }
 
   componentDidMount() {
     this.initMenu();
     this.checkSideMenu();
+
+    //when logged in, redux store is filled
+    let user = this.props.auth.user;
+    //when refresh, redux store value is deleted
+    if (!user) {
+      user = JSON.parse(localStorage.getItem("authUser"));
+    }
+    if (user) {
+      this.setState({ user: user });
+    }
+
+    this.props.getData('business');
+    this.props.getData('memberships');
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    let business = prevProps.data.business.length > 0 && prevProps.data.business.find((each) => each.id == this.state.user?.bid);
+    if (prevState.business != business) {
+      this.setState({ business: business })
+    }
+
+    let memberships = this.props.data.memberships;
+    if (memberships && prevState.memberships.length != memberships.length) {
+      this.setState({ memberships: memberships });
+    }
   }
 
   initMenu() {
@@ -120,6 +149,15 @@ class SidebarContent extends Component {
   }
 
   renderBusinessMenu() {
+    let isPro = false;
+    let mid = this.state.business?.mid;
+    if (mid) {
+      var membership = this.state.memberships.find(each => each.id == mid);
+      if (membership) {
+        isPro = membership.level.toLowerCase().includes('pro')
+      }
+    }
+
     return (
       <ul className="metismenu list-unstyled" id="side-menu">
         <li>
@@ -143,13 +181,18 @@ class SidebarContent extends Component {
           </Link>
         </li>
         <hr className="my-1" />
-        <li>
-          <Link to="/socialupdate" className="waves-effect">
-            <i className={`${Icons.socialUpdate} font-size-14`}></i>
-            <span>Social Update<span className="text-danger">(PRO)</span></span>
-          </Link>
-        </li>
-        <hr className="my-1" />
+        {
+          isPro &&
+          <>
+            <li>
+              <Link to="/socialupdate" className="waves-effect">
+                <i className={`${Icons.socialUpdate} font-size-14`}></i>
+                <span>Social Update<span className="text-danger">(PRO)</span></span>
+              </Link>
+            </li>
+            <hr className="my-1" />
+          </>
+        }
         {/* <li>
           <Link to="/settings" className="waves-effect">
             <i className={`${Icons.settings} font-size-14`}></i>
@@ -166,10 +209,10 @@ class SidebarContent extends Component {
       <React.Fragment>
         <div id="sidebar-menu" className="p-0">
           {
-            (this.props.auth.user.role === 'admin' || JSON.parse(localStorage.getItem("authUser")).role === 'admin' ) && this.renderAdminMenu()
+            (this.props.auth.user.role === 'admin' || JSON.parse(localStorage.getItem("authUser")).role === 'admin') && this.renderAdminMenu()
           }
           {
-            (this.props.auth.user.role === 'business' || JSON.parse(localStorage.getItem("authUser")).role === 'business' ) && this.renderBusinessMenu()
+            (this.props.auth.user.role === 'business' || JSON.parse(localStorage.getItem("authUser")).role === 'business') && this.renderBusinessMenu()
           }
         </div>
       </React.Fragment>
@@ -183,4 +226,6 @@ const mapStatetoProps = state => {
   };
 };
 
-export default connect(mapStatetoProps, {})(withRouter(SidebarContent));
+export default connect(mapStatetoProps, {
+  getData
+})(withRouter(SidebarContent));

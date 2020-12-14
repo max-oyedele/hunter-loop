@@ -123,10 +123,31 @@ class ServiceForm extends Component {
   }
 
   onPublish = () => {
+    if(!this.state.service.cid){
+      this.setState({
+        errorAlert: true,
+        errorAlertTxt: "Please enter hunt category!"
+      })
+      return;
+    }
     if (!this.state.service.name) {
       this.setState({
         errorAlert: true,
-        errorAlertTxt: "Service Title Missed!"
+        errorAlertTxt: "Please enter hunt title!"
+      })
+      return;
+    }
+    if(!this.state.service.days){
+      this.setState({
+        errorAlert: true,
+        errorAlertTxt: "Please enter hunt duration!"
+      })
+      return;
+    }
+    if(!this.state.service.hunters){
+      this.setState({
+        errorAlert: true,
+        errorAlertTxt: "Please enter hunt per package!"
       })
       return;
     }
@@ -211,7 +232,7 @@ class ServiceForm extends Component {
                     <Card>
                       <CardBody>
                         <div className="form-group row">
-                          <label className="col-md-3 col-form-label">Hunt Category</label>
+                          <label className="col-md-3 col-form-label">Hunt Category<span className="text-danger">*</span></label>
                           <div className="col-md-9">
                             <select className="form-control" onChange={(e) => this.onChangeField(e, 'cid')}>
                               {
@@ -223,7 +244,7 @@ class ServiceForm extends Component {
                           </div>                          
                         </div>
                         <div className="form-group row">
-                          <label htmlFor="example-text-input" className="col-md-3 col-form-label">Hunt Title</label>
+                          <label htmlFor="example-text-input" className="col-md-3 col-form-label">Hunt Title<span className="text-danger">*</span></label>
                           <div className="col-md-9">
                             <input className="form-control" type="text" defaultValue={`${this.state.service.name}`} onChange={(e) => this.onChangeField(e, 'name')} />
                           </div>
@@ -249,24 +270,33 @@ class ServiceForm extends Component {
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label className="col-md-3 col-form-label">Hunt Duration (day/s)</label>
+                          <label className="col-md-3 col-form-label">Hunt Duration (day/s)<span className="text-danger">*</span></label>
                           <div className="col-md-9">
-                            <select className="form-control" defaultValue={this.state.service.days} onChange={(e) => this.onChangeField(e, 'days')}>
+                            <select className="form-control" value={this.state.service.days} onChange={(e) => this.onChangeField(e, 'days')}>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
                               <option value="4">4</option>
                               <option value="5">5</option>
+                              <option value="6">6</option>
+                              <option value="7">7</option>
                             </select>
                           </div>
                         </div>
                         <div className="form-group row">
-                          <label className="col-md-3 col-form-label">Hunt per package</label>
+                          <label className="col-md-3 col-form-label">Hunt per package<span className="text-danger">*</span></label>
                           <div className="col-md-9">
-                            <select className="form-control" defaultValue={this.state.service.hunters} onChange={(e) => this.onChangeField(e, 'hunters')}>
+                            <select className="form-control" value={this.state.service.hunters} onChange={(e) => this.onChangeField(e, 'hunters')}>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                              <option value="7">7</option>
+                              <option value="8">8</option>
+                              <option value="9">9</option>
+                              <option value="10">10</option>
                             </select>
                           </div>
                         </div>

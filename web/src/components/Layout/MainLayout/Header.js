@@ -38,9 +38,7 @@ class Header extends Component {
     if (!user) {
       user = JSON.parse(localStorage.getItem("authUser"))
     }
-    this.setState({
-      user: user
-    });
+    this.setState({user: user});
 
     this.props.getData('users');
   }

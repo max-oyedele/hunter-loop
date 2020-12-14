@@ -153,7 +153,7 @@ export default function SplashScreen({ navigation }) {
         Constants.reviews = res.filter(each => each.status === 'accepted')
       }
     });
-    await getData('memberships').then(res => Constants.memberships = res);
+    await getData('memberships').then(res => Constants.memberships = res.sort((a,b)=>a.dispOrder-b.dispOrder));
     setSpinner(false);
     goScreen();
   }

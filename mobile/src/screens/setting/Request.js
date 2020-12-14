@@ -66,7 +66,7 @@ export default function RequestScreen({ navigation }) {
       setPhone(business.phone);
       setEmail(business.email);
       setSite(business.site);
-      setMembershipId(business.mid);
+      setMembershipId(business.mid);      
     }
   }
 
@@ -153,7 +153,7 @@ export default function RequestScreen({ navigation }) {
     await setData('business', act, nBusiness)
       .then((res) => {
         Alert.alert(
-          'Requested Success!',
+          'Account Requested Successfully!',
           '',
           [
             { text: "OK", onPress: () => { setSpinner(false); } }
@@ -355,12 +355,14 @@ export default function RequestScreen({ navigation }) {
                 }))
               }
               onValueChange={(value) => {
-                console.log(value)
-                if(value){
+                  console.log(value)
                   setMembershipId(value);
-                }
               }}
               value={membershipId}
+              placeholder={{}}
+              style={{inputAndroid:{
+                color: Colors.blackColor                
+              }}}
             />
           }
           {

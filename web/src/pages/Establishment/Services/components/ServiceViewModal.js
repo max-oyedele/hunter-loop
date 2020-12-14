@@ -46,7 +46,7 @@ class ServiceViewModal extends Component {
             <CardImg className="img-fluid" src={this.props.service.img ? this.props.service.img : noImg} alt="No Image" />
             <CardTitle className="d-flex justify-content-between align-items-center px-3 mt-2 mb-0">
               <span className="text-success font-size-24">${this.props.service.price}</span>
-              <span>{this.props.service.days} days, {this.props.service.hunters} {this.props.service.hunters < 2 ? 'hunter' : 'hunters'}</span>
+              <span>{this.props.service.days} {this.props.service.days < 2 ? 'Day' : 'Days'}, {this.props.service.hunters} {this.props.service.hunters < 2 ? 'Hunter' : 'Hunters'}</span>
             </CardTitle>
             <CardBody>
               <div>{this.props.service.guide}</div>

@@ -32,7 +32,8 @@ class Pricing extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     let memberships = this.props.data.memberships;
-    if (memberships && prevState.memberships.length != memberships.length) {
+    memberships.sort(function(a,b){return a.dispOrder - b.dispOrder});
+    if (memberships && prevState.memberships.length != memberships.length) {      
       this.setState({ memberships: memberships });
     }
 
@@ -65,6 +66,7 @@ class Pricing extends Component {
       alert('Wrong price entered');
       return;
     }
+
     membership.price = price;
     this.props.setData('memberships', 'update', this.state.memberships, membership);
 
@@ -173,18 +175,18 @@ class Pricing extends Component {
                       <input className="form-control" type="number" min={0} onChange={(e) => this.onChangePrice(e, each)} value={each.price} />
                     </div>
                     <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style={{ width: 25, height: 25, cursor: "pointer" }} onClick={() => { this.onSave(each) }}>
-                      <i className={`${Icons.edit} text-white font-size-14`}></i>
+                      <i className={`${Icons.save} text-white font-size-14`}></i>
                     </div>
-                    <div className="rounded-circle bg-danger d-flex justify-content-center align-items-center ml-2" style={{ width: 25, height: 25, cursor: "pointer" }} onClick={() => { this.onDelete(each) }}>
+                    {/* <div className="rounded-circle bg-danger d-flex justify-content-center align-items-center ml-2" style={{ width: 25, height: 25, cursor: "pointer" }} onClick={() => { this.onDelete(each) }}>
                       <i className={`${Icons.trash} text-white font-size-14`}></i>
-                    </div>
+                    </div> */}
                   </div>
                 ))
               }
 
             </CardBody>
 
-            <div className="d-flex justify-content-end mb-3" style={{ position: 'fixed', top: 15, right: 15, zIndex: 1100 }} >
+            {/* <div className="d-flex justify-content-end mb-3" style={{ position: 'fixed', top: 15, right: 15, zIndex: 1100 }} >
               <div className="d-flex align-items-center">
                 <Button
                   color='#f7d907'
@@ -195,7 +197,7 @@ class Pricing extends Component {
                   <b className="text-dark">ADD PLANS</b>
                 </Button>
               </div>
-            </div>
+            </div> */}
 
           </Container>
 

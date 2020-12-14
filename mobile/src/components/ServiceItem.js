@@ -86,7 +86,7 @@ export default function ServiceItem({ item, onPress, onRefresh, showAlert }) {
         </View>
         <View style={styles.priceLine}>
           <Text style={styles.priceTxt}>${item.price}</Text>
-          <Text style={styles.daysHuntersTxt}>{item.days} days, {item.hunters} {item.hunters < 2 ? 'Hunter' : 'Hunters'}</Text>
+          <Text style={styles.daysHuntersTxt}>{item.days} {item.days < 2 ? 'Day' : 'Days'}, {item.hunters} {item.hunters < 2 ? 'Hunter' : 'Hunters'}</Text>
         </View>
         <View style={styles.descLine}>
           <Text style={styles.descTxt} numberOfLines={2} ellipsizeMode='tail'>{item.about}</Text>
