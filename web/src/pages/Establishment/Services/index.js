@@ -150,7 +150,7 @@ class Services extends Component {
                             starDimension="14px"
                             starSpacing="3px"
                           />
-                          <CardText className="ml-2 mt-1">{this.state.business.rating}</CardText>
+                          <CardText className="ml-2 mt-1">{this.state.business.rating?.toFixed(1)}</CardText>
                         </div>
                       </CardBody>
                     </Col>
@@ -186,10 +186,10 @@ class Services extends Component {
                         <Collapse isOpen={isOpen}>
                           <Row id="table-header" className="px-4 mt-2 mb-1">
                             <Col className="col-2 font-size-11"><i><b>Title</b></i></Col>
-                            <Col className="col-5 font-size-11"><i><b>DESCRIPTION</b></i></Col>
+                            <Col className="col-4 font-size-11"><i><b>DESCRIPTION</b></i></Col>
                             <Col className="col-3 font-size-11"><i><b>HUNTING SEASON</b></i></Col>
                             <Col className="col-1 font-size-11"><i><b>DETAILS</b></i></Col>
-                            <Col className="col-1 font-size-11"><i><b>ACTIONS</b></i></Col>
+                            <Col className="col-2 font-size-11"><i><b>ACTIONS</b></i></Col>
                           </Row>
                           {
                             this.state.services && this.state.services.map((eachService, index) => {
@@ -198,17 +198,15 @@ class Services extends Component {
                                 <div key={index} className="px-4">
                                   <Row id="table-body" className="text-secondary">
                                     <Col className="col-2">{eachService.name}</Col>
-                                    <Col className="col-5">{eachService.about}</Col>
-                                    <Col className="col-3">{eachService.season.from} - {eachService.season.to}</Col>
-                                    <Col className="col-1">
-                                      <div className="d-flex align-items-center">
+                                    <Col className="col-4">{eachService.about}</Col>
+                                    <Col className="col-3">{eachService.season.from} ~ {eachService.season.to}</Col>
+                                    <Col className="col-1 d-flex align-items-center">
                                         <i className={`${Icons.profile} mr-1`}></i>
                                         <span>{eachService.hunters}</span>
                                         <i className={`${Icons.calendar} ml-3 mr-1`}></i>
                                         <span>{eachService.days}</span>
-                                      </div>
                                     </Col>
-                                    <Col className="col-1 px-2 d-flex justify-content-between align-items-center">
+                                    <Col className="col-2 px-2 d-flex justify-content-around align-items-center">
                                       <i className={`${Icons.eye} font-size-14 mr-1`} style={{ cursor: "pointer" }} onClick={() => this.onIcon('eye', eachService)}></i>
                                       <i className={`${Icons.pencil} font-size-14 mr-1`} style={{ cursor: "pointer" }} onClick={() => this.onIcon('edit', eachService)}></i>
                                       <i className={`${Icons.trash} font-size-14 text-danger`} style={{ cursor: "pointer" }} onClick={() => this.onIcon('delete', eachService)}></i>

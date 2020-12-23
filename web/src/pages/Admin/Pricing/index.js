@@ -172,7 +172,7 @@ class Pricing extends Component {
                   <div key={index} className="form-group row justify-content-center align-items-center">
                     <label htmlFor="example-text-input" className="col-md-3 col-form-label text-right">{each.level} ($)</label>
                     <div className="col-4">
-                      <input className="form-control" type="number" min={0} onChange={(e) => this.onChangePrice(e, each)} value={each.price} />
+                      <input className="form-control" type="number" min={0} onChange={(e) => this.onChangePrice(e, each)} value={each.price} oninput="validity.valid||(value='');" />
                     </div>
                     <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style={{ width: 25, height: 25, cursor: "pointer" }} onClick={() => { this.onSave(each) }}>
                       <i className={`${Icons.save} text-white font-size-14`}></i>

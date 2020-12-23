@@ -157,7 +157,7 @@ export default function SigninScreen({ navigation }) {
 
     var isConnected = await checkInternet();
     if (!isConnected) {
-      Alert.alert('Please connect to network.');
+      Alert.alert('Please check your internet connection.');
       return;
     }
 

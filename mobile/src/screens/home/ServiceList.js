@@ -57,7 +57,7 @@ export default function ServiceListScreen({ navigation, route }) {
 
     var isConnected = await checkInternet();
     if (!isConnected) {
-      Alert.alert('Please connect to network.');
+      Alert.alert('Please check your internet connection.');
       setSpinner(false);
       return;
     }
@@ -148,16 +148,16 @@ export default function ServiceListScreen({ navigation, route }) {
       />
       <View style={styles.header}>
         <View style={styles.iconBackContainer}>
-          <TouchableOpacity onPress={() => { 
-            Constants.refreshFlag = true; 
-            if(Constants.backRoute == 'Profile') navigation.navigate('Profile');
+          <TouchableOpacity onPress={() => {
+            Constants.refreshFlag = true;
+            if (Constants.backRoute == 'Profile') navigation.navigate('Profile');
             else navigation.goBack(null);
           }}>
             <EntypoIcon name="chevron-thin-left" style={styles.headerIcon}></EntypoIcon>
           </TouchableOpacity>
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.titleTxt} numberOfLines={1} ellipsizeMode='tail'>{businessItem.name}</Text>          
+          <Text style={styles.titleTxt} numberOfLines={1} ellipsizeMode='tail'>{businessItem.name}</Text>
         </View>
         <View style={styles.iconFlagContainer}>
           {/* <TouchableOpacity onPress={() => onBookmarkBusiness(Constants.user.favorbids.includes(businessItem.id) ? 'delete' : 'add')}>
@@ -186,7 +186,7 @@ export default function ServiceListScreen({ navigation, route }) {
           activeDotStyle={{ backgroundColor: Colors.yellowToneColor, marginBottom: normalize(160, 'height') }}
           renderItem={(data) => {
             return (
-              <Image style={styles.img} source={{ uri: data.item }} resizeMode='cover' />
+              <Image style={styles.img} source={ data.item ? { uri: data.item } : null} resizeMode='cover' />
             )
           }}
         />
@@ -198,13 +198,16 @@ export default function ServiceListScreen({ navigation, route }) {
             </View>
             <View style={styles.addressPart}>
               <EntypoIcon name="location-pin" style={styles.labelIcon}></EntypoIcon>
-              <Text style={styles.labelTxt} numberOfLines={1} ellipsizeMode='tail'>{businessItem.address}</Text>
+              <Text style={styles.labelTxt}>{businessItem.address}</Text>
             </View>
           </View>
-          <View style={styles.urlLine}>
-            <EntypoIcon name="network" style={styles.labelIcon}></EntypoIcon>
-            <Text style={styles.labelTxt}>{businessItem.site}</Text>
-          </View>
+          {
+            businessItem.site &&
+            <View style={styles.urlLine}>
+              <EntypoIcon name="network" style={styles.labelIcon}></EntypoIcon>
+              <Text style={styles.labelTxt}>{businessItem.site}</Text>
+            </View>
+          }
           <View style={styles.phoneHoursLine}>
             <EntypoIcon name="phone" style={styles.labelIcon}></EntypoIcon>
             <Text style={styles.labelTxt}>{businessItem.phone}</Text>
@@ -301,17 +304,17 @@ const styles = StyleSheet.create({
   distanceAddressLine: {
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'center',     
+    justifyContent: 'center',
     marginBottom: normalize(10, 'height'),
   },
-  distancePart: {    
+  distancePart: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
   addressPart: {
     maxWidth: normalize(230),
-    flexDirection: 'row',    
+    flexDirection: 'row',
     alignItems: 'center',
     paddingRight: normalize(10),
   },

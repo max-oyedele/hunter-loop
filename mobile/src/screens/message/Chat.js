@@ -71,7 +71,7 @@ export default function ChatScreen({ navigation, route }) {
   onSendMessage = async (messages = []) => {
     var isConnected = await checkInternet();
     if (!isConnected) {
-      Alert.alert('Please connect to network.');
+      Alert.alert('Please check your internet connection.');
       return;
     }
 

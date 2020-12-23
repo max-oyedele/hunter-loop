@@ -10,7 +10,7 @@ import {
   Platform,
   Text,
   ImageBackground,
-  PermissionsAndroid,  
+  PermissionsAndroid,
   Alert
 } from 'react-native';
 import normalize from 'react-native-normalize';
@@ -52,14 +52,14 @@ export default function SplashScreen({ navigation }) {
     else {
       requestPermissionIOS()
         .then(() => {
-          requestLocation();     
+          requestLocation();
           // getAllData();
         })
         .catch((err) => {
           console.log('request permission error', err);
         })
     }
-  }, []) 
+  }, [])
 
   keyboardManager = () => {
     if (Platform.OS === 'ios') {
@@ -92,7 +92,7 @@ export default function SplashScreen({ navigation }) {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
       ]);
       if (results[PermissionsAndroid.PERMISSIONS.CAMERA] === PermissionsAndroid.RESULTS.GRANTED &&
-        results[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED && 
+        results[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED &&
         results[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION] === PermissionsAndroid.RESULTS.GRANTED) {
         // console.log('all permission granted');
 
@@ -138,8 +138,8 @@ export default function SplashScreen({ navigation }) {
 
   getAllData = async () => {
     var isConnected = await checkInternet();
-    if(!isConnected){
-      Alert.alert('Please connect to network.');
+    if (!isConnected) {
+      Alert.alert('Please check your internet connection.');
       return;
     }
 
@@ -153,25 +153,23 @@ export default function SplashScreen({ navigation }) {
         Constants.reviews = res.filter(each => each.status === 'accepted')
       }
     });
-    await getData('memberships').then(res => Constants.memberships = res.sort((a,b)=>a.dispOrder-b.dispOrder));
-    setSpinner(false);
+    await getData('memberships').then(res => Constants.memberships = res.sort((a, b) => a.dispOrder - b.dispOrder));
     goScreen();
   }
 
   goScreen = () => {
-    setTimeout(() => {
-      AsyncStorage.getItem('user')
-        .then((user) => {
-          if (user) {
-            Constants.user = JSON.parse(user);
-            navigation.navigate("Home", { screen: 'BusinessList' });
-          }
-          else {
-            // navigation.navigate('Auth')
-            navigation.navigate("Home", { screen: 'BusinessList' });
-          }
-        })
-    }, 1500)
+    AsyncStorage.getItem('user')
+      .then((user) => {
+        if (user) {
+          Constants.user = JSON.parse(user);
+          navigation.navigate("Home", { screen: 'BusinessList' });
+          setSpinner(false);
+        }
+        else {
+          // navigation.navigate('Auth')
+          navigation.navigate("Home", { screen: 'BusinessList' });
+        }
+      })
   }
 
   return (

@@ -250,7 +250,7 @@ class Profile extends Component {
                                       </Col>
                                       <Col className="col-12 px-0 d-flex">
                                         <StarRatings
-                                          rating={each.bRating}
+                                          rating={each.type === 'business' ? each.bRating : each.sRating}
                                           starRatedColor="#F1B44C"
                                           starEmptyColor="#2D363F"
                                           numberOfStars={5}
