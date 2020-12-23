@@ -233,13 +233,13 @@ export default function SigninScreen({ navigation }) {
               <Text style={[styles.btnTxt, { color: Colors.blackColor }]}>Login with Google</Text>
             </TouchableOpacity>
             {
-              Platform.OS === 'ios' &&
-              <TouchableOpacity style={[styles.btn, { borderColor: Colors.greyWeakColor, borderWidth: 2 }]} onPress={() => onAppleSignin()}>
-                <View style={styles.btnIcon}>
-                  <FontAwesomeIcon name="apple" style={styles.btnIconTxt}></FontAwesomeIcon>
-                </View>
-                <Text style={[styles.btnTxt, { color: Colors.blackColor }]}>Login with Apple</Text>
-              </TouchableOpacity>
+              // Platform.OS === 'ios' &&
+              // <TouchableOpacity style={[styles.btn, { borderColor: Colors.greyWeakColor, borderWidth: 2 }]} onPress={() => onAppleSignin()}>
+              //   <View style={styles.btnIcon}>
+              //     <FontAwesomeIcon name="apple" style={styles.btnIconTxt}></FontAwesomeIcon>
+              //   </View>
+              //   <Text style={[styles.btnTxt, { color: Colors.blackColor }]}>Login with Apple</Text>
+              // </TouchableOpacity>
             }
             <TouchableOpacity style={[styles.btn, { backgroundColor: Colors.yellowToneColor }]} onPress={() => setPage('email')}>
               <View style={styles.btnIcon}>

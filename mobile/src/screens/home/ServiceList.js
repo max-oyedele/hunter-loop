@@ -178,7 +178,7 @@ export default function ServiceListScreen({ navigation, route }) {
 
       <View style={styles.topImgLine}>
         <AppIntroSlider
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index.toString()}
           data={businessItem.slideImgs.length > 0 ? businessItem.slideImgs : [businessItem.img]}
           showNextButton={false}
           showDoneButton={false}

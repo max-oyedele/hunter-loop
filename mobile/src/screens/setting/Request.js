@@ -58,15 +58,16 @@ export default function RequestScreen({ navigation }) {
     Constants.refreshFlag = false;
     if (Constants.user?.bid) {
       var business = Constants.business.find(each => each.id == Constants.user?.bid);
-
-      setLogo(business.img ? business.img : null);
-      setBname(business.name);
-      setAddress(business.address);
-      setLocation(business.location);
-      setPhone(business.phone);
-      setEmail(business.email);
-      setSite(business.site);
-      setMembershipId(business.mid);      
+      if(business){
+        setLogo(business.img ? business.img : null);
+        setBname(business.name);
+        setAddress(business.address);
+        setLocation(business.location);
+        setPhone(business.phone);
+        setEmail(business.email);
+        setSite(business.site);
+        setMembershipId(business.mid);      
+      }
     }
   }
 
