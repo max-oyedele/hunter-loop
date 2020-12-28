@@ -162,11 +162,12 @@ export default function SplashScreen({ navigation }) {
       .then((user) => {
         if (user) {
           Constants.user = JSON.parse(user);
-          navigation.navigate("Home", { screen: 'BusinessList' });
           setSpinner(false);
+          navigation.navigate("Home", { screen: 'BusinessList' });
         }
         else {
           // navigation.navigate('Auth')
+          setSpinner(false);
           navigation.navigate("Home", { screen: 'BusinessList' });
         }
       })
