@@ -360,8 +360,7 @@ const styles = StyleSheet.create({
   },
   body: {
     width: '100%',
-    height: '55%',
-    justifyContent: 'space-around',
+    height: '55%',    
     alignItems: 'center',
     marginTop: normalize(20, 'height')
   },
@@ -369,6 +368,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: '65%',
     justifyContent: 'space-around',
+    marginTop: normalize(15, 'height'),
     // borderWidth: 2
   },
   otherLink: {
@@ -376,6 +376,7 @@ const styles = StyleSheet.create({
     height: '15%',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: normalize(30, 'height'),
     // borderWidth: 2
   },
   linkTxt: {
@@ -410,6 +411,7 @@ const styles = StyleSheet.create({
 
   widgetContainer: {
     width: '80%',
+    marginTop: normalize(30, 'height'),
     // borderWidth: 2
   },
   inputBox: {
