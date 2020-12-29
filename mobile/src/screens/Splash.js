@@ -35,6 +35,7 @@ import { getUser, getData, checkInternet } from '../service/firebase';
 export default function SplashScreen({ navigation }) {
 
   const [spinner, setSpinner] = useState(false);
+  const [checkInternetTimer, setCheckInternetTimer] = useState();
 
   useEffect(() => {
     if (Platform.OS === 'ios') keyboardManager();
@@ -128,21 +129,34 @@ export default function SplashScreen({ navigation }) {
         Constants.location.latitude = location.latitude;
         Constants.location.longitude = location.longitude;
         // console.log('location', Constants.location);
-        getAllData();
+        checkInternetProcedure();
       })
       .catch(ex => {
         // GetLocation.openAppSettings();
-        getAllData(); //temp
+        checkInternetProcedure(); //temp
       });
   }
 
-  getAllData = async () => {
+  async function checkInternetProcedure() {
     var isConnected = await checkInternet();
     if (!isConnected) {
       Alert.alert('Please check your internet connection.');
+      var checkInternetTimer = setInterval(timer, 1000);  
+      setCheckInternetTimer(checkInternetTimer);
       return;
     }
+    getAllData();
+  }
 
+  async function timer(){
+    var isConnected = await checkInternet();
+    if (isConnected) {
+      getAllData();
+    }
+  }
+
+  getAllData = async () => {
+    if(checkInternetTimer) clearInterval(checkInternetTimer);
     setSpinner(true);
     await getData('users').then(res => Constants.users = res);
     await getData('business').then(res => Constants.business = res);

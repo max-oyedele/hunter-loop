@@ -281,7 +281,7 @@ export default function ServiceDetailScreen({ navigation, route }) {
       </View>
 
       <View style={styles.topImgContainer}>
-        <Image style={styles.topImg} source={{ uri: serviceItem.img }} />
+        <Image style={styles.topImg} source={serviceItem.img ? { uri: serviceItem.img } : Images.noImg} />
       </View>
 
       <View style={styles.detailImgContainer}>
@@ -300,7 +300,7 @@ export default function ServiceDetailScreen({ navigation, route }) {
             left: 0,
             top: 0,
             width: width,
-            height: height            
+            height: height
           }}
         >
           <ImageView
@@ -380,9 +380,9 @@ export default function ServiceDetailScreen({ navigation, route }) {
             <View style={styles.collapseHeader}>
               <Text style={styles.labelTxt}>Hunter Guide</Text>
             </View>
-            <View style={[styles.collapseContent, {alignItems: 'center'}]}>
+            <View style={[styles.collapseContent, { alignItems: 'center' }]}>
               <Image style={styles.hunterImg} source={hunter?.img ? { uri: hunter.img } : Images.profileImg} />
-              <Text style={styles.labelTxt}>{hunter?.name ? hunter.name : ''}</Text>  
+              <Text style={styles.labelTxt}>{hunter?.name ? hunter.name : ''}</Text>
             </View>
             <Text style={styles.hunterDesc}>{serviceItem.hunterDesc}</Text>
             {
