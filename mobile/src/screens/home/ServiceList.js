@@ -186,7 +186,7 @@ export default function ServiceListScreen({ navigation, route }) {
           activeDotStyle={{ backgroundColor: Colors.yellowToneColor, marginBottom: normalize(160, 'height') }}
           renderItem={(data) => {
             return (
-              <Image style={styles.img} source={ data.item ? { uri: data.item } : null} resizeMode='cover' />
+              <Image style={styles.img} source={ data.item ? { uri: data.item } : null} resizeMode='stretch' />
             )
           }}
         />
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
 
   topImgLine: {
     width: '100%',
-    height: '40%'
+    height: '35%'
   },
   img: {
     width: '100%',

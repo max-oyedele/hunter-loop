@@ -281,7 +281,7 @@ export default function ServiceDetailScreen({ navigation, route }) {
       </View>
 
       <View style={styles.topImgContainer}>
-        <Image style={styles.topImg} source={serviceItem.img ? { uri: serviceItem.img } : Images.noImg} />
+        <Image style={styles.topImg} source={serviceItem.img ? { uri: serviceItem.img } : Images.noImg} resizeMode='stretch' />
       </View>
 
       <View style={styles.detailImgContainer}>
@@ -314,7 +314,11 @@ export default function ServiceDetailScreen({ navigation, route }) {
 
       <View style={styles.titlePriceLine}>
         <Text style={styles.title} numberOfLines={1} ellipsizeMode='tail'>{serviceItem.name}</Text>
-        <Text style={styles.price}>${serviceItem.price}</Text>
+        <Text style={styles.price}>
+          {
+            serviceItem.price ? `$${serviceItem.price}` : ''
+          }
+        </Text>
       </View>
 
       <Text style={styles.itemTitle}>{Constants.business.find(each => each.id == serviceItem.bid).name}</Text>
@@ -451,8 +455,9 @@ const styles = StyleSheet.create({
   },
 
   topImgContainer: {
-    width: '100%',
+    width: width,
     height: '30%',
+    // height: '30%',
     paddingTop: normalize(3, 'height'),
     paddingBottom: normalize(4, 'height')
   },

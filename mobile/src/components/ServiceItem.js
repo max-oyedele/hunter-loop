@@ -82,14 +82,18 @@ export default function ServiceItem({ item, onPress, onRefresh, showAlert }) {
           </TouchableOpacity>
         </View>
         <View style={styles.imgLine}>
-          <Image style={styles.img} source={item.img ? { uri: item.img } : Images.noImg} />
+          <Image style={styles.img} source={item.img ? { uri: item.img } : Images.noImg} resizeMode='stretch' />
         </View>
         <View style={styles.priceLine}>
           {
             item.isContactPrice ?
               <Text style={styles.daysHuntersTxt}>Contact guide for package price</Text>
               :
-              <Text style={styles.priceTxt}>${item.price}</Text>
+              <Text style={styles.priceTxt}>
+                {
+                  item.price ? `$${item.price}` : ''
+                }
+              </Text>
           }
           <Text style={styles.daysHuntersTxt}>{item.days} {item.days < 2 ? 'Day' : 'Days'}, {item.hunters} {item.hunters < 2 ? 'Hunter' : 'Hunters'}</Text>
         </View>
@@ -128,7 +132,7 @@ const height = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     width: '93%',
-    height: normalize(400, 'height'),
+    height: normalize(330, 'height'),
     backgroundColor: Colors.whiteColor,
     alignSelf: 'center',
     marginBottom: normalize(15, 'height'),
@@ -164,7 +168,9 @@ const styles = StyleSheet.create({
   },
 
   imgLine: {
-    height: '45%',
+    width: width * 0.93,
+    height: width * 0.93 / 2,
+    // height: '45%',
     // borderWidth: 2
   },
   img: {
@@ -173,7 +179,7 @@ const styles = StyleSheet.create({
   },
 
   priceLine: {
-    height: '10%',
+    height: normalize(35, 'height'),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -203,6 +209,7 @@ const styles = StyleSheet.create({
 
   seasonLine: {
     height: '10%',
+    marginTop: normalize(5, 'height'),
     paddingLeft: normalize(10),
     paddingRight: normalize(10),
     borderColor: Colors.greyWeakColor,
