@@ -41,7 +41,7 @@ class ServiceViewModal extends Component {
               <br />
               <span className="font-size-12"><i className={`${Icons.location} mr-2`}></i>{this.props.service.address}</span>
             </div>
-            <i className={`${Icons.bookmark} font-size-16`} style={{ color: '#f7d907', cursor: "pointer" }}></i>
+            <i className={`${Icons.bookmark} font-size-16`} style={{ color: '#676767', cursor: "pointer" }}></i>
           </div>
           <div className="modal-body p-0">
             <CardImg className="img-fluid" src={this.props.service.img ? this.props.service.img : noImg} alt="No Image" />
@@ -50,7 +50,11 @@ class ServiceViewModal extends Component {
                 this.props.service.isContactPrice ? 
                 <span>Contact guide for package price</span>
                 :
-                <span className="text-success font-size-24">${this.props.service.price}</span>
+                <span className="text-success font-size-24">
+                  {
+                    this.props.service.price ? `$${this.props.service.price}` : ''
+                  }                  
+                </span>
               }
               <span>{this.props.service.days} {this.props.service.days < 2 ? 'Day' : 'Days'}, {this.props.service.hunters} {this.props.service.hunters < 2 ? 'Hunter' : 'Hunters'}</span>
             </CardTitle>

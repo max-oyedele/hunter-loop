@@ -321,7 +321,7 @@ class ServiceForm extends Component {
                           <div className="col-9">
                             {
                               this.state.service.img &&
-                              <CardImg className="img-fluid" src={this.state.service.img} alt="No Image" />
+                              <CardImg className="img-fluid" src={this.state.service.img} alt="No Image" style={{width: 400, height: 200}} />
                             }
                             <ImageUploader folder='services' setImageUrl={(url) => {
                               var service = { ...this.state.service };

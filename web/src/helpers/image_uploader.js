@@ -4,9 +4,12 @@ import FileUploader from "react-firebase-file-uploader";
  
 class ImageUploader extends Component {
   state = {
-    
+    files: []
   };
-   
+  
+  handleUploadStart = file => {
+    // console.log('file', file)
+  }
   handleUploadError = error => {    
     console.log('upload error', error);
   };
@@ -16,9 +19,9 @@ class ImageUploader extends Component {
       .ref(this.props.folder)
       .child(filename)
       .getDownloadURL()
-      .then(url => this.props.setImageUrl(url));
+      .then(url => {this.props.setImageUrl(url); console.log(url)});
   };
- 
+
   render() {
     return (
       <div>

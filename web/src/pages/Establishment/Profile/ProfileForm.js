@@ -117,7 +117,7 @@ class ProfileForm extends Component {
                   <div className="form-group row">
                     <label htmlFor="example-text-input" className="col-md-2 col-form-label text-right">Company Logo</label>
                     <div className="col-md-4">
-                      <CardImg className="img-fluid" src={this.state.business.img} alt="No Image" style={{ borderRadius: 10 }} />
+                      <CardImg className="img-fluid" src={this.state.business.img} alt="No Image" style={{ borderRadius: 10, width: 400, height: 200 }} />
                       <ImageUploader folder='business' setImageUrl={(url) => {
                         var business = { ...this.state.business };
                         business.img = url;
@@ -143,8 +143,8 @@ class ProfileForm extends Component {
                         [0, 1, 2].map((each, index) => {
                           var src = this.state.business.slideImgs && this.state.business.slideImgs.length > 0 && this.state.business.slideImgs[each] ? this.state.business.slideImgs[each] : Logo;
                           return (
-                            <div key={index} className="col-md-4 d-flex flex-column justify-content-between" style={{ minHeight: 160, maxHeight: 160 }}>
-                              <CardImg className="img-fluid" src={src} alt="No Image" style={{ width: '100%', height: 140, marginBottom: 10 }} />
+                            <div key={index} className="col-md-4 d-flex flex-column justify-content-between" style={{ minHeight: 130, maxHeight: 130 }}>
+                              <CardImg className="img-fluid" src={src} alt="No Image" style={{ width: 200, height: 100, marginBottom: 10 }} />
                               <ImageUploader folder='details' setImageUrl={(url) => {
                                 var business = { ...this.state.business };
                                 business.slideImgs[each] = url;

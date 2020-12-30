@@ -57,6 +57,7 @@
     "react-dropzone": "^10.2.1",
     "react-firebase-file-uploader": "^2.4.3",
     "react-geocode": "^0.2.2",
+    "react-image-file-resizer": "^0.3.9",
     "react-image-lightbox": "^5.1.1",
     "react-input-mask": "^2.0.4",
     "react-jvectormap": "^0.0.16",
