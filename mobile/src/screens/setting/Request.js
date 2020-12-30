@@ -100,7 +100,7 @@ export default function RequestScreen({ navigation }) {
     return new Promise(async (resolve, reject) => {
       var platformPhotoLocalPath = Platform.OS === "android" ? photoLocalPath : photoLocalPath.replace("file://", "")
       let newPath = '';
-      await ImageResizer.createResizedImage(platformPhotoLocalPath, 300, 300, 'PNG', 50, 0, null)
+      await ImageResizer.createResizedImage(platformPhotoLocalPath, 400, 200, 'PNG', 50, 0, null)
         .then(response => {
           newPath = response.uri;
         })
@@ -443,11 +443,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   logo: {
-    width: '100%',
-    height: normalize(150, 'height'),
+    width: width * 0.9,
+    height: width * 0.9 / 2,
     backgroundColor: Colors.greyWeakColor,
     marginTop: normalize(10, 'height'),
-    borderRadius: normalize(8)
+    borderRadius: normalize(8),
   },
   logoImg: {
     width: '100%',

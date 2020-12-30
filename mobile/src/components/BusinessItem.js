@@ -135,7 +135,7 @@ export default function BusinessItem({ item, onPress, onRefresh, showAlert }) {
           </View>
         </View>
         <View style={styles.imgPart}>
-          <Image style={styles.img} source={item.img ? { uri: item.img } : Images.noImg} />
+          <Image style={styles.img} source={item.img ? { uri: item.img } : Images.noImg} resizeMode='stretch' />
         </View>
         <View style={styles.bottomPart}>
           <Text style={styles.descTxt} numberOfLines={1} ellipsizeMode='tail'>{item.desc}</Text>
@@ -162,7 +162,7 @@ const height = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     width: '93%',
-    height: normalize(300, 'height'),
+    height: normalize(285, 'height'),
     backgroundColor: Colors.whiteColor,
     alignSelf: 'center',
     marginBottom: normalize(15, 'height'),
@@ -224,7 +224,9 @@ const styles = StyleSheet.create({
   },
 
   imgPart: {
-    height: '52%',
+    width: width * 0.93,
+    height: width * 0.93 / 2,
+    // height: '52%',
     // borderWidth: 2
   },
   img: {
