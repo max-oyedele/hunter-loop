@@ -132,7 +132,7 @@ const height = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     width: '93%',
-    height: normalize(330, 'height'),
+    height: normalize(360, 'height'),
     backgroundColor: Colors.whiteColor,
     alignSelf: 'center',
     marginBottom: normalize(15, 'height'),
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
 
   imgLine: {
     width: width * 0.93,
-    height: width * 0.93 / 2,
+    height: normalize(width * 0.93 / 2),
     // height: '45%',
     // borderWidth: 2
   },
@@ -208,8 +208,7 @@ const styles = StyleSheet.create({
   },
 
   seasonLine: {
-    height: '10%',
-    marginTop: normalize(5, 'height'),
+    height: '10%',    
     paddingLeft: normalize(10),
     paddingRight: normalize(10),
     borderColor: Colors.greyWeakColor,

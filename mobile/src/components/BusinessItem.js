@@ -162,7 +162,7 @@ const height = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     width: '93%',
-    height: normalize(285, 'height'),
+    height: normalize(300, 'height'),
     backgroundColor: Colors.whiteColor,
     alignSelf: 'center',
     marginBottom: normalize(15, 'height'),
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
 
   imgPart: {
     width: width * 0.93,
-    height: width * 0.93 / 2,
+    height: normalize(width * 0.93 / 2),
     // height: '52%',
     // borderWidth: 2
   },
