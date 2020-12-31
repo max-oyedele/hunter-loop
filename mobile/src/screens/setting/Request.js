@@ -58,7 +58,7 @@ export default function RequestScreen({ navigation }) {
     Constants.refreshFlag = false;
     if (Constants.user?.bid) {
       var business = Constants.business.find(each => each.id == Constants.user?.bid);
-      if(business){
+      if (business) {
         setLogo(business.img ? business.img : null);
         setBname(business.name);
         setAddress(business.address);
@@ -66,14 +66,14 @@ export default function RequestScreen({ navigation }) {
         setPhone(business.phone);
         setEmail(business.email);
         setSite(business.site);
-        setMembershipId(business.mid);      
+        setMembershipId(business.mid);
       }
     }
   }
 
   useEffect(() => {
-    if(address){
-      refAddress.current?.setAddressText(address);    
+    if (address) {
+      refAddress.current?.setAddressText(address);
     }
   }, [address])
 
@@ -233,7 +233,7 @@ export default function RequestScreen({ navigation }) {
     if (!membershipId) {
       Alert.alert('Please select membership');
       return;
-    }    
+    }
 
     setSpinner(true);
     if (photoLocalPath) {
@@ -264,7 +264,7 @@ export default function RequestScreen({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.titleTxt}>Request a Business Account</Text>
+          <Text style={styles.titleTxt}>Request A Business Account</Text>
         </View>
       </View>
 
@@ -273,7 +273,7 @@ export default function RequestScreen({ navigation }) {
           <TouchableOpacity style={styles.logoBtn} onPress={() => onBusinessLogo()}>
             {
               logo &&
-              <Image style={styles.logoImg} source={{ uri: logo }} />
+              <Image style={styles.logoImg} source={{ uri: logo }} resizeMode='stretch' />
             }
             {
               !logo &&
@@ -324,7 +324,7 @@ export default function RequestScreen({ navigation }) {
           placeholder='Contact Number'
           placeholderTextColor={Colors.greyColor}
           value={phone}
-          keyboardType={'numeric'}          
+          keyboardType={'numeric'}
           onChangeText={(text) => setPhone(text)}
         />
         <TextInput
@@ -356,18 +356,20 @@ export default function RequestScreen({ navigation }) {
                 }))
               }
               onValueChange={(value) => {
-                  console.log(value)
-                  setMembershipId(value);
+                // console.log(value)
+                setMembershipId(value);
               }}
               value={membershipId}
               placeholder={{}}
-              style={{inputAndroid:{
-                color: Colors.blackColor                
-              }}}
+              style={{
+                inputAndroid: {
+                  color: Colors.blackColor
+                }
+              }}
             />
           }
           {
-            Platform.OS === 'ios' &&
+            (Platform.OS === 'ios' && Constants.memberships) && 
             <DropDownPicker
               items={
                 Constants.memberships.map(each => ({
@@ -375,7 +377,7 @@ export default function RequestScreen({ navigation }) {
                   value: each.id
                 }))
               }
-              defaultValue={membershipId}
+              defaultValue={membershipId && Constants.memberships.findIndex(e=>e.id == membershipId) != -1 ? membershipId : Constants.memberships[0].id}
               placeholder='Select Membership'
               placeholderStyle={{
                 fontSize: RFPercentage(2.4),
@@ -444,7 +446,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: width * 0.9,
-    height: width * 0.9 / 2,
+    height: normalize(width * 0.9 / 2.4, 'height'),
     backgroundColor: Colors.greyWeakColor,
     marginTop: normalize(10, 'height'),
     borderRadius: normalize(8),
