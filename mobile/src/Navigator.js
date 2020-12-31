@@ -29,6 +29,8 @@ import PolicyScreen from './screens/setting/Policy';
 import TermsScreen from './screens/setting/Terms';
 import RequestScreen from './screens/setting/Request';
 
+import { Colors } from '@constants';
+
 const Stack = createStackNavigator();
 
 function AuthStack() {
@@ -151,7 +153,7 @@ function SettingStack (){
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode='none' initialRouteName="Splash">
+      <Stack.Navigator headerMode='none' initialRouteName="Splash" screenOptions={{ cardStyle: {backgroundColor: Colors.blackColor }}}>
         <Stack.Screen name='Splash' component={SplashScreen} />
         <Stack.Screen name='Auth' component={AuthStack} />
         <Stack.Screen name='Welcome' component={WelcomeScreen} />
