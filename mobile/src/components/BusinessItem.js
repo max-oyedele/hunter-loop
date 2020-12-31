@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
 
   imgPart: {
     width: width * 0.93,
-    height: normalize(width * 0.93 / 2),
+    height: normalize(width * 0.93 / 2.4, 'height'),
     // height: '52%',
     // borderWidth: 2
   },

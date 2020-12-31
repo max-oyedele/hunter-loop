@@ -273,7 +273,7 @@ export default function RequestScreen({ navigation }) {
           <TouchableOpacity style={styles.logoBtn} onPress={() => onBusinessLogo()}>
             {
               logo &&
-              <Image style={styles.logoImg} source={{ uri: logo }} />
+              <Image style={styles.logoImg} source={{ uri: logo }} resizeMode='stretch' />
             }
             {
               !logo &&
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: width * 0.9,
-    height: width * 0.9 / 2,
+    height: normalize(width * 0.9 / 2.4, 'height'),
     backgroundColor: Colors.greyWeakColor,
     marginTop: normalize(10, 'height'),
     borderRadius: normalize(8),

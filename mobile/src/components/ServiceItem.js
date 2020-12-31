@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
 
   imgLine: {
     width: width * 0.93,
-    height: normalize(width * 0.93 / 2),
+    height: normalize(width * 0.93 / 2.4, 'height'),
     // height: '45%',
     // borderWidth: 2
   },
@@ -208,9 +208,10 @@ const styles = StyleSheet.create({
   },
 
   seasonLine: {
-    height: '10%',    
+    // height: '10%',    
     paddingLeft: normalize(10),
     paddingRight: normalize(10),
+    paddingBottom: normalize(10, 'height'),
     borderColor: Colors.greyWeakColor,
     borderBottomWidth: 2
   },
