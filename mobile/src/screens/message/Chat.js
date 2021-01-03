@@ -47,7 +47,10 @@ export default function ChatScreen({ navigation, route }) {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () => { });
 
     makeChat();
-    KeyboardManager.setEnable(false);
+    
+    if(Platform.OS === 'ios'){
+      KeyboardManager.setEnable(false);
+    }
 
     return (() => {
       backHandler.remove()
