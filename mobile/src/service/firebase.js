@@ -5,10 +5,10 @@ import storage from '@react-native-firebase/storage';
 import database from '@react-native-firebase/database';
 
 import { GoogleSignin } from '@react-native-community/google-signin';
-import appleAuth, {
-  AppleAuthRequestScope,
-  AppleAuthRequestOperation,
-} from '@invertase/react-native-apple-authentication';
+// import appleAuth, {
+//   AppleAuthRequestScope,
+//   AppleAuthRequestOperation,
+// } from '@invertase/react-native-apple-authentication';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 
 import NetInfo from '@react-native-community/netinfo';
@@ -50,28 +50,28 @@ export const signOut = () => {
 
 export const appleSignin = () => {
   return new Promise(async (resolve, reject) => {
-    try {
-      // Start the sign-in request
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: AppleAuthRequestOperation.LOGIN,
-        requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
-      });
+    // try {
+    //   // Start the sign-in request
+    //   const appleAuthRequestResponse = await appleAuth.performRequest({
+    //     requestedOperation: AppleAuthRequestOperation.LOGIN,
+    //     requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+    //   });
       
-      // Ensure Apple returned a user identityToken
-      if (!appleAuthRequestResponse.identityToken) {
-        throw 'Apple Sign-In failed - no identify token returned';
-      }
+    //   // Ensure Apple returned a user identityToken
+    //   if (!appleAuthRequestResponse.identityToken) {
+    //     throw 'Apple Sign-In failed - no identify token returned';
+    //   }
 
-      // Create a Firebase credential from the response
-      const { identityToken, nonce } = appleAuthRequestResponse;
-      const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+    //   // Create a Firebase credential from the response
+    //   const { identityToken, nonce } = appleAuthRequestResponse;
+    //   const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
 
-      // Sign the user in with the credential
-      resolve(auth().signInWithCredential(appleCredential));
-    }
-    catch (err) {
-      reject(err);
-    }
+    //   // Sign the user in with the credential
+    //   resolve(auth().signInWithCredential(appleCredential));
+    // }
+    // catch (err) {
+    //   reject(err);
+    // }
   })
 }
 
