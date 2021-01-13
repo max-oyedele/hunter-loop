@@ -93,7 +93,7 @@ export default function SigninScreen({ navigation }) {
           return;
         }
 
-        if(!user.active){
+        if (!user.active) {
           Alert.alert('You are banned by admin.');
           return;
         }
@@ -166,14 +166,14 @@ export default function SigninScreen({ navigation }) {
     await signin(email, pwd)
       .then((user) => {
         //console.log('signin success', user);
-        
-        if(!user.active){
+
+        if (!user.active) {
           Alert.alert(
             'You are banned by admin.',
             '',
             [
               { text: "OK", onPress: () => setSpinner(false) }
-            ],  
+            ],
           );
           return;
         }
@@ -182,7 +182,7 @@ export default function SigninScreen({ navigation }) {
 
         Constants.user = user;
         AsyncStorage.setItem('user', JSON.stringify(user));
-        navigation.navigate('Home', {screen: 'BusinessList'});
+        navigation.navigate('Home', { screen: 'BusinessList' });
       })
       .catch((err) => {
         console.log('signin errr', err);
@@ -233,13 +233,10 @@ export default function SigninScreen({ navigation }) {
               <Text style={[styles.btnTxt, { color: Colors.blackColor }]}>Login with Google</Text>
             </TouchableOpacity>
             {
-              // Platform.OS === 'ios' &&
-              // <TouchableOpacity style={[styles.btn, { borderColor: Colors.greyWeakColor, borderWidth: 2 }]} onPress={() => onAppleSignin()}>
-              //   <View style={styles.btnIcon}>
-              //     <FontAwesomeIcon name="apple" style={styles.btnIconTxt}></FontAwesomeIcon>
-              //   </View>
-              //   <Text style={[styles.btnTxt, { color: Colors.blackColor }]}>Login with Apple</Text>
-              // </TouchableOpacity>
+              Platform.OS === 'ios' &&
+              <TouchableOpacity style={[styles.btn, { borderColor: Colors.greyWeakColor, borderWidth: 2 }]} onPress={() => onAppleSignin()}>
+                <Image style={{ width: '100%', height: '100%' }} source={Images.signinWithApple} />
+              </TouchableOpacity>
             }
             <TouchableOpacity style={[styles.btn, { backgroundColor: Colors.yellowToneColor }]} onPress={() => setPage('email')}>
               <View style={styles.btnIcon}>
@@ -360,7 +357,7 @@ const styles = StyleSheet.create({
   },
   body: {
     width: '100%',
-    height: '55%',    
+    height: '55%',
     alignItems: 'center',
     marginTop: normalize(20, 'height')
   },

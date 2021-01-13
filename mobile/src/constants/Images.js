@@ -9,6 +9,7 @@ const Images = {
     marker: require('../assets/images/marker.png'),
     
     google: require('../assets/images/ic_google.png'),
+    signinWithApple: require('../assets/images/sign-in-with-apple.png'),
 
     profileImg: require('../assets/images/profileImg.png'),
     noImg: require('../assets/images/noImg.png'),
