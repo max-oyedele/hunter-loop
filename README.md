@@ -29,5 +29,8 @@ Ban and Lift user
 Manage business request
 Manage membership
 
+## App store
+Please go [here](https://apps.apple.com/sc/app/hunters-loop/id1536214645)
+
 ## Captures
 <img src="./hunter_app_admin.png" height="550px" width="700px">
