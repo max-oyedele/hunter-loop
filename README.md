@@ -30,4 +30,4 @@ Manage business request
 Manage membership
 
 ## Captures
-<img src="./hunter_app_admin.png" height="550px" width="320px">
+<img src="./hunter_app_admin.png" height="550px" width="700px">
