@@ -3,30 +3,48 @@
 ## Specifications and Platform
 
 React.js
+
 React Native
+
 Firebase
+
 Android
+
 iOS
 
 ## Features
 - Mobile
+
 Register User Profile
+
 Browse Business and Services
+
 Search by name, address, location and distance
+
 Rating business and service
+
 Chat with operator
+
 Request business
 
 - Operator panel
+
 Register new service
+
 Manage services
+
 Chat with user
+
 Report
 
 - Admin panel
+
 Approve user and business
+
 Ban and Lift user
+
 Manage business request
+
 Manage membership
 
 ## App store, Google play, Web portal link
