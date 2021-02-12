@@ -31,7 +31,9 @@ Manage membership
 
 ## App store, Google play, Web portal link
 [android app](https://apps.apple.com/sc/app/hunters-loop/id1536214645)
+
 [iOS app](https://play.google.com/store/apps/details?id=com.brainyapps.hunters&hl=en_CA&gl=US)
+
 [web panel](https://hunters.brainyapps.com/)
 
 ## Screenshot
