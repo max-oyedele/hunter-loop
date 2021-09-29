@@ -111,7 +111,7 @@ const getFirestoreBackend = () => {
   if (!_fireStoreBackend) {
     _fireStoreBackend = new FirestoreBackend();
   }
-  return _fireStoreBackend;
+  return _fireStoreBackend; 
 };
 
 export { getFirestoreBackend };
